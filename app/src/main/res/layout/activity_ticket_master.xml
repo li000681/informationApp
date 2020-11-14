@@ -1,9 +1,63 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".TicketMasterActivity">
+    android:layout_height="wrap_content">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ListView
+        android:id="@+id/theListView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+
+    </ListView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        >
+
+        <EditText
+            android:id="@+id/addEditText1"
+            android:layout_width="158dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="City" />
+
+        <EditText
+            android:id="@+id/addEditText2"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hin="Radios" />
+    <Button
+        android:id="@+id/button1"
+        android:text="SEARCH"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        >
+        <Button
+        android:id="@+id/button2"
+        android:text="HELP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"/>
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="SAVE" />
+
+    </LinearLayout>
+</RelativeLayout>
+
+
+
+
+
+
