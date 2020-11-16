@@ -5,4 +5,14 @@
     <string name="recipeSearch">收据查询/姓名</string>
     <string name="covidCaseData">新冠数据/姓名</string>
     <string name="audioDatabaseApi">音频数据API/姓名</string>
+    <string name="WelcomeRecipeSearch">欢迎来到菜谱查询页面，请输入要查询的菜谱和原料，按查找按钮开始查询</string>
+    <string name="inputRecipe">菜谱</string>
+    <string name="editRecipe">请在此输入要查找的菜谱</string>
+    <string name="inputIngredients">原料</string>
+    <string name="editIngredients">请在此输入需要的原料</string>
+    <string name="RecipeSearch">按此查询</string>
+    <string name="Recipe_toast_message">只能填入一个菜谱</string>
+    <string name="Ingredients_snackBar_message">多个原料之间请用“,”分隔</string>
+    <string name="RecipeHelp">帮助</string>
+    <string name="recipeAlertNB">好</string>
 </resources>
