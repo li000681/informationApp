@@ -19,5 +19,12 @@ public class MainActivity extends AppCompatActivity {
         {
             startActivity(nextPage);
         });
+
+        Button TheAudioDbButton = findViewById(R.id.button4);
+        Intent audioDb = new Intent(this, TheAudioDatabase.class);
+        TheAudioDbButton.setOnClickListener(click->
+        {
+            startActivity(audioDb);
+        });
     }
 }
