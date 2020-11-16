@@ -15,4 +15,6 @@
     <string name="Ingredients_snackBar_message">多个原料之间请用“,”分隔</string>
     <string name="RecipeHelp">帮助</string>
     <string name="recipeAlertNB">好</string>
+    <string name="recipeURL">"URL: "</string>
+    <string name="recipeIngredients">"Ingredients: "</string>
 </resources>

@@ -14,4 +14,6 @@
     <string name="Ingredients_snackBar_message">Separate ingredients with \",\"</string>
     <string name="RecipeHelp">Help</string>
     <string name="recipeAlertNB">OK</string>
+    <string name="recipeURL">"URL: "</string>
+    <string name="recipeIngredients">"Ingredients: "</string>
 </resources>

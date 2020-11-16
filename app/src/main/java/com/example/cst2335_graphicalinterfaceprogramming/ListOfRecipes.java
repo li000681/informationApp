@@ -55,7 +55,7 @@ public class ListOfRecipes extends AppCompatActivity {
         pb = findViewById(R.id.progressBar);
         pb.setVisibility(View.VISIBLE);
         ForecastQuery req = new ForecastQuery();
-        req.execute("http://www.recipepuppy.com/api/","?i=", ingredients, "&q=", recipe, "&format=xml");
+        req.execute("http://www.recipepuppy.com/api/?i=", ingredients, "&q=", recipe, "&format=xml");
         recipeList = (ListView) findViewById(R.id.recipeList);
 
 
@@ -68,7 +68,7 @@ public class ListOfRecipes extends AppCompatActivity {
 
     }
 
-
+/** visit http://www.recipepuppy.com/api and get the recipes in the background*/
     private class ForecastQuery extends AsyncTask<String, Integer, String> {
         //string variables for the UV, min, max, and current temperature
         String title;
@@ -80,13 +80,8 @@ public class ListOfRecipes extends AppCompatActivity {
         public String doInBackground(String... args) {
             try {
                 String a = URLEncoder.encode(args[1], "UTF-8");
-                String b = URLEncoder.encode(args[2], "UTF-8");
-                String c = URLEncoder.encode(args[3], "UTF-8");
-                String d = URLEncoder.encode(args[4], "UTF-8");
-                String e = URLEncoder.encode(args[5], "UTF-8");
-               // String f = URLEncoder.encode(args[6], "UTF-8");
                 //create a URL object of what server to contact:
-                URL url = new URL(args[0] + a + b + c + d + e);
+                URL url = new URL(args[0] + a + args[2] + args[3] +args[4]);
 
                 //open the connection
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -95,15 +90,14 @@ public class ListOfRecipes extends AppCompatActivity {
                 InputStream response = urlConnection.getInputStream();
 
 
-                //From part 3: slide 19
+
                 XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
                 factory.setNamespaceAware(false);
                 XmlPullParser xpp = factory.newPullParser();
                 xpp.setInput(response, "UTF-8"); //response is data from the server
 
 
-                //From part 3, slide 20
-                //String parameter = null;
+
 
                 int eventType = xpp.getEventType(); //The parser is currently at START_DOCUMENT
 
@@ -111,30 +105,33 @@ public class ListOfRecipes extends AppCompatActivity {
 
                     if (eventType == XmlPullParser.START_TAG) {
                         //If you get here, then you are pointing at a start tag
-                        if (xpp.getName().equals("recipe")) {
+                        if (xpp.getName().equals("title")) {
                             //If you get here, then you are pointing to a <Weather> start tag
-                            title = xpp.getAttributeValue(null, "title");
-
+                            xpp.next();
+                            title = xpp.getText();
                             publishProgress(25);
-                            href = xpp.getAttributeValue(null, "href");
-
+                        }else if (xpp.getName().equals("href")) {
+                            xpp.next();
+                            href = xpp.getText();
                             publishProgress(50);
-
-                            ingredients = xpp.getAttributeValue(null, "ingredients");
+                        }else if (xpp.getName().equals("ingredients")) {
+                            xpp.next();
+                            ingredients = xpp.getText();
                             publishProgress(75);
-
+                            Recipes recipe = new Recipes(title, href, ingredients);
+                            elements.add(recipe);
                         }
 
                     }
-                    Recipes recipe = new Recipes(title, href, ingredients);
-                    elements.add(recipe);
-                    publishProgress(100);
+
+
                     eventType = xpp.next(); //move to the next xml event and store it in a variable
                 }
+
             } catch (Exception e) {
                 Log.i(String.valueOf(e), "not connected");
             }
-
+            publishProgress(100);
             return "done";
         }
 
@@ -176,7 +173,7 @@ public class ListOfRecipes extends AppCompatActivity {
             LayoutInflater inflater = getLayoutInflater();
             View newView = inflater.inflate(R.layout.recipe_list_view, parent, false);
 
-
+/** In listView, only the title of recipe would be shown*/
             TextView tView = newView.findViewById(R.id.recipeTitle);
             tView.setText(elements.get(position).getTitle());
 
@@ -185,6 +182,7 @@ public class ListOfRecipes extends AppCompatActivity {
         }
 
     }
+    /** showMessage would show the details of recipes when one of the recipes is long clicked */
     protected void showMessage(int position)
     {
         Recipes selectedRecipe = elements.get(position);
@@ -202,7 +200,7 @@ public class ListOfRecipes extends AppCompatActivity {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(selectedRecipe.getTitle())
-                .setMessage(selectedRecipe.getHref()+"/n"+selectedRecipe.getIngredients())
+                .setMessage(getResources().getString(R.string.recipeURL)+ selectedRecipe.getHref()+"\n"+getResources().getString(R.string.recipeIngredients)+selectedRecipe.getIngredients())
 //                .setView(contact_view) //add the 3 edit texts showing the contact information
 //                .setPositiveButton(getResources().getString(R.string.alertUB), (click, b) -> {
 //                    selectedMessage.update(rowName.getText().toString(), selectedMessage.stringToBoolean(rowEmail.getText().toString()));
