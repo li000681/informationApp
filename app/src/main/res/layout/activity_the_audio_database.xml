@@ -26,9 +26,15 @@
             android:gravity="right"
             android:text="Search" />
     </RelativeLayout>
+    <ProgressBar
+        android:id="@+id/pb_tad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
     <ListView
         android:id="@+id/lv_albums_tad"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+
 
 </LinearLayout>
