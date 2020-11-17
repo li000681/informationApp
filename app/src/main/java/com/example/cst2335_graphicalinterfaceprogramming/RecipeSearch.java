@@ -37,7 +37,7 @@ public class RecipeSearch extends AppCompatActivity {
         /** set the text to be the ingredients input by user last time.*/
         et1.setText(savedString1);
         /** When users input, there is a snackBar indicating that ingredients should be separated by comma.*/
-        et1.setOnClickListener(v ->Snackbar.make(et1,getResources().getString(R.string.Ingredients_snackBar_message),Snackbar.LENGTH_LONG));
+        et1.setOnClickListener(v ->Snackbar.make(et1,getResources().getString(R.string.Ingredients_snackBar_message),Snackbar.LENGTH_LONG).show());
         /** help button is for help information which would show in AlertDialog.*/
         Button help = findViewById(R.id.recipeHelpButton);
         help.setOnClickListener(v ->{
