@@ -7,7 +7,8 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 public interface ArtistSearch {
-    @GET("/api/v1/json/1/searchalbum")
-    Call<List<Album>> getData(@Query("s") String artistName);
+    @GET("/api/v1/json/1/searchalbum.php")
+    Call<Albums> getData(@Query("s") String artistName);
+
 }
 
