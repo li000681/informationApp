@@ -58,7 +58,7 @@ public class ListOfRecipes extends AppCompatActivity {
         req.execute("http://www.recipepuppy.com/api/?i=", ingredients, "&q=", recipe, "&format=xml");
         recipeList = (ListView) findViewById(R.id.recipeList);
 
-
+/** When long press the recipe, there is an AlertDialog showing the recipe title, URL and ingredients.*/
         recipeList.setOnItemLongClickListener((parent, view, pos, id) -> {
 
             showMessage(pos);
