@@ -19,5 +19,9 @@ public class MainActivity extends AppCompatActivity {
         {
             startActivity(nextPage);
         });
+
+        Button covid=findViewById(R.id.button3);
+        covid.setOnClickListener(clk->
+                startActivity(new Intent(MainActivity.this, Covid19Activity.class)));
     }
 }
