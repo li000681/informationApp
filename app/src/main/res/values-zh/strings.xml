@@ -3,6 +3,18 @@
     <string name="app_name">CST2335_GraphicalInterfaceProgramming</string>
     <string name="ticketMaster">订票大师/李薇</string>
     <string name="recipeSearch">收据查询/姓名</string>
-    <string name="covidCaseData">新冠数据/姓名</string>
+    <string name="covidCaseData">新冠数据/李俊娥</string>
     <string name="audioDatabaseApi">音频数据API/姓名</string>
+    <string name="covidSearch">查询</string>
+    <string name="help">帮助</string>
+    <string name="country">国家</string>
+    <string name="fromDate">起始日期(年-月-日)</string>
+    <string name="endDate">结束日期（年-月-日）</string>
+    <string name="favorite">收藏数据</string>
+    <string name="hint">请在这里输入</string>
+    <string name="save">加入收藏夹</string>
+    <string name="clear">清除收藏夹</string>
+    <string name="undo">撤销清除</string>
+    <string name="hide">隐藏</string>
+    <string name="searchHeader">查询结果</string>
 </resources>
