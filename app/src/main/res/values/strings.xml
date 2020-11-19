@@ -4,4 +4,19 @@
     <string name="recipeSearch">Recipe Search page/name</string>
     <string name="covidCaseData">Covid-19 case data/name</string>
     <string name="audioDatabaseApi">The Audio Database api/name</string>
+    <string name="recipeSearch">Recipe Search page/name</string>
+    <string name="covidCaseData">Covid-19 case data/name</string>
+    <string name="audioDatabaseApi">The Audio Database api/name</string>
+    <string name="WelcomeRecipeSearch">Welcome to recipe search page, please input the recipe and ingredients, press the button to begin search</string>
+    <string name="inputRecipe">Recipe: </string>
+    <string name="editRecipe">"Please input the recipe you want to search here "</string>
+    <string name="inputIngredients">Ingredients: </string>
+    <string name="editIngredients">Please input the ingredients included in the recipe here</string>
+    <string name="RecipeSearch">Press to search</string>
+    <string name="Recipe_toast_message">"Only one recipe "</string>
+    <string name="Ingredients_snackBar_message">Separate ingredients with \",\"</string>
+    <string name="RecipeHelp">Help</string>
+    <string name="recipeAlertNB">OK</string>
+    <string name="recipeURL">"URL: "</string>
+    <string name="recipeIngredients">"Ingredients: "</string>
 </resources>
