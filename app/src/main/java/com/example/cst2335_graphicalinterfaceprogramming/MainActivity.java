@@ -19,6 +19,14 @@ public class MainActivity extends AppCompatActivity {
         {
             startActivity(nextPage);
         });
+
+        Button TheAudioDbButton = findViewById(R.id.button4);
+        Intent audioDb = new Intent(this, TheAudioDatabase.class);
+        TheAudioDbButton.setOnClickListener(click->
+        {
+            startActivity(audioDb);
+        });
+      
         /** Button ReceipeSearchButton will lead to the recipe search page.*/
         Button ReceipeSearchButton = findViewById(R.id.button2);
         Intent nextPage1 = new Intent(MainActivity.this, RecipeSearch.class);
