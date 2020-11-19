@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,6 +56,11 @@ public class TicketMasterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ticket_master);
+        ProgressBar progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
+
+        ListView myList=findViewById(R.id.the_list);
+        myList.setAdapter(myAdapter = new MyListAdapter());
 
         EditText City = findViewById(R.id.addEditText1);
         EditText Radius = findViewById(R.id.addEditText2);
@@ -77,37 +83,20 @@ public class TicketMasterActivity extends AppCompatActivity {
         });
     }
 
-    private String convertStreamToString(InputStream is) {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        StringBuilder sb = new StringBuilder();
-
-        String line;
-        try {
-            while (( line = reader.readLine() ) != null) {
-                sb.append(line).append('\n');
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                is.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return sb.toString();
-    } // End convertStreamToString()
-
     public String establishConnection(String reqUrl) {
-
-        String response = null;
+        String result=null;
         try {
             URL url = new URL(reqUrl);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            // read the response
-            InputStream inputStream = new BufferedInputStream(conn.getInputStream());
-            response = convertStreamToString(inputStream);
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            InputStream response = urlConnection.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(response, "UTF-8"), 8);
+            StringBuilder sb = new StringBuilder();
+            String line = null;
+            while ((line = reader.readLine()) != null)
+            {
+                sb.append(line + "\n");
+            }
+            result = sb.toString();
         } catch (MalformedURLException e) {
             Log.e("TicketMasterActivity", "MalformedURLException: " + e.getMessage());
         } catch (ProtocolException e) {
@@ -117,16 +106,16 @@ public class TicketMasterActivity extends AppCompatActivity {
         } catch (Exception e) {
             Log.e("TicketMasterActivity", "Exception: " + e.getMessage());
         }
-        return response;
+        return result;
     } // End establishConnection()
 
 
     private class ForecastQuery extends AsyncTask<String, Integer, String> {
-        protected String size;
-        protected int totalElement;
-        protected int totalPages;
+        protected int size = 0;
+        protected int totalElement = 0;
+        protected int totalPages = 0;
 
-        private void getPageParameter(String reqUrl) {
+        private JSONObject getPageParameter(String reqUrl) {
             JSONObject page = null;
             try {
                 page = new JSONObject(establishConnection(reqUrl));
@@ -134,53 +123,55 @@ public class TicketMasterActivity extends AppCompatActivity {
                 Log.e("TicketMasterActivity", "Exception: " + e.getMessage());
             }
             try {
-                size = page.getString("size");
-                totalElement = page.getInt("totalElement");
-                totalPages = page.getInt("totalPages");
+                size = page.getJSONObject("page").getInt("size");
+                totalElement = page.getJSONObject("page").getInt("totalElements");
+                totalPages = page.getJSONObject("page").getInt("totalPages");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            Log.d("getPageParameter", "size:"+size+"totalElement:"+totalElement+"totalPages:"+totalPages);
-            return;
+            Log.d("getPageParameter", "size: "+ size + "totalElement: "+ totalElement +"totalPages: "+totalPages);
+            return page;
         }
 
         //Type3                      Type1
         public String doInBackground(String... args) {
             try {
                 int count = 0;
+                String nextPage = "";
                 String url = "https://app.ticketmaster.com/discovery/v2/events.json?apikey=naG2r1v48w2ubfr6icXhrvmlWvBW8dmz&" +
                         "city=" + args[0] + "&radius=" + args[1];
-                url = "https://app.ticketmaster.com/discovery/v2/events.json?apikey=naG2r1v48w2ubfr6icXhrvmlWvBW8dmz&city=ottawa&radius=2";
-                getPageParameter(url);
-
-                for (int i = 0; i < totalPages; i++) {
-                    url += "&page=" + i + "&size=" + size;
-                    JSONObject jsonObj = new JSONObject(establishConnection(url));
-                    JSONArray ticketArray = jsonObj.getJSONArray("events");
-/*                    String name, String url, String imgUrl, String city, String localDate,
-                            String localTime, String min, String max, String currency)*/
-                    for (int k = 0; k < ticketArray.length(); k++) {
-                        JSONObject event = ticketArray.getJSONObject(i);
-                        JSONArray Array = event.getJSONArray("images");
-                        JSONObject image = Array.getJSONObject(0);
+                Log.d("doInBackground",url);
+                //url = "https://app.ticketmaster.com/discovery/v2/events.json?apikey=naG2r1v48w2ubfr6icXhrvmlWvBW8dmz&city=ottawa&radius=2";
+                JSONObject jsonObj = getPageParameter(url);
+                JSONArray ticketArray = jsonObj.getJSONObject("_embedded").getJSONArray("events");
+                totalElement = (totalElement < size)?totalElement:size;
+                for (int k = 0; k < totalElement; k++) {
+                    JSONObject price;
+                    JSONObject event = ticketArray.getJSONObject(k);
+                    JSONArray Array = event.getJSONArray("images");
+                    JSONObject image = Array.getJSONObject(0);
+                    if(event.has("priceRanges")){
                         Array = event.getJSONArray("priceRanges");
-                        JSONObject price = Array.getJSONObject(0);
-
-                        list.add(new TicketEvent(event.getString("name"),
-                                event.getString("url"),
-                                event.getString(image.getString("url")),
-                                event.getString(args[0]),
-                                event.getString("localDate"),
-                                event.getString("localTime"),
-                                event.getString(price.getString("min")),
-                                event.getString(price.getString("max")),
-                                event.getString(price.getString("currency"))
-                        ));
-                        count++;
-                        if (count % 10 == 0) {
-                            publishProgress(( count * 100 ) / totalElement, count);
-                        }
+                        price = Array.getJSONObject(0);
                     }
+                    else
+                    {
+                        price = new JSONObject("{min:0, max:0, currency:'CA'}");
+                    }
+
+
+                    list.add(new TicketEvent(event.getString("name"),
+                            event.getString("url"),
+                            image.getString("url"),
+                            args[0],
+                            event.getJSONObject("dates").getJSONObject("start").getString("localDate"),
+                            event.getJSONObject("dates").getJSONObject("start").getString("localTime"),
+                            price.getString("min"),
+                            price.getString("max"),
+                            price.getString("currency")
+                    ));
+                    count++;
+                    publishProgress(( count * 100 ) / totalElement, count);
                 }
                 if(count > 0){
                     publishProgress(100, count);
@@ -195,13 +186,19 @@ public class TicketMasterActivity extends AppCompatActivity {
         public void onProgressUpdate(Integer... args) {
             ProgressBar progressBar = findViewById(R.id.progressBar);
             progressBar.setProgress(args[0]);
-            myAdapter.notifyDataSetChanged();
-            Log.d("onProgressUpdate", "Update progress bar to: " + args[0]);
+            //myAdapter.notifyDataSetChanged();
+            Log.d("onProgressUpdate", "Update progress bar to: " + args[0] +"  " +args[1]);
         }
 
         public void onPostExecute(String fromDoInBackground) {
+            Toast toast;
             //Toast toast = Toast.makeText(TicketMasterActivity.this.getApplicationContext(), getResources().getString(R.string.toast), Toast.LENGTH_LONG);
-            Toast toast = Toast.makeText(TicketMasterActivity.this.getApplicationContext(), totalElement+" items has been loaded successfylly!", Toast.LENGTH_LONG);
+            if(totalElement > 0) {
+                toast = Toast.makeText(TicketMasterActivity.this.getApplicationContext(), totalElement+" events has been loaded successfylly!", Toast.LENGTH_LONG);
+            }
+            else {
+                toast = Toast.makeText(TicketMasterActivity.this.getApplicationContext(), " Sorry, No events found!", Toast.LENGTH_LONG);
+            }
             toast.show();
         }
     }
