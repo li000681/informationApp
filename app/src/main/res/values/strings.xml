@@ -1,10 +1,7 @@
 <resources>
     <string name="app_name">CST2335_GraphicalInterfaceProgramming</string>
     <string name="ticketMaster">TicketMaster event search/Wei Li</string>
-    <string name="recipeSearch">Recipe Search page/name</string>
-    <string name="covidCaseData">Covid-19 case data/name</string>
-    <string name="audioDatabaseApi">The Audio Database api/name</string>
-    <string name="recipeSearch">Recipe Search page/name</string>
+    <string name="recipeSearch">Recipe Search page/Jianchuan Li</string>
     <string name="covidCaseData">Covid-19 case data/name</string>
     <string name="audioDatabaseApi">The Audio Database api/name</string>
     <string name="WelcomeRecipeSearch">Welcome to recipe search page, please input the recipe and ingredients, press the button to begin search</string>
