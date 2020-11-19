@@ -2,18 +2,6 @@
     <string name="app_name">CST2335_GraphicalInterfaceProgramming</string>
     <string name="ticketMaster">TicketMaster event search/Wei Li</string>
     <string name="recipeSearch">Recipe Search page/name</string>
-    <string name="covidCaseData">Covid-19 case data/June Li</string>
+    <string name="covidCaseData">Covid-19 case data/name</string>
     <string name="audioDatabaseApi">The Audio Database api/name</string>
-    <string name="covidSearch">Search</string>
-    <string name="help">How to Use</string>
-    <string name="country">Country</string>
-    <string name="fromDate">From Date(YYYY-MM-DD)</string>
-    <string name="endDate">End Date(YYYY-MM-DD)</string>
-    <string name="favorite">Favorite</string>
-    <string name="hint">Type Here</string>
-    <string name="save">Add To Favorite</string>
-    <string name="clear">Clear</string>
-    <string name="undo">Recovery</string>
-    <string name="hide">Hide</string>
-    <string name="searchHeader">The Search Result</string>
 </resources>
