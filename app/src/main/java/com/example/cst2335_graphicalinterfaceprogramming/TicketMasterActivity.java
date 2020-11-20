@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -31,6 +33,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -45,12 +48,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TicketMasterActivity extends AppCompatActivity {
+    private List<JSONObject> list = new ArrayList<>();
     String city;
     String radius;
-    private List<TicketEvent> list = new ArrayList<>();
     MyListAdapter myAdapter;
     SQLiteDatabase db;
-
+    SharedPreferences prefs = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +68,13 @@ public class TicketMasterActivity extends AppCompatActivity {
         EditText City = findViewById(R.id.addEditText1);
         EditText Radius = findViewById(R.id.addEditText2);
         Button searchButton = findViewById(R.id.searchButton);
+
+        prefs = getSharedPreferences("FileName", Context.MODE_PRIVATE);
+        String savedCity = prefs.getString("CITY", "");
+        String savedRadius = prefs.getString("RADIUS", "");
+        City.setText(savedCity);
+        Radius.setText(savedRadius);
+
         searchButton.setOnClickListener(click -> {
             if (( City.getText().toString().length() == 0 ) ||
                     ( Radius.getText().toString().length() == 0 )) {
@@ -77,13 +87,28 @@ public class TicketMasterActivity extends AppCompatActivity {
             } else {
                 city = City.getText().toString();
                 radius = Radius.getText().toString();
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putString("CITY", city);
+                editor.putString("RADIUS", radius);
+                editor.commit();
                 ForecastQuery req = new ForecastQuery();
+                list.clear();
                 req.execute(city, radius);
             }
         });
+
+        myList.setOnItemClickListener((list1, item, position, id) -> {
+            //Create a bundle to pass data to the new fragment
+            Bundle dataToPass = new Bundle();
+            dataToPass.putString("JSONSTRING", list.get(position).toString());
+
+            Intent nextActivity = new Intent(TicketMasterActivity.this, TicketDetailsActivity.class);
+            nextActivity.putExtras(dataToPass); //send data to next activity
+            startActivity(nextActivity); //make the transition
+        });
     }
 
-    public String establishConnection(String reqUrl) {
+    private String establishConnection(String reqUrl) {
         String result=null;
         try {
             URL url = new URL(reqUrl);
@@ -109,6 +134,36 @@ public class TicketMasterActivity extends AppCompatActivity {
         return result;
     } // End establishConnection()
 
+    private boolean downloadImage(String reqUrl, String name){
+        Bitmap image = null;
+        boolean result = false;
+        File file = getBaseContext().getFileStreamPath(name);
+        if(file.exists())
+            return result;
+        try {
+            URL url = new URL(reqUrl);
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.connect();
+            if(urlConnection.getResponseCode() == 200){
+                image = BitmapFactory.decodeStream(urlConnection.getInputStream());
+                FileOutputStream outputStream = openFileOutput(name+".jpg", Context.MODE_PRIVATE);
+                image.compress(Bitmap.CompressFormat.PNG, 80, outputStream);
+                outputStream.flush();
+                outputStream.close();
+                Log.d("FILE", "The icon file is downloaded");
+                result = true;
+            }
+        } catch (MalformedURLException e) {
+            Log.e("TicketMasterActivity", "MalformedURLException: " + e.getMessage());
+        } catch (ProtocolException e) {
+            Log.e("TicketMasterActivity", "ProtocolException: " + e.getMessage());
+        } catch (IOException e) {
+            Log.e("TicketMasterActivity", "IOException: " + e.getMessage());
+        } catch (Exception e) {
+            Log.e("TicketMasterActivity", "Exception: " + e.getMessage());
+        }
+        return result;
+    }
 
     private class ForecastQuery extends AsyncTask<String, Integer, String> {
         protected int size = 0;
@@ -148,28 +203,38 @@ public class TicketMasterActivity extends AppCompatActivity {
                 for (int k = 0; k < totalElement; k++) {
                     JSONObject price;
                     JSONObject event = ticketArray.getJSONObject(k);
-                    JSONArray Array = event.getJSONArray("images");
-                    JSONObject image = Array.getJSONObject(0);
+                    JSONObject listItem = new JSONObject();
+                    JSONArray imagesArray = event.getJSONArray("images");
+                    JSONObject image = imagesArray.getJSONObject(0);
+                    for(int i = 0; i < 10; i++) {
+                        JSONObject img = imagesArray.getJSONObject(i);
+                        if(img.getInt("width") == 1024){
+                            image = img;
+                            break;
+                        }
+                    }
                     if(event.has("priceRanges")){
-                        Array = event.getJSONArray("priceRanges");
-                        price = Array.getJSONObject(0);
+                        price = event.getJSONArray("priceRanges").getJSONObject(0);
                     }
                     else
                     {
                         price = new JSONObject("{min:0, max:0, currency:'CA'}");
                     }
+                    listItem.put("name", event.getString("name"));
+                    listItem.put("url", event.getString("url"));
+                    listItem.put("imgUrl", image.getString("url"));
+                    listItem.put("city", args[0]);
+                    listItem.put("localDate", event.getJSONObject("dates").getJSONObject("start").getString("localDate"));
+                    listItem.put("localTime", event.getJSONObject("dates").getJSONObject("start").getString("localTime"));
+                    listItem.put("min", price.getString("min"));
+                    listItem.put("max", price.getString("max"));
+                    listItem.put("currency", price.getString("currency"));
+                    listItem.put("id", 0);
+                    listItem.put("imgName", event.getString("id")+".jpg");
 
+                    downloadImage(image.getString("url"), event.getString("id"));
 
-                    list.add(new TicketEvent(event.getString("name"),
-                            event.getString("url"),
-                            image.getString("url"),
-                            args[0],
-                            event.getJSONObject("dates").getJSONObject("start").getString("localDate"),
-                            event.getJSONObject("dates").getJSONObject("start").getString("localTime"),
-                            price.getString("min"),
-                            price.getString("max"),
-                            price.getString("currency")
-                    ));
+                    list.add(listItem);
                     count++;
                     publishProgress(( count * 100 ) / totalElement, count);
                 }
@@ -179,14 +244,13 @@ public class TicketMasterActivity extends AppCompatActivity {
             } catch (Exception e) {
                 Log.e("doInBackground", e.toString());
             }
-
             return "Done";
         }
 
         public void onProgressUpdate(Integer... args) {
             ProgressBar progressBar = findViewById(R.id.progressBar);
             progressBar.setProgress(args[0]);
-            //myAdapter.notifyDataSetChanged();
+            myAdapter.notifyDataSetChanged();
             Log.d("onProgressUpdate", "Update progress bar to: " + args[0] +"  " +args[1]);
         }
 
@@ -210,26 +274,37 @@ public class TicketMasterActivity extends AppCompatActivity {
         }
 
         @Override
-        public TicketEvent getItem(int position) {
+        public JSONObject getItem(int position) {
             return list.get(position);
         }
 
         @Override
         public View getView(int position, View old, ViewGroup parent) {
             View row = null;
-            TicketEvent event = getItem(position);
+            JSONObject event = getItem(position);
             LayoutInflater inflater= getLayoutInflater();//this loads xml layouts
             if(event != null){
                     row=inflater.inflate(R.layout.row_layout, parent, false);
                     TextView tView = row.findViewById(R.id.name);
-                    tView.setText(event.getName());
+                try {
+                    position += 1;
+                    tView.setText(position+"."+event.getString("name"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
             return row;
         }
 
         @Override
         public long getItemId(int position) {
-            return getItem(position).getId();
+            long id = 0;
+            try {
+                id = getItem(position).getLong("id");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return id;
         }
     }
 }
