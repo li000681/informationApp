@@ -26,6 +26,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONArray;
@@ -48,13 +50,18 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.net.ssl.SSLEngineResult;
+
 public class TicketMasterActivity extends AppCompatActivity {
+    private static final int SEARCH = 1;
+    private static final int SAVE = 2;
     private List<JSONObject> list = new ArrayList<>();
     String city;
     String radius;
     MyListAdapter myAdapter;
     SQLiteDatabase db;
     SharedPreferences prefs = null;
+    int currentButton = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +84,11 @@ public class TicketMasterActivity extends AppCompatActivity {
         City.setText(savedCity);
         Radius.setText(savedRadius);
 
+        loadDataFromDatabase();
+        myAdapter.notifyDataSetChanged();
+
         searchButton.setOnClickListener(click -> {
+            currentButton = SEARCH;
             if (( City.getText().toString().length() == 0 ) ||
                     ( Radius.getText().toString().length() == 0 )) {
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
@@ -100,6 +111,7 @@ public class TicketMasterActivity extends AppCompatActivity {
         });
 
         saveButton.setOnClickListener(click -> {
+            currentButton = SAVE;
             list.clear();
             loadDataFromDatabase();
             myAdapter.notifyDataSetChanged();
@@ -114,6 +126,46 @@ public class TicketMasterActivity extends AppCompatActivity {
             nextActivity.putExtras(dataToPass); //send data to next activity
             startActivity(nextActivity); //make the transition
         });
+
+        myList.setOnItemLongClickListener((parent, view, pos, id) -> {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.setTitle("Do you want to delete this?")
+                    //what the Yes button does:
+                    .setPositiveButton("Yes", (click, arg) -> {
+                        JSONObject removedItem = null;
+                        long database_id = 0;
+                        try {
+                            removedItem = list.get(pos);
+                            database_id = list.get(pos).getLong("id");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        if(currentButton == SAVE){
+                            db.delete(MyOpener.TABLE_NAME, MyOpener.COL_ID + "= ?", new String[] {Long.toString(database_id)});
+                        }
+                        list.remove(pos);
+                        myAdapter.notifyDataSetChanged();
+                        JSONObject finalRemovedItem = removedItem;
+                        Snackbar.make(view,"The item has been deleted!", Snackbar.LENGTH_LONG).setAction("UNDO", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                list.add(finalRemovedItem);
+                                if(currentButton == SAVE){
+                                    ContentValues newRowValues = new ContentValues();
+                                    newRowValues.put(MyOpener.COL_MESSAGE, finalRemovedItem.toString());
+                                    db.insert(MyOpener.TABLE_NAME, null, newRowValues);
+                                }
+                                myAdapter.notifyDataSetChanged();
+                                Toast.makeText(TicketMasterActivity.this,"The Item has been recovered!",Toast.LENGTH_SHORT).show();
+                            }
+                        }).show();
+                    })
+                    //What the No button does:
+                    .setNegativeButton("No", (click, arg) -> { })
+                    //Show the dialog
+                    .create().show();
+            return true;
+        } );
     }
 
     private void loadDataFromDatabase()
