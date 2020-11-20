@@ -8,6 +8,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -68,6 +69,7 @@ public class TicketMasterActivity extends AppCompatActivity {
         EditText City = findViewById(R.id.addEditText1);
         EditText Radius = findViewById(R.id.addEditText2);
         Button searchButton = findViewById(R.id.searchButton);
+        Button saveButton = findViewById(R.id.saveButton);
 
         prefs = getSharedPreferences("FileName", Context.MODE_PRIVATE);
         String savedCity = prefs.getString("CITY", "");
@@ -97,6 +99,12 @@ public class TicketMasterActivity extends AppCompatActivity {
             }
         });
 
+        saveButton.setOnClickListener(click -> {
+            list.clear();
+            loadDataFromDatabase();
+            myAdapter.notifyDataSetChanged();
+        });
+
         myList.setOnItemClickListener((list1, item, position, id) -> {
             //Create a bundle to pass data to the new fragment
             Bundle dataToPass = new Bundle();
@@ -106,6 +114,43 @@ public class TicketMasterActivity extends AppCompatActivity {
             nextActivity.putExtras(dataToPass); //send data to next activity
             startActivity(nextActivity); //make the transition
         });
+    }
+
+    private void loadDataFromDatabase()
+    {
+        //get a database connection:
+        MyOpener dbOpener = new MyOpener(this);
+        db = dbOpener.getWritableDatabase(); //This calls onCreate() if you've never built the table before, or onUpgrade if the version here is newer
+
+        // We want to get all of the columns. Look at MyOpener.java for the definitions:
+        String [] columns = {MyOpener.COL_ID, MyOpener.COL_MESSAGE};
+        //query all the results from the database:
+        Cursor results = db.query(false, MyOpener.TABLE_NAME, columns, null, null, null, null, null, null);
+        //printCursor(results, dbOpener.getVersionNum());
+
+        //Now the results object has rows of results that match the query.
+        //find the column indices:
+        int messageColumnIndex = results.getColumnIndex(MyOpener.COL_MESSAGE);
+        int idColIndex = results.getColumnIndex(MyOpener.COL_ID);
+
+        //iterate over the results, return true if there is a next item:
+        while(results.moveToNext())
+        {
+            JSONObject event = null;
+            try {
+                event = new JSONObject(results.getString(messageColumnIndex));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                long id = results.getLong(idColIndex);
+                event.put("id", id);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            list.add(event);
+        }
     }
 
     private String establishConnection(String reqUrl) {
