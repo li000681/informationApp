@@ -28,4 +28,14 @@
     <string name="undo">Recovery</string>
     <string name="hide">Hide</string>
     <string name="searchHeader">The Search Result</string>
+    <string name="TicketHelp">Help</string>
+    <string name="WelcomeTicketSearch">Welcome to ticket search page. Please input the city name and radius! Press the SEARCH button to begin search.</string>
+    <string name="ticketAlertNB">OK</string>
+    <string name="ticketFavorite">Press the FAVORITE button shows list of your saved favorite events( long press the chosen event can be deleted. )</string>
+    <string name="ticketToolBar">Press the TOOLBAR button go to Toolbar and Navigation page.</string>
+    <string name="TicketDetailHelp">Help</string>
+    <string name="TicketFavoriteSaveAs">Welcome to ticket event detail page! Press the SAVE AS FAVORITE button can save events as favorite.</string>
+    <string name="ticketAlertNB1">OK</string>
+    <string name="open" />
+    <string name="close" />
 </resources>

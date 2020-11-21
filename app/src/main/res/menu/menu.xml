@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single"></group>
+    <item
+        android:id="@+id/chatPage"
+        android:title="Chat Page"/>
+    <item
+        android:id="@+id/weatherForecast"
+        android:title="Weather Forecast"/>
+    <item
+        android:id="@+id/goBack"
+        android:title="Go back to login"/>
+</menu>

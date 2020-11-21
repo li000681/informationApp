@@ -29,4 +29,12 @@
     <string name="undo">撤销清除</string>
     <string name="hide">隐藏</string>
     <string name="searchHeader">查询结果</string>
+    <string name="TicketHelp">帮助</string>
+    <string name="WelcomeTicketSearch">欢迎来到订票网页! 请输入城市名称和半径. 按下输入按钮开始搜索.</string>
+    <string name="ticketAlertNB">好的</string>
+    <string name="ticketFavorite">按下收藏按钮显示你所收藏的所有事件 (长按选中的事件可以删除.)</string>
+    <string name="TicketDetailHelp">帮助</string>
+    <string name="TicketFavoriteSaveAs">欢迎来到订票明细目录页面! 按下收藏按钮会收藏您所喜爱的明细.</string>
+    <string name="ticketToolBar">按下工具栏按钮跳转到工具栏和导航页面.</string>
+    <string name="ticketAlertNB1">好的</string>
 </resources>

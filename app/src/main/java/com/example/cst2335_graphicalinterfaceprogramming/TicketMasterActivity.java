@@ -117,6 +117,13 @@ public class TicketMasterActivity extends AppCompatActivity {
             myAdapter.notifyDataSetChanged();
         });
 
+        Button toolbarButton = findViewById(R.id.my_toolbar);
+        Intent nextToolbarPage = new Intent(TicketMasterActivity.this, MenuExample.class);
+        toolbarButton.setOnClickListener( click ->
+        {
+            startActivity( nextToolbarPage );
+        });
+
         myList.setOnItemClickListener((list1, item, position, id) -> {
             //Create a bundle to pass data to the new fragment
             Bundle dataToPass = new Bundle();
@@ -166,6 +173,14 @@ public class TicketMasterActivity extends AppCompatActivity {
                     .create().show();
             return true;
         } );
+
+        Button help1 = findViewById(R.id.helpButton);
+        help1.setOnClickListener(v ->{
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(getResources().getString(R.string.TicketHelp) + ": ")
+                    .setMessage(getResources().getString(R.string.WelcomeTicketSearch)+getResources().getString(R.string.ticketFavorite)+getResources().getString(R.string.ticketToolBar))
+                    .setNeutralButton(getResources().getString(R.string.ticketAlertNB), (click, b) -> { })
+                    .create().show();});
     }
 
     private void loadDataFromDatabase()

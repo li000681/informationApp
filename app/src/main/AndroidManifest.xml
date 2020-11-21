@@ -14,7 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".TicketDetailsActivity"></activity>
+        <activity android:name=".MenuExample"></activity>
+        <activity android:name=".GoToTicketToolbarPage" />
+        <activity android:name=".TicketDetailsActivity" />
         <activity android:name=".AlbumDetailsInfo" />
         <activity android:name=".TheAudioDatabase" />
         <activity android:name=".ListOfRecipes" />
