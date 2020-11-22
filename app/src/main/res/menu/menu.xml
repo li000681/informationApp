@@ -2,12 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single"></group>
     <item
-        android:id="@+id/chatPage"
-        android:title="Chat Page"/>
+        android:id="@+id/navigation_search"
+        android:title="@string/ticketsearch1"
+        android:icon="@drawable/search"/>
     <item
-        android:id="@+id/weatherForecast"
-        android:title="Weather Forecast"/>
-    <item
-        android:id="@+id/goBack"
-        android:title="Go back to login"/>
+        android:id="@+id/navigation_favorite"
+        android:title="@string/ticketfavorite2"
+        android:icon="@drawable/favorite"/>
 </menu>

@@ -25,7 +25,7 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Options"
+                android:text="@string/title"
                 android:id="@+id/insert"/>
         </LinearLayout>
 

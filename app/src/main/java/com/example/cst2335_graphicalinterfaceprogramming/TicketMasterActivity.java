@@ -2,13 +2,9 @@ package com.example.cst2335_graphicalinterfaceprogramming;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -25,20 +21,11 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.material.snackbar.Snackbar;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONArray;
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserFactory;
-
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -50,9 +37,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.net.ssl.SSLEngineResult;
 
 public class TicketMasterActivity extends AppCompatActivity {
+//    public static final String STARTING_DATE = "Starting date: ";
+//    public static final String MIN_PRICE = "Min price: ";
+//    public static final String MAX_PRICE = "Max price: ";
+//    public static final String URL = "URL: ";
     private static final int SEARCH = 1;
     private static final int SAVE = 2;
     private List<JSONObject> list = new ArrayList<>();
@@ -72,6 +62,7 @@ public class TicketMasterActivity extends AppCompatActivity {
 
         ListView myList=findViewById(R.id.the_list);
         myList.setAdapter(myAdapter = new MyListAdapter());
+        boolean isTablet = findViewById(R.id.frameLayout) != null;
 
         EditText City = findViewById(R.id.addEditText1);
         EditText Radius = findViewById(R.id.addEditText2);
@@ -84,17 +75,14 @@ public class TicketMasterActivity extends AppCompatActivity {
         City.setText(savedCity);
         Radius.setText(savedRadius);
 
-        loadDataFromDatabase();
-        myAdapter.notifyDataSetChanged();
-
         searchButton.setOnClickListener(click -> {
             currentButton = SEARCH;
             if (( City.getText().toString().length() == 0 ) ||
                     ( Radius.getText().toString().length() == 0 )) {
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-                alertDialogBuilder.setTitle("Error!")
-                        .setMessage("Please input city and radius")
-                        .setPositiveButton("OK", (click_ok, arg) -> {
+                alertDialogBuilder.setTitle(getResources().getString(R.string.ticketError))
+                        .setMessage(getResources().getString(R.string.ticketPlease))
+                        .setPositiveButton(getResources().getString(R.string.ticketok), (click_ok, arg) -> {
                         })
                         .create().show();
             } else {
@@ -110,11 +98,9 @@ public class TicketMasterActivity extends AppCompatActivity {
             }
         });
 
+        Intent nextPage = new Intent(TicketMasterActivity.this, FavoriteTicketActivity.class);
         saveButton.setOnClickListener(click -> {
-            currentButton = SAVE;
-            list.clear();
-            loadDataFromDatabase();
-            myAdapter.notifyDataSetChanged();
+            startActivity(nextPage);
         });
 
         Button toolbarButton = findViewById(R.id.my_toolbar);
@@ -128,51 +114,24 @@ public class TicketMasterActivity extends AppCompatActivity {
             //Create a bundle to pass data to the new fragment
             Bundle dataToPass = new Bundle();
             dataToPass.putString("JSONSTRING", list.get(position).toString());
+            dataToPass.putString("SEARCH", "1");
 
-            Intent nextActivity = new Intent(TicketMasterActivity.this, TicketDetailsActivity.class);
-            nextActivity.putExtras(dataToPass); //send data to next activity
-            startActivity(nextActivity); //make the transition
+            if(isTablet)
+            {
+                TicketDetailsFragment dFragment = new TicketDetailsFragment(); //add a DetailFragment
+                dFragment.setArguments( dataToPass ); //pass it a bundle for information
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.frameLayout, dFragment) //Add the fragment in FrameLayout
+                        .commit(); //actually load the fragment.
+            }
+            else //isPhone
+            {
+                Intent nextActivity = new Intent(TicketMasterActivity.this, TicketDetailsActivity.class);
+                nextActivity.putExtras(dataToPass); //send data to next activity
+                startActivity(nextActivity); //make the transition
+            }
         });
-
-        myList.setOnItemLongClickListener((parent, view, pos, id) -> {
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-            alertDialogBuilder.setTitle("Do you want to delete this?")
-                    //what the Yes button does:
-                    .setPositiveButton("Yes", (click, arg) -> {
-                        JSONObject removedItem = null;
-                        long database_id = 0;
-                        try {
-                            removedItem = list.get(pos);
-                            database_id = list.get(pos).getLong("id");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        if(currentButton == SAVE){
-                            db.delete(MyOpener.TABLE_NAME, MyOpener.COL_ID + "= ?", new String[] {Long.toString(database_id)});
-                        }
-                        list.remove(pos);
-                        myAdapter.notifyDataSetChanged();
-                        JSONObject finalRemovedItem = removedItem;
-                        Snackbar.make(view,"The item has been deleted!", Snackbar.LENGTH_LONG).setAction("UNDO", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                list.add(finalRemovedItem);
-                                if(currentButton == SAVE){
-                                    ContentValues newRowValues = new ContentValues();
-                                    newRowValues.put(MyOpener.COL_MESSAGE, finalRemovedItem.toString());
-                                    db.insert(MyOpener.TABLE_NAME, null, newRowValues);
-                                }
-                                myAdapter.notifyDataSetChanged();
-                                Toast.makeText(TicketMasterActivity.this,"The Item has been recovered!",Toast.LENGTH_SHORT).show();
-                            }
-                        }).show();
-                    })
-                    //What the No button does:
-                    .setNegativeButton("No", (click, arg) -> { })
-                    //Show the dialog
-                    .create().show();
-            return true;
-        } );
 
         Button help1 = findViewById(R.id.helpButton);
         help1.setOnClickListener(v ->{
@@ -181,43 +140,6 @@ public class TicketMasterActivity extends AppCompatActivity {
                     .setMessage(getResources().getString(R.string.WelcomeTicketSearch)+getResources().getString(R.string.ticketFavorite)+getResources().getString(R.string.ticketToolBar))
                     .setNeutralButton(getResources().getString(R.string.ticketAlertNB), (click, b) -> { })
                     .create().show();});
-    }
-
-    private void loadDataFromDatabase()
-    {
-        //get a database connection:
-        MyOpener dbOpener = new MyOpener(this);
-        db = dbOpener.getWritableDatabase(); //This calls onCreate() if you've never built the table before, or onUpgrade if the version here is newer
-
-        // We want to get all of the columns. Look at MyOpener.java for the definitions:
-        String [] columns = {MyOpener.COL_ID, MyOpener.COL_MESSAGE};
-        //query all the results from the database:
-        Cursor results = db.query(false, MyOpener.TABLE_NAME, columns, null, null, null, null, null, null);
-        //printCursor(results, dbOpener.getVersionNum());
-
-        //Now the results object has rows of results that match the query.
-        //find the column indices:
-        int messageColumnIndex = results.getColumnIndex(MyOpener.COL_MESSAGE);
-        int idColIndex = results.getColumnIndex(MyOpener.COL_ID);
-
-        //iterate over the results, return true if there is a next item:
-        while(results.moveToNext())
-        {
-            JSONObject event = null;
-            try {
-                event = new JSONObject(results.getString(messageColumnIndex));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            try {
-                long id = results.getLong(idColIndex);
-                event.put("id", id);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            list.add(event);
-        }
     }
 
     private String establishConnection(String reqUrl) {
@@ -370,10 +292,10 @@ public class TicketMasterActivity extends AppCompatActivity {
             Toast toast;
             //Toast toast = Toast.makeText(TicketMasterActivity.this.getApplicationContext(), getResources().getString(R.string.toast), Toast.LENGTH_LONG);
             if(totalElement > 0) {
-                toast = Toast.makeText(TicketMasterActivity.this.getApplicationContext(), totalElement+" events has been loaded successfylly!", Toast.LENGTH_LONG);
+                toast = Toast.makeText(TicketMasterActivity.this.getApplicationContext(), totalElement+getResources().getString(R.string.ticketLoad), Toast.LENGTH_LONG);
             }
             else {
-                toast = Toast.makeText(TicketMasterActivity.this.getApplicationContext(), " Sorry, No events found!", Toast.LENGTH_LONG);
+                toast = Toast.makeText(TicketMasterActivity.this.getApplicationContext(), getResources().getString(R.string.ticketNoFound), Toast.LENGTH_LONG);
             }
             toast.show();
         }

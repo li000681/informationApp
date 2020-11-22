@@ -2,21 +2,18 @@ package com.example.cst2335_graphicalinterfaceprogramming;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
@@ -74,20 +71,28 @@ public class TicketDetailsActivity extends AppCompatActivity {
         }
 
         Button favoriteButton = findViewById(R.id.favorite_button);
-        favoriteButton.setOnClickListener( click -> {
-            ContentValues newRowValues = new ContentValues();
-            //Log.d("sssssssss", getIntent().getStringExtra("JSONSTRING"));
-            newRowValues.put(MyOpener.COL_MESSAGE, getIntent().getStringExtra("JSONSTRING"));
-            db.insert(MyOpener.TABLE_NAME, null, newRowValues);
-        });
-
         Button help2 = findViewById(R.id.help_button);
-        help2.setOnClickListener(v ->{
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(getResources().getString(R.string.TicketDetailHelp) + ": ")
-                    .setMessage(getResources().getString(R.string.TicketFavoriteSaveAs))
-                    .setNeutralButton(getResources().getString(R.string.ticketAlertNB1), (click, b) -> { })
-                    .create().show();});
+        if(getIntent().hasExtra("FAVORITE")){
+            favoriteButton.setVisibility(View.INVISIBLE);
+            help2.setVisibility(View.INVISIBLE);
+        }
+        else{
+            favoriteButton.setOnClickListener( click -> {
+                ContentValues newRowValues = new ContentValues();
+                //Log.d("sssssssss", getIntent().getStringExtra("JSONSTRING"));
+                newRowValues.put(MyOpener.COL_MESSAGE, getIntent().getStringExtra("JSONSTRING"));
+                db.insert(MyOpener.TABLE_NAME, null, newRowValues);
+            });
+
+            help2.setOnClickListener(v ->{
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(getResources().getString(R.string.TicketFavoriteHelp) + ": ")
+                        .setMessage(getResources().getString(R.string.TicketFavoriteSaveAs))
+                        .setNeutralButton(getResources().getString(R.string.ticketAlertNB1), (click, b) -> { })
+                        .create().show();});
+
+        }
+
     }
 
 }

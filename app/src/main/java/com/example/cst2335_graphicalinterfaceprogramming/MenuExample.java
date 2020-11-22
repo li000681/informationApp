@@ -37,7 +37,6 @@ public class MenuExample extends AppCompatActivity implements NavigationView.OnN
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
     }
 
 
@@ -72,17 +71,13 @@ public class MenuExample extends AppCompatActivity implements NavigationView.OnN
         switch(item.getItemId())
         {
             //what to do when the menu item is selected:
-            case R.id.item1:
-                Toast.makeText(this,"You clicked on item3",Toast.LENGTH_SHORT).show();
-                break;
             case R.id.search_item:
-                Toast.makeText(this,"You clicked on item1",Toast.LENGTH_SHORT).show();
+                Intent nextToolbarPage4 = new Intent(MenuExample.this, TicketMasterActivity.class);
+                startActivity( nextToolbarPage4 );
                 break;
-            case R.id.help_item:
-                Toast.makeText(this,"You clicked on the overflow menu",Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.mail:
-                Toast.makeText(this,"You clicked on item2",Toast.LENGTH_SHORT).show();
+            case R.id.favorite_item:
+                Intent nextPage5 = new Intent(MenuExample.this, FavoriteTicketActivity.class);
+                startActivity(nextPage5);
                 break;
         }
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
@@ -92,17 +87,13 @@ public class MenuExample extends AppCompatActivity implements NavigationView.OnN
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int d=item.getItemId();
-        if (d==R.id.chatPage){
-            Intent nextToolbarPage1 = new Intent(MenuExample.this, ChatRoomActivity.class);
-            startActivity( nextToolbarPage1);
+        if (d==R.id.navigation_search){
+            Intent nextToolbarPage4 = new Intent(MenuExample.this, TicketMasterActivity.class);
+            startActivity( nextToolbarPage4 );
         }
-        else if (d==R.id.weatherForecast){
-            Intent nextToolbarPage2 = new Intent(MenuExample.this, WeatherForecastActivity.class);
-            startActivity( nextToolbarPage2 );
-        }
-        else if (d==R.id.goBack){
-            Intent nextToolbarPage3 = new Intent(MenuExample.this, MainActivity.class);
-            startActivity( nextToolbarPage3 );
+        else if (d==R.id.navigation_favorite){
+            Intent nextPage5 = new Intent(MenuExample.this, FavoriteTicketActivity.class);
+            startActivity(nextPage5);
         }
         return false;
     }
