@@ -28,4 +28,9 @@
     <string name="undo">Recovery</string>
     <string name="hide">Hide</string>
     <string name="searchHeader">The Search Result</string>
+    <string name="recipeSearchopen">open</string>
+    <string name="recipeSearchclose">close</string>
+    <string name="recipeSearchFavorite">favorites</string>
+    <string name="recipeSearchHelp">help</string>
+    <string name="login">go back to login</string>
 </resources>

@@ -29,4 +29,8 @@
     <string name="undo">撤销清除</string>
     <string name="hide">隐藏</string>
     <string name="searchHeader">查询结果</string>
+    <string name="recipeSearchopen">open</string>
+    <string name="recipeSearchclose">close</string>
+    <string name="recipeSearchFavorite">favorites</string>
+    <string name="recipeSearchHelp">help</string>
 </resources>

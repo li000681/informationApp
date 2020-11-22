@@ -14,12 +14,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".AlbumDetailsInfo"></activity>
+        <activity android:name=".RecipeSearchToolBar"></activity>
+        <activity android:name=".AlbumDetailsInfo" />
         <activity android:name=".TheAudioDatabase" />
-        <activity android:name=".ListOfRecipes"></activity>
+        <activity android:name=".ListOfRecipes" />
         <activity android:name=".RecipeSearch" />
         <activity android:name=".TicketMasterActivity" />
-        <activity android:name=".DetailsActivity"/>
+        <activity android:name=".DetailsActivity" />
         <activity android:name=".FavoriteActivity" />
         <activity android:name=".SearchActivity" />
         <activity android:name=".SearchResult" />
