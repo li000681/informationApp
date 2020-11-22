@@ -2,15 +2,15 @@ package com.example.cst2335_graphicalinterfaceprogramming;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,22 +19,28 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-/**
+/**The class is used to create an instance of TicketDetails fragment
  * A simple {@link Fragment} subclass.
- * Use the {@link TicketDetailsFragment#newInstance} factory method to
- * create an instance of this fragment.
+ *  @author Wei Li
+ *  @version 1.0
  */
 public class TicketDetailsFragment extends Fragment {
     private Bundle dataFromActivity;
     private AppCompatActivity parentActivity;
     SQLiteDatabase db;
+
+    /**
+     * Method used to retrieve required data(image, starting date, min price, max price, and URL) from jsonObject and set to ImageView and TextView
+     * @param inflater reference of LayoutInflater that loads xml layouts
+     * @param container reference of ViewGroup
+     * @param savedInstanceState reference to a Bundle object that is passed into the onCreate method
+     * @return view of ticket details
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -42,6 +48,7 @@ public class TicketDetailsFragment extends Fragment {
         dataFromActivity = getArguments();
         JSONObject jsonObject = null;
         Bitmap image = null;
+        String url ="";
         super.onCreate(savedInstanceState);
         MyOpener dbOpener = new MyOpener(getContext());
         db = dbOpener.getWritableDatabase();
@@ -55,6 +62,7 @@ public class TicketDetailsFragment extends Fragment {
         TextView textView2=(TextView)result.findViewById(R.id.min1);
         TextView textView3=(TextView)result.findViewById(R.id.max1);
         TextView textView4=(TextView)result.findViewById(R.id.URL1);
+
         FileInputStream fis = null;
         try {
             fis = getContext().openFileInput(jsonObject.getString("imgName"));
@@ -82,16 +90,25 @@ public class TicketDetailsFragment extends Fragment {
             e.printStackTrace();
         }
         try {
-            textView4.setText("URL: "+jsonObject.getString("url"));
+            url = jsonObject.getString("url");
+            textView4.setText(url);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         Button favoriteButton = result.findViewById(R.id.favorite_button1);
         Button help2 = result.findViewById(R.id.help_button1);
+        Button urlButton = result.findViewById(R.id.URL1);
+
+        // click on URL button launch a browser that loads the URL
+        String finalUrl = url;
+        urlButton.setOnClickListener(click->{
+            Intent nextActivity = new Intent(Intent.ACTION_VIEW);
+            nextActivity.setData(Uri.parse(finalUrl));
+            startActivity(nextActivity);
+        });
 
         favoriteButton.setOnClickListener( click -> {
             ContentValues newRowValues = new ContentValues();
-            //Log.d("sssssssss", getIntent().getStringExtra("JSONSTRING"));
             newRowValues.put(MyOpener.COL_MESSAGE, dataFromActivity.getString("JSONSTRING"));
             db.insert(MyOpener.TABLE_NAME, null, newRowValues);
         });
@@ -105,11 +122,13 @@ public class TicketDetailsFragment extends Fragment {
         return result;
     }
 
+    /**
+     * Call back function, when the fragment has been added to the Activity which has the FrameLayout
+     * @param context
+     */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
-        //context will either be FragmentExample for a tablet, or EmptyActivity for phone
         parentActivity = (AppCompatActivity)context;
     }
 }

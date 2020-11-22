@@ -35,15 +35,16 @@
             android:layout_below="@id/min"
             android:textSize="75px"
             android:id="@+id/max"/>
-        <TextView
+        <Button
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+            android:background="@color/colorAccent"
             android:layout_below="@id/max"
-            android:textSize="75px"
+            android:textSize="55px"
             android:id="@+id/URL"/>
         <Button
             android:layout_height="wrap_content"
-            android:layout_width="180dp"
+            android:layout_width="match_parent"
             android:layout_gravity="center"
             android:id="@+id/favorite_button"
             android:layout_alignParentBottom="true"
@@ -51,7 +52,7 @@
 
         <Button
             android:id="@+id/help_button"
-            android:layout_width="180dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@id/favorite_button"
             android:layout_gravity="center"

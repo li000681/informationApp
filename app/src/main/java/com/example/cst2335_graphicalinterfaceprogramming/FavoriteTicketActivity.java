@@ -2,7 +2,6 @@ package com.example.cst2335_graphicalinterfaceprogramming;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -16,20 +15,35 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.material.snackbar.Snackbar;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class shows a list of favorite events, allows user to delete a event from the list
+ * @author Wei Li
+ * @version 1.0
+ */
 public class FavoriteTicketActivity extends AppCompatActivity {
+    /**
+     * list with user's favorite events
+     */
     private List<JSONObject> list = new ArrayList<>();
+    /**
+     * adapter for the ListView
+     */
     private FavoriteTicketActivity.MyListAdapter myAdapter;
+    /**
+     * database used to store data
+     */
     SQLiteDatabase db;
 
+    /**
+     * Method loads a list of favorite events from database, allows to delete events from the list
+     * @param savedInstanceState reference to a Bundle object that is passed into the onCreate method
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +55,7 @@ public class FavoriteTicketActivity extends AppCompatActivity {
         list.clear();
         loadDataFromDatabase();
         myAdapter.notifyDataSetChanged();
-
+        //HELP button in favorite page
         Button help3 = findViewById(R.id.Help);
         help3.setOnClickListener(v ->{
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -49,7 +63,7 @@ public class FavoriteTicketActivity extends AppCompatActivity {
                     .setMessage(getResources().getString(R.string.TicketFavoriteDelete))
                     .setNeutralButton(getResources().getString(R.string.ticketFavoriteAlertNB), (click, b) -> { })
                     .create().show();});
-
+        //click on the specific favorite event then go to event detail page
         myList.setOnItemClickListener((list1, item, position, id) -> {
             //Create a bundle to pass data to the new fragment
             Bundle dataToPass = new Bundle();
@@ -60,7 +74,7 @@ public class FavoriteTicketActivity extends AppCompatActivity {
             nextActivity.putExtras(dataToPass); //send data to next activity
             startActivity(nextActivity); //make the transition
         });
-
+       //long click on the specific favorite event, shows "Do you want to delete this?"
         myList.setOnItemLongClickListener((parent, view, pos, id) -> {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setTitle(getResources().getString(R.string.ticketDelete))
@@ -78,6 +92,7 @@ public class FavoriteTicketActivity extends AppCompatActivity {
                         list.remove(pos);
                         myAdapter.notifyDataSetChanged();
                         JSONObject finalRemovedItem = removedItem;
+                        //what UNDO do
                         Snackbar.make(view,getResources().getString(R.string.ticketDeleted), Snackbar.LENGTH_LONG).setAction(getResources().getString(R.string.ticketUndo), new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -97,7 +112,9 @@ public class FavoriteTicketActivity extends AppCompatActivity {
             return true;
         } );
     }
-
+    /**
+     * Method loads a list of favorite events from database
+     */
     private void loadDataFromDatabase()
     {
         //get a database connection:
@@ -108,7 +125,6 @@ public class FavoriteTicketActivity extends AppCompatActivity {
         String [] columns = {MyOpener.COL_ID, MyOpener.COL_MESSAGE};
         //query all the results from the database:
         Cursor results = db.query(false, MyOpener.TABLE_NAME, columns, null, null, null, null, null, null);
-        //printCursor(results, dbOpener.getVersionNum());
 
         //Now the results object has rows of results that match the query.
         //find the column indices:
@@ -135,17 +151,34 @@ public class FavoriteTicketActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * The inner class is an adapter for ListView
+     */
     private class MyListAdapter extends BaseAdapter {
+        /**
+         * Method counts how many events are in a list
+         * @return number of events in a list
+         */
         @Override
         public int getCount() {
             return list.size();
         }
-
+        /**
+         * Method gets a event from a list
+         * @param position position of a event in a list
+         * @return JSONObject event
+         */
         @Override
         public JSONObject getItem(int position) {
             return list.get(position);
         }
-
+        /**
+         * Method returns a view for a event
+         * @param position position of a event in a list
+         * @param old recycled view
+         * @param parent view that can contain other views
+         * @return view of a event (row to the ListView)
+         */
         @Override
         public View getView(int position, View old, ViewGroup parent) {
             View row = null;
@@ -163,7 +196,11 @@ public class FavoriteTicketActivity extends AppCompatActivity {
             }
             return row;
         }
-
+        /**
+         * Method gets a event's id from a database
+         * @param position position of a event in a list
+         * @return id of a event
+         */
         @Override
         public long getItemId(int position) {
             long id = 0;

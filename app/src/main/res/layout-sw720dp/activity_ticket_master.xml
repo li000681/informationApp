@@ -68,7 +68,7 @@
             android:textSize="18sp" />
         <FrameLayout
             android:id="@+id/frameLayout"
-            android:layout_width="500dp"
+            android:layout_width="900dp"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true" />
     </RelativeLayout>

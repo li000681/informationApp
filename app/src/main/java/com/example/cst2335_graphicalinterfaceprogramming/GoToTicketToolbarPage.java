@@ -1,9 +1,14 @@
 package com.example.cst2335_graphicalinterfaceprogramming;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 
+/**
+ * The class is used to go to toolbar page
+ *  @author Wei Li
+ * @version 1.0
+ *
+ */
 public class GoToTicketToolbarPage extends AppCompatActivity {
 
     @Override
