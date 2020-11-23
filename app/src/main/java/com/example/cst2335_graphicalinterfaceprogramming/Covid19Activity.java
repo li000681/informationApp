@@ -1,14 +1,36 @@
 package com.example.cst2335_graphicalinterfaceprogramming;
 
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.DatabaseUtils;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
+
+import java.util.ArrayList;
 
 /**
  * The class is the main responsible the main page funtion
@@ -17,6 +39,11 @@ import android.widget.EditText;
  */
 public class Covid19Activity extends AppCompatActivity {
     SharedPreferences prefs=null;
+    ArrayList<String> savedList= new ArrayList<>();
+    private SQLiteDatabase db;
+    SavedAdapter savedAdapter=new SavedAdapter();
+
+
     @Override
     /**
      * The method is the entry of execute,it equivalent to main method
@@ -25,43 +52,176 @@ public class Covid19Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_covid19);
+
+        Toolbar tBar = (Toolbar)findViewById(R.id.toolbar);
+        //This loads the toolbar, which calls onCreateOptionsMenu below:
+        setSupportActionBar(tBar);
         //get data from saved file
         prefs=getSharedPreferences("favoriteRecord", Context.MODE_PRIVATE);
         String savedString1 = prefs.getString("country", "");
-        String savedString2= prefs.getString("fromDate","");
-        String savedString3= prefs.getString("endDate","");
+        String savedString2= prefs.getString("date","");
 
         EditText country1 = findViewById(R.id.country);
-        EditText fromDate1 = findViewById(R.id.fromDate);
-        EditText endDate1 = findViewById(R.id.endDate);
+        EditText date1 = findViewById(R.id.date);
 
         country1.setText(savedString1);
-        fromDate1.setText(savedString2);
-        endDate1.setText(savedString3);
+        date1.setText(savedString2);
+
+        loadSavedDataFromDatabase();
+        ListView savedView=findViewById(R.id.savedData);
+        savedView.setAdapter(savedAdapter);
+        savedView.setOnItemLongClickListener((p, b, pos, id)->{
+            String selectedRecord = savedList.get(pos);
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.setTitle("Do you want to delete it?")
+                    //What is the message:
+                    .setMessage("The country is: " + selectedRecord.substring(11) + "The date is: "+selectedRecord.substring(1,10))
+                    .setPositiveButton("Yes", (click, arg) -> {
+                        savedList.remove(pos);
+                        deleteRecord(selectedRecord);
+                        //getSupportFragmentManager().beginTransaction().remove(dFragment).commit();
+                        savedAdapter.notifyDataSetChanged();
+                    })
+                    .setNegativeButton("No", (click, arg) -> {
+                    })
+                    .setView(getLayoutInflater().inflate(R.layout.row_layout, null))
+                    .create().show();
+            return true;
+        });
 
         Button searchButton = findViewById(R.id.entrySearch);
         searchButton.setOnClickListener(clk -> {
             Intent searchIntent = new Intent(this, SearchActivity.class);
             String country=country1.getText().toString();
-            String fromDate=fromDate1.getText().toString();
-            String endDate=endDate1.getText().toString();
+            String date=date1.getText().toString();
 
             searchIntent.putExtra("country", country);
-            searchIntent.putExtra("fromDate", fromDate);
-            searchIntent.putExtra("endDate", endDate);
+            searchIntent.putExtra("date", date);
 
-            saveSharedPrefs(country,fromDate,endDate);
+            saveSharedPrefs(country,date);
             startActivity(searchIntent);
         });
-        Button favoriteButton = findViewById(R.id.favorite);
-        favoriteButton.setOnClickListener(clk ->
-                startActivity(new Intent(this, FavoriteActivity.class)));
+
+
     }
-    private void saveSharedPrefs(String s1,String s2, String s3) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu items for use in the action bar
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.covidmenu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId())
+        {
+            //what to do when the menu item is selected:
+            case R.id.item1:
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+                alertDialogBuilder.setTitle("How to use:")
+                        .setMessage(getResources().getString(R.string.WelcomeCovidSearch))
+                        .setNeutralButton("OK", (click, b) -> { })
+                        .setView(getLayoutInflater().inflate(R.layout.alert_layout, null))
+                        .create().show();
+                break;
+        }
+        return true;
+    }
+    private void saveSharedPrefs(String s1,String s2) {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString("country", s1);
-        editor.putString("fromDate", s2);
-        editor.putString("endDate", s3);
+        editor.putString("date",s2);
         editor.commit();
+    }
+    private void loadSavedDataFromDatabase() {
+        //get a database connection:
+        CovidOpener covidOpener = new CovidOpener(this);
+        db = covidOpener.getWritableDatabase();
+        // get all of the columns.
+       // String [] columns = {CovidOpener.COL_ID, CovidOpener.COL_DATE,CovidOpener.COL_COUNTRY, CovidOpener.COL_PROVINCE,CovidOpener.COL_CASE};
+        String [] columns = { CovidOpener.COL_DATE,CovidOpener.COL_COUNTRY};
+        //query all the results from the database:
+        Cursor results = db.query(true, CovidOpener.TABLE_NAME, columns, null, null, null, null,CovidOpener.COL_DATE , null);
+        //find the column index:
+        int dateColIndex = results.getColumnIndex(CovidOpener.COL_DATE);
+        int countryColIndex = results.getColumnIndex(CovidOpener.COL_COUNTRY);
+
+
+        //iterate over the results, return true if there is a next item:
+        while(results.moveToNext()){
+            String  s1 = results.getString(dateColIndex);
+            String s2=results.getString(countryColIndex);
+            savedList.add(s1+s2);
+        }
+        //At this point, the contactsList array has loaded every row from the cursor.
+    }
+    protected void deleteRecord(String s) {
+        db.delete(CovidOpener.TABLE_NAME, CovidOpener.COL_DATE + "= ? and "+CovidOpener.COL_COUNTRY+" =?",
+                new String[]{s.substring(1,10),s.substring(11)});
+    }
+
+    protected class SavedAdapter extends BaseAdapter {
+        /**
+         * How many items are in the data set represented by this Adapter.
+         *
+         * @return Count of items.
+         */
+        @Override
+        public int getCount() {
+            return savedList.size();
+        }
+
+        /**
+         * Get the data item associated with the specified position in the data set.
+         *
+         * @param position Position of the item whose data we want within the adapter's
+         *                 data set.
+         * @return The data at the specified position.
+         */
+        @Override
+        public String getItem(int position){
+            return savedList.get(position);
+        }
+
+        /**
+         * Get a View that displays the data at the specified position in the data set. You can either
+         * create a View manually or inflate it from an XML layout file. When the View is inflated, the
+         * parent View (GridView, ListView...) will apply default layout parameters unless you use
+         * {@link LayoutInflater#inflate(int, ViewGroup, boolean)}
+         * to specify a root view and to prevent attachment to the root.
+         *
+         * @param position    The position of the item within the adapter's data set of the item whose view
+         *                    we want.
+         * @param old         The old view to reuse, if possible. Note: You should check that this view
+         *                    is non-null and of an appropriate type before using. If it is not possible to convert
+         *                    this view to display the correct data, this method can create a new view.
+         *                    Heterogeneous lists can specify their number of view types, so that this View is
+         *                    always of the right type (see {@link #getViewTypeCount()} and
+         *                    {@link #getItemViewType(int)}).
+         * @param parent      The parent that this view will eventually be attached to
+         * @return A View corresponding to the data at the specified position.
+         */
+        @Override
+        public View getView(int position, View old, ViewGroup parent) {
+            String sr = getItem(position);
+            LayoutInflater inflater = getLayoutInflater();
+            View view = inflater.inflate(R.layout.activity_search_result, parent, false);
+            if (sr != null) {
+                TextView savedView = view.findViewById(R.id.searchResult);
+                savedView.setText(sr);
+            }
+            return view;
+        }
+        /**
+         * Get the row id associated with the specified position in the list.
+         *
+         * @param position The position of the item within the adapter's data set whose row id we want.
+         * @return The id of the item at the specified position.
+         */
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
     }
 }

@@ -27,6 +27,11 @@ public class SearchResult {
         caseNumber=ca;
         date=d;
     }
+    public SearchResult( String p,int ca)
+    {
+        province=p;
+        caseNumber=ca;
+    }
     /**
      * The getters method
      */
@@ -42,5 +47,5 @@ public class SearchResult {
     public String getDate() {
         return date;
     }
-    //  public long getId() {return id; }
+    public long getId() {return id; }
 }

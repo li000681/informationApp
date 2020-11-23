@@ -2,7 +2,10 @@ package com.example.cst2335_graphicalinterfaceprogramming;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -41,10 +44,6 @@ public class SearchActivity extends AppCompatActivity {
      */
     ArrayList<SearchResult> resultList = new ArrayList<>();
     /**
-     * The ArrayList is used to store the country and date of search result you want to save
-     */
-    ArrayList<String> favorites=new ArrayList<>();
-    /**
      * Adapter used to listview
      */
     MyAdapter myAdapter= new MyAdapter();;
@@ -59,10 +58,12 @@ public class SearchActivity extends AppCompatActivity {
     /**
      * These variables is the elementary of each search
      */
-    String country,fromDate,endDate,province,date;
-    int caseNumber;
+    private String country,province,date;
+    private int caseNumber;
     SearchResult newSearch;
     ListView listView;
+    SQLiteDatabase db;
+
     @Override
     /**
      * The method is the entry of execute,it equivalent to main method
@@ -72,22 +73,35 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         country = getIntent().getStringExtra("country");
-        fromDate = getIntent().getStringExtra("fromDate");
-        endDate = getIntent().getStringExtra("endDate");
+        date = getIntent().getStringExtra("date");
         listView = findViewById(R.id.listView);
         TextView headerView=findViewById(R.id.header);
-        String urlString = "https://api.covid19api.com/country/" + country + "/status/confirmed/live?from=" + fromDate + "T00:00:00Z&to=" + endDate + "T00:00:00Z";
+        String urlString = "https://api.covid19api.com/country/" + country + "/status/confirmed/live?from=" + date + "T00:00:00Z&to=" + date + "T23:59:59Z";
         fQuery.execute(urlString);
         progressBar = findViewById(R.id.bar);
         progressBar.setVisibility(View.VISIBLE);
         Button saveButton = findViewById(R.id.save);
+
         saveButton.setOnClickListener(clk -> {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setTitle("Do you want to save to favorite list?")
                     //What is the message:
                     .setPositiveButton("Yes", (click, arg) -> {
-                        favorites.add(country + " from " + fromDate + " to " + endDate);
-                        Toast.makeText(this, "Add successfully!", Toast.LENGTH_LONG).show();
+                            ContentValues newRowValues = new ContentValues();
+                            for(int i=0;i<resultList.size();i++) {
+                                newRowValues.put(CovidOpener.COL_DATE, date);
+                                newRowValues.put(CovidOpener.COL_COUNTRY, country);
+                                newRowValues.put(CovidOpener.COL_PROVINCE, resultList.get(i).getProvince());
+                                newRowValues.put(CovidOpener.COL_CASE, resultList.get(i).getCase());
+                                //Insert in the database:
+                                CovidOpener covidOpener = new CovidOpener(this);
+                                db = covidOpener.getWritableDatabase();
+                                db.insert(CovidOpener.TABLE_NAME, null, newRowValues);
+
+                            }
+
+                      //  favorites.add(country + ":" +date);
+                        Toast.makeText(this, "Add successfully!", Toast.LENGTH_SHORT).show();
 
                     })
                     .setNegativeButton("No", (click, arg) -> {
@@ -99,10 +113,10 @@ public class SearchActivity extends AppCompatActivity {
         listView.setOnItemClickListener((list, view, position, id) -> {
             Intent detailsIntent = new Intent(this, DetailsActivity.class);
 
-            detailsIntent.putExtra("country", resultList.get(position).getCountry());
+            detailsIntent.putExtra("country", country);
             detailsIntent.putExtra("province", resultList.get(position).getProvince());
             detailsIntent.putExtra("cases", resultList.get(position).getCase()+"");
-            detailsIntent.putExtra("date", resultList.get(position).getDate());
+            detailsIntent.putExtra("date", date);
             startActivity(detailsIntent);
         });
     }
@@ -145,8 +159,7 @@ public class SearchActivity extends AppCompatActivity {
                         JSONObject job = json.getJSONObject(i);
                         province = job.getString("Province");
                         caseNumber=job.getInt("Cases");
-                        date = job.getString("Date");
-                        newSearch= new SearchResult(country,province,caseNumber,date);
+                        newSearch= new SearchResult(province,caseNumber);
                         resultList.add(newSearch);
                         //myAdapter.notifyDataSetChanged();
                         publishProgress(i*100/json.length());
@@ -224,7 +237,7 @@ public class SearchActivity extends AppCompatActivity {
          */
         @Override
         public long getItemId(int position) {
-            return position;
+            return getItem(position).getId();
         }
 
         /**
@@ -252,7 +265,7 @@ public class SearchActivity extends AppCompatActivity {
             View view = inflater.inflate(R.layout.activity_search_result, parent, false);
             if (sr != null) {
                 TextView searchView = view.findViewById(R.id.searchResult);
-                searchView.setText(sr.getDate().substring(0,10)+":"+sr.getProvince()+":"+sr.getCase());
+                searchView.setText(sr.getProvince()+":"+sr.getCase());
             }
             return view;
         }
