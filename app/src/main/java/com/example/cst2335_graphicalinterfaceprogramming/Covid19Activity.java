@@ -40,6 +40,7 @@ import java.util.ArrayList;
 public class Covid19Activity extends AppCompatActivity {
     SharedPreferences prefs=null;
     ArrayList<String> savedList= new ArrayList<>();
+    ArrayList<String> detailList= new ArrayList<>();
     private SQLiteDatabase db;
     SavedAdapter savedAdapter=new SavedAdapter();
 
@@ -75,7 +76,7 @@ public class Covid19Activity extends AppCompatActivity {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setTitle("Do you want to delete it?")
                     //What is the message:
-                    .setMessage("The country is: " + selectedRecord.substring(11) + "The date is: "+selectedRecord.substring(1,10))
+                    .setMessage("The country is: " + selectedRecord.substring(11) + "\nThe date is: "+selectedRecord.substring(0,10))
                     .setPositiveButton("Yes", (click, arg) -> {
                         savedList.remove(pos);
                         deleteRecord(selectedRecord);
@@ -87,6 +88,19 @@ public class Covid19Activity extends AppCompatActivity {
                     .setView(getLayoutInflater().inflate(R.layout.row_layout, null))
                     .create().show();
             return true;
+        });
+        savedView.setOnItemClickListener((p,b,pos,id)->{
+            String s=savedList.get(pos);
+             String [] columns1 = {CovidOpener.COL_PROVINCE,CovidOpener.COL_CASE};
+                Cursor detailResults=db.query(false,CovidOpener.TABLE_NAME,columns1, CovidOpener.COL_DATE + "= ? and "+CovidOpener.COL_COUNTRY+" =?",
+                    new String[]{s.substring(0,10),s.substring(11)},null,null,null,null);
+                int provinceColIndex = detailResults.getColumnIndex(CovidOpener.COL_PROVINCE);
+                int caseColIndex = detailResults.getColumnIndex(CovidOpener.COL_CASE);
+            while(detailResults.moveToNext()){
+                String  s1 = detailResults.getString(provinceColIndex);
+                String s2=detailResults.getString(caseColIndex);
+                detailList.add(s1+":"+s2);
+            }
         });
 
         Button searchButton = findViewById(R.id.entrySearch);
@@ -138,27 +152,22 @@ public class Covid19Activity extends AppCompatActivity {
         //get a database connection:
         CovidOpener covidOpener = new CovidOpener(this);
         db = covidOpener.getWritableDatabase();
-        // get all of the columns.
-       // String [] columns = {CovidOpener.COL_ID, CovidOpener.COL_DATE,CovidOpener.COL_COUNTRY, CovidOpener.COL_PROVINCE,CovidOpener.COL_CASE};
         String [] columns = { CovidOpener.COL_DATE,CovidOpener.COL_COUNTRY};
-        //query all the results from the database:
         Cursor results = db.query(true, CovidOpener.TABLE_NAME, columns, null, null, null, null,CovidOpener.COL_DATE , null);
         //find the column index:
         int dateColIndex = results.getColumnIndex(CovidOpener.COL_DATE);
         int countryColIndex = results.getColumnIndex(CovidOpener.COL_COUNTRY);
 
-
         //iterate over the results, return true if there is a next item:
         while(results.moveToNext()){
             String  s1 = results.getString(dateColIndex);
             String s2=results.getString(countryColIndex);
-            savedList.add(s1+s2);
+            savedList.add(s1+" "+s2);
         }
-        //At this point, the contactsList array has loaded every row from the cursor.
     }
     protected void deleteRecord(String s) {
         db.delete(CovidOpener.TABLE_NAME, CovidOpener.COL_DATE + "= ? and "+CovidOpener.COL_COUNTRY+" =?",
-                new String[]{s.substring(1,10),s.substring(11)});
+                new String[]{s.substring(0,9),s.substring(11)});
     }
 
     protected class SavedAdapter extends BaseAdapter {

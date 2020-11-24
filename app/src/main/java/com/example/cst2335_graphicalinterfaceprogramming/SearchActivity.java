@@ -110,15 +110,15 @@ public class SearchActivity extends AppCompatActivity {
                     .setView(getLayoutInflater().inflate(R.layout.alert_layout, null))
                     .create().show();
         });
-        listView.setOnItemClickListener((list, view, position, id) -> {
-            Intent detailsIntent = new Intent(this, DetailsActivity.class);
-
-            detailsIntent.putExtra("country", country);
-            detailsIntent.putExtra("province", resultList.get(position).getProvince());
-            detailsIntent.putExtra("cases", resultList.get(position).getCase()+"");
-            detailsIntent.putExtra("date", date);
-            startActivity(detailsIntent);
-        });
+//        listView.setOnItemClickListener((list, view, position, id) -> {
+//            Intent detailsIntent = new Intent(this, DetailsActivity.class);
+//
+//            detailsIntent.putExtra("country", country);
+//            detailsIntent.putExtra("province", resultList.get(position).getProvince());
+//            detailsIntent.putExtra("cases", resultList.get(position).getCase()+"");
+//            detailsIntent.putExtra("date", date);
+//            startActivity(detailsIntent);
+//        });
     }
     /**
      * The inner class is used to read date from website using JSON
