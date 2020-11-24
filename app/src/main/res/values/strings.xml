@@ -4,4 +4,6 @@
     <string name="recipeSearch">Recipe Search page/name</string>
     <string name="covidCaseData">Covid-19 case data/name</string>
     <string name="audioDatabaseApi">The Audio Database api/name</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
