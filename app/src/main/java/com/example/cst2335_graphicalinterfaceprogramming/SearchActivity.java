@@ -1,10 +1,7 @@
 package com.example.cst2335_graphicalinterfaceprogramming;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.ContentValues;
-import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -18,10 +15,8 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.io.BufferedReader;
@@ -31,7 +26,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-import static android.icu.text.DisplayContext.LENGTH_SHORT;
 
 /**
  * The class is used to search covid data according to user's input
@@ -44,7 +38,7 @@ public class SearchActivity extends AppCompatActivity {
      */
     ArrayList<SearchResult> resultList = new ArrayList<>();
     /**
-     * Adapter used to listview
+     * Adapter is used to listview
      */
     MyAdapter myAdapter= new MyAdapter();;
     /**
@@ -60,8 +54,17 @@ public class SearchActivity extends AppCompatActivity {
      */
     private String country,province,date;
     private int caseNumber;
+    /**
+     * The newSearch is used to store the object of one search result
+     */
     SearchResult newSearch;
+    /**
+     * The listView is used to demonstrate the view of the list
+     */
     ListView listView;
+    /**
+     * The db is used to connect database and execute sql
+     */
     SQLiteDatabase db;
 
     @Override

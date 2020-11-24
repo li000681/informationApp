@@ -1,6 +1,7 @@
 package com.example.cst2335_graphicalinterfaceprogramming;
 
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -118,6 +119,19 @@ public class Covid19Activity extends AppCompatActivity {
 
 
     }
+
+    /**
+     * Initialize the contents of the Activity's standard options menu.
+     *
+     * <p>This is only called once, the first time the options menu is
+     * displayed.
+     * <p>The default implementation populates the menu with standard system
+     * menu items.
+     * @param menu The options menu in which you place your items.
+     * @return You must return true for the menu to be displayed;
+     * if you return false it will not be shown.
+     */
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu items for use in the action bar
@@ -126,6 +140,17 @@ public class Covid19Activity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * This hook is called whenever an item in your options menu is selected.
+     * The default implementation simply returns false to have the normal
+     * processing happen (calling the item's Runnable or sending a message to
+     * its Handler as appropriate).
+     * <p>Derived classes should call through to the base class for it to
+     * perform the default menu handling.</p>
+     * @param item The menu item that was selected.
+     * @return boolean Return false to allow normal menu processing to
+     * proceed, true to consume it here.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId())
@@ -142,12 +167,19 @@ public class Covid19Activity extends AppCompatActivity {
         }
         return true;
     }
+    /**
+     * This method is called when click search button to save the input content to a file.
+     * @param s1,s2 these two parameters are the content to save.
+     */
     private void saveSharedPrefs(String s1,String s2) {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString("country", s1);
         editor.putString("date",s2);
         editor.commit();
     }
+    /**
+     * This method is called to load the saved data from database.
+     */
     private void loadSavedDataFromDatabase() {
         //get a database connection:
         CovidOpener covidOpener = new CovidOpener(this);
@@ -165,6 +197,9 @@ public class Covid19Activity extends AppCompatActivity {
             savedList.add(s1+" "+s2);
         }
     }
+    /**
+     * This method is called to delete the records from the saved data in database.
+     */
     protected void deleteRecord(String s) {
         db.delete(CovidOpener.TABLE_NAME, CovidOpener.COL_DATE + "= ? and "+CovidOpener.COL_COUNTRY+" =?",
                 new String[]{s.substring(0,9),s.substring(11)});
