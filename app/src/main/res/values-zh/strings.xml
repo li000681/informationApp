@@ -33,4 +33,9 @@
     <string name="recipeSearchclose">close</string>
     <string name="recipeSearchFavorite">favorites</string>
     <string name="recipeSearchHelp">help</string>
+    <string name="recipeSearchAuthor">Jianchuan Li</string>
+    <string name="recipeSearchVersion">1.0</string>
+    <string name="recipeSearchSave">save</string>
+    <string name="recipeSearchHide">hide</string>
+    <string name="Recipe_save_toast_message">this recipe is saved to favorates</string>
 </resources>

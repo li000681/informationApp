@@ -7,9 +7,12 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,12 +26,17 @@ import com.google.android.material.snackbar.Snackbar;
 
 public class RecipeSearchToolBar extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     /** prefs is used to store the recipe and ingredients input by user last time.*/
+
     SharedPreferences prefs = null;
+    private SQLiteDatabase db;
+
+    RecipeSearchDetailsFragment dFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_search_tool_bar);
         prefs = getSharedPreferences("FileName", Context.MODE_PRIVATE);
+
         /** savedString is used to store the recipe */
         String savedString = prefs.getString("Recipe", "");
         /** et is the editText where users input the recipe*/
@@ -67,7 +75,7 @@ public class RecipeSearchToolBar extends AppCompatActivity implements Navigation
             //This gets the toolbar from the layout:
         Toolbar tBar = (Toolbar)findViewById(R.id.recipeSearchtoolbar);
 
-        //This loads the toolbar, which calls onCreateOptionsMenu below:
+        /**This loads the toolbar, which calls onCreateOptionsMenu below*/
         setSupportActionBar(tBar);
         //For NavigationDrawer:
         DrawerLayout drawer = findViewById(R.id.recipeSearchdrawer_layout);
@@ -126,7 +134,7 @@ public class RecipeSearchToolBar extends AppCompatActivity implements Navigation
         {
             //what to do when the menu item is selected:
             case R.id.recipeSearchFavorite:
-                message = "You clicked favorite item";
+                message = "You clicked recipe_search_favorite.png item";
                 break;
             case R.id.recipeSearchHelp:
                 message = "You clicked on the search item";
@@ -147,7 +155,7 @@ public class RecipeSearchToolBar extends AppCompatActivity implements Navigation
         switch(item.getItemId())
         {
             case R.id.recipeSearchFavorite:
-                message = "You clicked favorite item";
+                message = "You clicked recipe_search_favorite.png item";
                 break;
             case R.id.recipeSearchHelp:
                 message = "You clicked on the search item";
@@ -164,4 +172,5 @@ public class RecipeSearchToolBar extends AppCompatActivity implements Navigation
         Toast.makeText(this, "NavigationDrawer: " + message, Toast.LENGTH_LONG).show();
         return false;
     }
+
 }

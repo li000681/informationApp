@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".RecipeSearchToolBar"></activity>
+        <activity android:name=".RecipeSearchEmptyActivity"></activity>
+        <activity android:name=".RecipeSearchToolBar" />
         <activity android:name=".AlbumDetailsInfo" />
         <activity android:name=".TheAudioDatabase" />
         <activity android:name=".ListOfRecipes" />

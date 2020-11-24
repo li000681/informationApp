@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/recipeSearchFavorite"
         android:title="@string/recipeSearchFavorite"
-        android:icon="@drawable/favorite"
+        android:icon="@drawable/recipe_search_favorite"
         android:orderInCategory="100"
         app:showAsAction="always"/>  <!-- This uses showAsAction=always, so look at icon= parameter -->
 
@@ -11,13 +11,13 @@
     <item android:id="@+id/recipeSearchHelp"
         android:orderInCategory="50"
         app:actionViewClass="android.widget.SearchView"
-        android:icon="@drawable/email"
+        android:icon="@drawable/recipe_search_help"
         app:showAsAction="always|collapseActionView"
         android:title="@string/recipeSearchHelp"/>    <!-- This uses showAsAction=always, so look at icon= parameter -->
 
 
     <item android:id="@+id/recipeSearchLogin"
-        android:icon="@drawable/delete"
+        android:icon="@drawable/recipe_search_login"
         android:title="@string/login"
         app:showAsAction="never"
         android:orderInCategory="400"/> <!-- This uses showAsAction=never, so look at title= parameter -->

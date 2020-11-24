@@ -83,7 +83,7 @@ public class SearchActivity extends AppCompatActivity {
         Button saveButton = findViewById(R.id.save);
         saveButton.setOnClickListener(clk -> {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-            alertDialogBuilder.setTitle("Do you want to save to favorite list?")
+            alertDialogBuilder.setTitle("Do you want to save to recipe_search_favorite.png list?")
                     //What is the message:
                     .setPositiveButton("Yes", (click, arg) -> {
                         favorites.add(country + " from " + fromDate + " to " + endDate);
