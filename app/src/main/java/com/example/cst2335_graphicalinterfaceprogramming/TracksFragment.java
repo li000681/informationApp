@@ -1,17 +1,24 @@
 package com.example.cst2335_graphicalinterfaceprogramming;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +37,7 @@ public class TracksFragment extends Fragment {
     private ListView listView;
     ArrayAdapter arrayAdapter;
     static TracksFragment fragment;
+    private ImageView imageView;
 
     // TODO: Rename and change types and number of parameters
     public static TracksFragment newInstance() {
@@ -41,8 +49,9 @@ public class TracksFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View result =  inflater.inflate(R.layout.fragment_tracks, container, false);
+        View result = inflater.inflate(R.layout.fragment_tracks, container, false);
         listView = result.findViewById(R.id.list_view_tracks);
+        imageView = result.findViewById(R.id.iv_album_img_ft);
 
         arrayAdapter = new ArrayAdapter<String>(
                 parentActivity,
@@ -50,15 +59,41 @@ public class TracksFragment extends Fragment {
                 new ArrayList<>());
         listView.setAdapter(arrayAdapter);
 
-        Call<AnswerTracks> call = parentActivity.searchCall.getTracks(getArguments().getString(parentActivity.ID_ALBUM));
-        call.enqueue(new Callback<AnswerTracks>() {
+        Call<AnswerTracks> callTracks = parentActivity.searchCall.getTracks(getArguments().getString(parentActivity.ID_ALBUM));
+        callTracks.enqueue(new Callback<AnswerTracks>() {
             @Override
             public void onResponse(Call<AnswerTracks> call, Response<AnswerTracks> response) {
                 List<Track> tracks = response.body().getTrack();
                 List<String> trackNames = new ArrayList<>();
-                for (Track t: tracks) trackNames.add(t.getStrTrack());
+                for (Track t : tracks) trackNames.add(t.getStrTrack());
                 arrayAdapter.addAll(trackNames);
                 arrayAdapter.notifyDataSetChanged();
+                ArtistSearch artistSearch = parentActivity.retrofit.create(ArtistSearch.class);
+                Call<Albums> callAlbums = artistSearch.getData(tracks.get(0).getStrArtist());
+                callAlbums.enqueue(new Callback<Albums>() {
+                    @Override
+                    public void onResponse(Call<Albums> call, Response<Albums> response) {
+                        DownloadImageTask task = new DownloadImageTask(imageView);
+                        List<Album> albums = response.body().getAlbums();
+                        String url = null;
+                        for (Album album : albums) {
+                            if (getArguments().getString(parentActivity.ID_ALBUM).equals(album.getIdAlbum())){
+                                url = (String) album.getStrAlbumThumb();
+                                break;
+                            }
+                        }
+                        if (!TextUtils.isEmpty(url)) {
+                            task.execute(url);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Albums> call, Throwable t) {
+                        System.out.println(t);
+                    }
+                });
+
+
             }
 
             @Override
@@ -67,6 +102,7 @@ public class TracksFragment extends Fragment {
             }
         });
 
+
         return result;
     }
 
@@ -74,5 +110,35 @@ public class TracksFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         parentActivity = (TheAudioDatabase) context;
         super.onAttach(context);
+    }
+
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+
+        }
     }
 }
