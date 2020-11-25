@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:gravity="right"
-            android:text="Search" />
+            android:text="@string/search" />
     </RelativeLayout>
     <ProgressBar
         android:id="@+id/pb_tad"
