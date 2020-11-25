@@ -6,12 +6,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 
+import java.io.InputStream;
 import java.util.List;
 
 import retrofit2.Retrofit;
@@ -21,7 +27,7 @@ public class TheAudioDatabase extends AppCompatActivity {
 
     static final String ID_ALBUM = "ID_ALBUM";
     ArtistSearch searchCall;
-    private Retrofit retrofit;
+    Retrofit retrofit;
     private List<Album> albums;
     private ArrayAdapter<String> arrayAdapter;
     public static final String ARTIST_NAME = "ARTIST_NAME";
@@ -76,7 +82,7 @@ public class TheAudioDatabase extends AppCompatActivity {
         if (item.getTitle().equals("instruction")) {
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
             alert.setTitle("Instruction")
-                    .setMessage("Input name and press \"Search\"")
+                    .setMessage(R.string.Instruction)
                     .setPositiveButton("Ok", (dialog, which) -> dialog.dismiss());
             alert.show();
         }
@@ -89,4 +95,6 @@ public class TheAudioDatabase extends AppCompatActivity {
             changeFragment(SearchListFragment.newInstance(), null);
         } else super.onBackPressed();
     }
+
+
 }
