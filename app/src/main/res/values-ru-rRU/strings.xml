@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="Instruction">Укажите имя исполнителя и нажмите \"Search\"</string>
+    <string name="search">Поиск</string>
+    <string name="empty_field_toast">Укажите имя исполнителя</string>
+    <string name="error">Ошибка</string>
+    <string name="cant_find_artist">Не находим такого артиста</string>
+    <string name="no_network">Интернет пропал</string>
+</resources>
