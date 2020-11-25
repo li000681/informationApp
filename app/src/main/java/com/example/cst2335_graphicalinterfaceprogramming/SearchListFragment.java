@@ -88,7 +88,7 @@ public class SearchListFragment extends Fragment {
             InputMethodManager imm = (InputMethodManager) parentActivity.getSystemService(Activity.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
             if (TextUtils.isEmpty(etSearch.getText().toString())) {
-                Toast.makeText(parentActivity, "Input artist name", Toast.LENGTH_SHORT).show();
+                Toast.makeText(parentActivity, R.string.empty_field_toast, Toast.LENGTH_SHORT).show();
             }
             else if (parentActivity.isNetworkOk()){
                 arrayAdapter.clear();
@@ -103,8 +103,8 @@ public class SearchListFragment extends Fragment {
                         albums = response.body().getAlbums(); // получение ответа и преобразование его в список альбомов
                         if (albums == null){
                             AlertDialog.Builder alert = new AlertDialog.Builder(parentActivity);
-                            alert.setTitle("Error")
-                                    .setMessage("Can't find artist: " + etSearch.getText().toString())
+                            alert.setTitle(R.string.error)
+                                    .setMessage(getString(R.string.cant_find_artist) + ": " + etSearch.getText().toString())
                                     .setPositiveButton("Ok", (dialog, which) -> dialog.dismiss());
                             alert.show();
                         }else {
@@ -125,7 +125,7 @@ public class SearchListFragment extends Fragment {
                     }
                 });
             } else {
-                Snackbar.make(listView, "No Internet Connection", BaseTransientBottomBar.LENGTH_SHORT).show();
+                Snackbar.make(listView, R.string.no_network, BaseTransientBottomBar.LENGTH_SHORT).show();
             }
 
         });
