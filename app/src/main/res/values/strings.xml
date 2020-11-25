@@ -6,4 +6,11 @@
     <string name="audioDatabaseApi">The Audio Database api/name</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="Instruction">Input name and press \"Search\"</string>
+    <string name="search">Search</string>
+    <string name="empty_field_toast">Input artist name</string>
+    <string name="error">Error</string>
+    <string name="cant_find_artist">Can not find artist</string>
+    <string name="no_network">No Internet Connection</string>
+
 </resources>
