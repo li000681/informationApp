@@ -142,15 +142,15 @@ public class ListOfRecipes extends AppCompatActivity {
                         if (xpp.getName().equals("title")) {
                             //If you get here, then you are pointing to a <Weather> start tag
                             xpp.next();
-                            title = xpp.getText();
+                            title = xpp.getText().trim();
                             publishProgress(25);
                         }else if (xpp.getName().equals("href")) {
                             xpp.next();
-                            href = xpp.getText();
+                            href = xpp.getText().trim();
                             publishProgress(50);
                         }else if (xpp.getName().equals("ingredients")) {
                             xpp.next();
-                            ingredients = xpp.getText();
+                            ingredients = xpp.getText().trim();
                             publishProgress(75);
                             Recipes recipe = new Recipes(title, href, ingredients);
                             elements.add(recipe);
@@ -253,6 +253,11 @@ public class ListOfRecipes extends AppCompatActivity {
     }
     protected void updateMessage(Recipes c)
     {
+        //get a database connection:
+        RecipeSearchMyOpener dbOpener = new RecipeSearchMyOpener(this);
+        //This calls onCreate() if you've never built the table before, or onUpgrade if the version here is newer
+
+        db = dbOpener.getWritableDatabase();
         //Create a ContentValues object to represent a database row:
         ContentValues updatedValues = new ContentValues();
         updatedValues.put(RecipeSearchMyOpener.COL_TITLE, c.getTitle());

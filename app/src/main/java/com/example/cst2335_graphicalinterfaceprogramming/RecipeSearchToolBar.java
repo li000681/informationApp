@@ -137,7 +137,11 @@ public class RecipeSearchToolBar extends AppCompatActivity implements Navigation
                 message = "You clicked recipe_search_favorite.png item";
                 break;
             case R.id.recipeSearchHelp:
-                message = "You clicked on the search item";
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(getResources().getString(R.string.RecipeHelp) + ": ")
+                        .setMessage(getResources().getString(R.string.WelcomeRecipeSearch)+getResources().getString(R.string.editRecipe))
+                        .setNeutralButton(getResources().getString(R.string.recipeAlertNB), (click, b) -> { })
+                        .create().show();
                 break;
             case R.id.recipeSearchLogin:
                 message = "You clicked on the overflow menu";
@@ -158,10 +162,14 @@ public class RecipeSearchToolBar extends AppCompatActivity implements Navigation
                 message = "You clicked recipe_search_favorite.png item";
                 break;
             case R.id.recipeSearchHelp:
-                message = "You clicked on the search item";
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(getResources().getString(R.string.RecipeHelp) + ": ")
+                        .setMessage(getResources().getString(R.string.WelcomeRecipeSearch)+getResources().getString(R.string.editRecipe))
+                        .setNeutralButton(getResources().getString(R.string.recipeAlertNB), (click, b) -> { })
+                        .create().show();
                 break;
             case R.id.recipeSearchLogin:
-                message = "You clicked on the overflow menu";
+                finish();
                 break;
 
         }
@@ -169,7 +177,7 @@ public class RecipeSearchToolBar extends AppCompatActivity implements Navigation
         DrawerLayout drawerLayout = findViewById(R.id.recipeSearchdrawer_layout);
         drawerLayout.closeDrawer(GravityCompat.START);
 
-        Toast.makeText(this, "NavigationDrawer: " + message, Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "NavigationDrawer: " + message, Toast.LENGTH_LONG).show();
         return false;
     }
 
