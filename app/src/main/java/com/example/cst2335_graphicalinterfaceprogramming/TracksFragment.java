@@ -85,6 +85,7 @@ public class TracksFragment extends Fragment {
                         if (!TextUtils.isEmpty(url)) {
                             task.execute(url);
                         }
+
                     }
 
                     @Override
