@@ -10,5 +10,7 @@ public interface ArtistSearch {
     @GET("/api/v1/json/1/searchalbum.php")
     Call<Albums> getData(@Query("s") String artistName);
 
+    @GET("/api/v1/json/1/track.php")
+    Call<AnswerTracks> getTracks(@Query("m") String idAlbum);
 }
 
