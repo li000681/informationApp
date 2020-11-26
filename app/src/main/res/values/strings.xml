@@ -4,8 +4,6 @@
     <string name="recipeSearch">Recipe Search page/Jianchuan Li</string>
     <string name="covidCaseData">Covid-19 case data/June Li</string>
     <string name="audioDatabaseApi">The Audio Database api/name</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="Instruction">Input name and press \"Search\"</string>
     <string name="search">Search</string>
     <string name="empty_field_toast">Input artist name</string>
@@ -88,6 +86,5 @@
     <string name="ticketNo">No</string>
     <string name="open" />
     <string name="close" />
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    
 </resources>
