@@ -26,5 +26,17 @@ public class MainActivity extends AppCompatActivity {
         {
             startActivity(audioDb);
         });
+
+        Button covid=findViewById(R.id.button3);
+        covid.setOnClickListener(clk->
+                startActivity(new Intent(MainActivity.this, Covid19Activity.class)));
+
+        /** Button ReceipeSearchButton will lead to the recipe search page.*/
+        Button ReceipeSearchButton = findViewById(R.id.button2);
+        Intent nextPage1 = new Intent(MainActivity.this, RecipeSearchToolBar.class);
+        ReceipeSearchButton.setOnClickListener(click->
+        {
+            startActivity(nextPage1);
+        });
     }
 }

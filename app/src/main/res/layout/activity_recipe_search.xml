@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+
+
+    tools:context=".MainActivity"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/WelcomeRecipeSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/WelcomeRecipeSearch"
+        android:textSize="15sp" />
+    <TextView
+        android:id="@+id/inputRecipe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/inputRecipe"/>
+    <EditText
+        android:id="@+id/editRecipe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/editRecipe"/>
+    <TextView
+        android:id="@+id/inputIngredients"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/inputIngredients"
+        />
+    <EditText
+        android:id="@+id/editIngredients"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/editIngredients"/>
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:text="@string/RecipeSearch" />
+    <Button
+        android:id="@+id/recipeHelpButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:text="@string/RecipeHelp" />
+
+   </LinearLayout>
