@@ -22,13 +22,16 @@
     <string name="country">国家</string>
     <string name="fromDate">起始日期(年-月-日)</string>
     <string name="endDate">结束日期（年-月-日）</string>
-    <string name="favorite">收藏数据</string>
+    <string name="date">日期（年-月-日）</string>
+    <string name="favorite">您收藏的查询数据</string>
     <string name="hint">请在这里输入</string>
     <string name="save">加入收藏夹</string>
     <string name="clear">清除收藏夹</string>
     <string name="undo">撤销清除</string>
     <string name="hide">隐藏</string>
     <string name="searchHeader">查询结果</string>
+    <string name="WelcomeCovidSearch">欢迎来到新冠病毒查询页面。你可以输入国家和日期，点击查询按钮来查询，
+        如果您想保存查询结果，点击加入收藏夹按钮，如果您想删除保存的记录，直接点击该条记录删除。 </string>
     <string name="TicketHelp">帮助</string>
     <string name="WelcomeTicketSearch">欢迎来到订票网页! 请输入城市名称和半径. 按下搜索按钮开始搜索.</string>
     <string name="ticketAlertNB">好的</string>

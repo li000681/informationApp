@@ -17,17 +17,21 @@
     <string name="recipeURL">"URL: "</string>
     <string name="recipeIngredients">"Ingredients: "</string>
     <string name="covidSearch">Search</string>
-    <string name="help">How to Use</string>
+    <string name="help">Help</string>
     <string name="country">Country</string>
     <string name="fromDate">From Date(YYYY-MM-DD)</string>
     <string name="endDate">End Date(YYYY-MM-DD)</string>
-    <string name="favorite">Favorite</string>
+    <string name="date">Date(YYYY-MM-DD)</string>
+    <string name="favorite">The favorite data you have saved:</string>
     <string name="hint">Type Here</string>
     <string name="save">Add To Favorite</string>
     <string name="clear">Clear</string>
     <string name="undo">Recovery</string>
     <string name="hide">Hide</string>
     <string name="searchHeader">The Search Result</string>
+    <string name="WelcomeCovidSearch">Welcome to Covid-19 search page. You can input the country name and date,then press
+        the "SEARCH" button to search the detailed data,including province, cases. If you want to save the result, press
+        "ADD TO FAVORITE" button. If you want to delete the saved record, click the specific record. </string>
     <string name="TicketHelp">Help</string>
     <string name="WelcomeTicketSearch">Welcome to ticket search page. Please input the city name and radius! Press the SEARCH button to begin search.</string>
     <string name="ticketAlertNB">OK</string>
