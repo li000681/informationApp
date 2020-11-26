@@ -1,5 +1,6 @@
 package com.example.cst2335_graphicalinterfaceprogramming;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -13,7 +14,6 @@ public class FavoriteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_favorite);
         Button clearButton=findViewById(R.id.clear);
         clearButton.setOnClickListener(clk->{
-
         });
     }
 }

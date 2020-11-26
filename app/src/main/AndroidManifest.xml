@@ -14,8 +14,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+
         <activity android:name=".RecipeSearchEmptyActivity"></activity>
         <activity android:name=".RecipeSearchToolBar" />
+
+        <activity android:name=".FavoriteTicketActivity"></activity>
+        <activity android:name=".MenuExample" />
+        <activity android:name=".GoToTicketToolbarPage" />
+        <activity android:name=".TicketDetailsActivity" />
+
         <activity android:name=".AlbumDetailsInfo" />
         <activity android:name=".TheAudioDatabase" />
         <activity android:name=".ListOfRecipes" />

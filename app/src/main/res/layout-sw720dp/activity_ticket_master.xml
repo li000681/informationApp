@@ -58,13 +58,19 @@
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
+            android:layout_above="@+id/the_list"
             android:id="@+id/progressBar"/>
+        <ListView
+            android:id="@+id/the_list"
+            android:layout_width="300dp"
+            android:layout_height="match_parent"
+            android:clickable="false"
+            android:textSize="18sp" />
+        <FrameLayout
+            android:id="@+id/frameLayout"
+            android:layout_width="900dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true" />
     </RelativeLayout>
 
-    <ListView
-        android:id="@+id/the_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clickable="false"
-        android:textSize="18sp" />
 </LinearLayout>
