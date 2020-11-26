@@ -87,7 +87,7 @@ public class SearchActivity extends AppCompatActivity {
 
         saveButton.setOnClickListener(clk -> {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-            alertDialogBuilder.setTitle("Do you want to save to favorite list?")
+            alertDialogBuilder.setTitle("Do you want to save to recipe_search_favorite.png list?")
                     //What is the message:
                     .setPositiveButton("Yes", (click, arg) -> {
                             ContentValues newRowValues = new ContentValues();

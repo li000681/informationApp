@@ -3,8 +3,10 @@ package com.example.cst2335_graphicalinterfaceprogramming;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -36,10 +38,16 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 
 public class ListOfRecipes extends AppCompatActivity {
+    public final static String ITEM_TITLE = "TITLE";
+    public final static String ITEM_URL = "URL";
+    public final static String ITEM_INGREDIENTS = "INGREDIENTS";
+    public final static String ITEM_ID = "_id";
     private ListView lv;
     private ProgressBar pb;
     ArrayList<Recipes> elements = new ArrayList<>();
     private MyListAdapter myAdapter;
+    private SQLiteDatabase db;
+    boolean isTablet;
     ListView recipeList;
 
     //    Intent fromMain = getIntent();
@@ -57,6 +65,7 @@ public class ListOfRecipes extends AppCompatActivity {
         ForecastQuery req = new ForecastQuery();
         req.execute("http://www.recipepuppy.com/api/?i=", ingredients, "&q=", recipe, "&format=xml");
         recipeList = (ListView) findViewById(R.id.recipeList);
+        isTablet= findViewById(R.id.fragmentLocation) != null;
 
 /** When long press the recipe, there is an AlertDialog showing the recipe title, URL and ingredients.*/
         recipeList.setOnItemLongClickListener((parent, view, pos, id) -> {
@@ -64,6 +73,31 @@ public class ListOfRecipes extends AppCompatActivity {
             showMessage(pos);
 
             return true;
+        });
+        recipeList.setOnItemClickListener((list, item, position, id) -> {
+            //Create a bundle to pass data to the new fragment
+            Bundle dataToPass = new Bundle();
+            dataToPass.putString(ITEM_TITLE, elements.get(position).getTitle() );
+
+            dataToPass.putLong(ITEM_ID, id);
+            dataToPass.putString(ITEM_URL, elements.get(position).getHref());
+            dataToPass.putString(ITEM_INGREDIENTS, elements.get(position).getIngredients());
+            if(isTablet)
+            {
+                //add a DetailFragment
+                RecipeSearchDetailsFragment dFragment = new RecipeSearchDetailsFragment();
+                dFragment.setArguments( dataToPass ); //pass it a bundle for information
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragmentLocation, dFragment) //Add the fragment in FrameLayout
+                        .commit(); //actually load the fragment. Calls onCreate() in DetailFragment
+            }
+            else //isPhone
+            {
+                Intent nextActivity = new Intent(ListOfRecipes.this, RecipeSearchEmptyActivity.class);
+                nextActivity.putExtras(dataToPass); //send data to next activity
+                startActivity(nextActivity); //make the transition
+            }
         });
 
     }
@@ -108,15 +142,15 @@ public class ListOfRecipes extends AppCompatActivity {
                         if (xpp.getName().equals("title")) {
                             //If you get here, then you are pointing to a <Weather> start tag
                             xpp.next();
-                            title = xpp.getText();
+                            title = xpp.getText().trim();
                             publishProgress(25);
                         }else if (xpp.getName().equals("href")) {
                             xpp.next();
-                            href = xpp.getText();
+                            href = xpp.getText().trim();
                             publishProgress(50);
                         }else if (xpp.getName().equals("ingredients")) {
                             xpp.next();
-                            ingredients = xpp.getText();
+                            ingredients = xpp.getText().trim();
                             publishProgress(75);
                             Recipes recipe = new Recipes(title, href, ingredients);
                             elements.add(recipe);
@@ -205,7 +239,7 @@ public class ListOfRecipes extends AppCompatActivity {
 //                .setPositiveButton(getResources().getString(R.string.alertUB), (click, b) -> {
 //                    selectedMessage.update(rowName.getText().toString(), selectedMessage.stringToBoolean(rowEmail.getText().toString()));
 //                    updateMessage(selectedMessage);
-//                    myAdapter.notifyDataSetChanged(); //the email and name have changed so rebuild the list
+//                    myAdapter.notifyDataSetChanged(); //the recipe_search_help.png and name have changed so rebuild the list
 //                })
 //                .setNegativeButton(getResources().getString(R.string.alertPB), (click, b) -> {
 //                    deleteMessage(selectedMessage); //remove the contact from database
@@ -216,5 +250,27 @@ public class ListOfRecipes extends AppCompatActivity {
 //                })
                 .setNeutralButton(getResources().getString(R.string.recipeAlertNB), (click, b) -> { })
                 .create().show();
+    }
+    protected void updateMessage(Recipes c)
+    {
+        //get a database connection:
+        RecipeSearchMyOpener dbOpener = new RecipeSearchMyOpener(this);
+        //This calls onCreate() if you've never built the table before, or onUpgrade if the version here is newer
+
+        db = dbOpener.getWritableDatabase();
+        //Create a ContentValues object to represent a database row:
+        ContentValues updatedValues = new ContentValues();
+        updatedValues.put(RecipeSearchMyOpener.COL_TITLE, c.getTitle());
+        updatedValues.put(RecipeSearchMyOpener.COL_URL, c.getHref());
+        updatedValues.put(RecipeSearchMyOpener.COL_INGREDIENTS, c.getIngredients());
+        updatedValues.put(RecipeSearchMyOpener.COL_ID, c.getId());
+
+        //now call the update function:
+        db.update(RecipeSearchMyOpener.TABLE_NAME, updatedValues, RecipeSearchMyOpener.COL_ID + "= ?", new String[] {Long.toString(c.getId())});
+    }
+
+    protected void deleteMessage(Recipes c)
+    {
+        db.delete(RecipeSearchMyOpener.TABLE_NAME, RecipeSearchMyOpener.COL_ID + "= ?", new String[] {Long.toString(c.getId())});
     }
 }

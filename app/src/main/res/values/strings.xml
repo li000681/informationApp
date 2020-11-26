@@ -29,6 +29,18 @@
     <string name="undo">Recovery</string>
     <string name="hide">Hide</string>
     <string name="searchHeader">The Search Result</string>
+    <string name="recipeSearchopen">open</string>
+    <string name="recipeSearchclose">close</string>
+    <string name="recipeSearchFavorite">favorites</string>
+    <string name="recipeSearchHelp">help</string>
+    <string name="login">go back to login</string>
+    <string name="recipeSearchTitle">Recipe Search</string>
+    <string name="recipeSearchAuthor">Jianchuan Li</string>
+    <string name="recipeSearchVersion">1.0</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="recipeSearchSave">save</string>
+    <string name="recipeSearchHide">hide</string>
+    <string name="Recipe_save_toast_message">this recipe is saved to favorates</string>
     <string name="WelcomeCovidSearch">Welcome to Covid-19 search page. You can input the country name and date,then press
         the "SEARCH" button to search the detailed data,including province, cases. If you want to save the result, press
         "ADD TO FAVORITE" button. If you want to delete the saved record, click the specific record. </string>
