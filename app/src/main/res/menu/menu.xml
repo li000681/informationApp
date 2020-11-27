@@ -2,11 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single"></group>
     <item
-        android:id="@+id/navigation_search"
-        android:title="@string/ticketsearch1"
-        android:icon="@drawable/search"/>
+        android:id="@+id/navigation_help"
+        android:title="@string/tickethelp3"
+        android:icon="@drawable/tickethelp"/>
     <item
         android:id="@+id/navigation_favorite"
         android:title="@string/ticketfavorite2"
         android:icon="@drawable/favorite"/>
+    <item
+        android:id="@+id/navigation_home"
+        android:title="@string/tickethome"
+        android:icon="@drawable/tickethome"/>
 </menu>

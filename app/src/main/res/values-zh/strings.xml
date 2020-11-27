@@ -38,7 +38,6 @@
     <string name="ticketFavorite">按下收藏按钮跳转到收藏活动界面.</string>
     <string name="TicketDetailHelp">帮助</string>
     <string name="TicketFavoriteSaveAs">欢迎来到订票明细目录页面! 按下收藏按钮会收藏您所喜爱的明细.</string>
-    <string name="ticketToolBar">按下工具栏按钮跳转到工具栏和导航页面.</string>
     <string name="ticketAlertNB1">好的</string>
     <string name="TicketFavoriteHelp">帮助</string>
     <string name="favorite_help">帮助</string>
@@ -48,14 +47,14 @@
     <string name="radius">半径</string>
     <string name="ticketsearch">搜索</string>
     <string name="ticketfavorite1">收藏</string>
-    <string name="tickettoolbar">工具栏</string>
     <string name="tickethelp1">帮助</string>
     <string name="save_as_favorite">保存为收藏</string>
     <string name="tickethelp2">帮助</string>
     <string name="title">票据-活动-搜索, 作者李薇, 版本1.0.</string>
-    <string name="choice">选择</string>
-    <string name="ticketsearch1">搜索</string>
+    <string name="choice">订票系统，作者李薇，版本号1.0</string>
+    <string name="tickethelp3">帮助</string>
     <string name="ticketfavorite2">收藏</string>
+    <string name="tickethome">主页面</string>
     <string name="ticketError">错误!</string>
     <string name="ticketPlease">请输入城市和半径范围.</string>
     <string name="ticketLoad">活动成功下载!</string>

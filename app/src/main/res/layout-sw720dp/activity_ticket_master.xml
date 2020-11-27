@@ -33,13 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/ticketfavorite1"
-        android:id="@+id/saveButton"/>
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/tickettoolbar"
-            android:id="@+id/my_toolbar"/>
+            android:id="@+id/saveButton"/>
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -68,7 +62,7 @@
             android:textSize="18sp" />
         <FrameLayout
             android:id="@+id/frameLayout"
-            android:layout_width="900dp"
+            android:layout_width="650dp"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true" />
     </RelativeLayout>

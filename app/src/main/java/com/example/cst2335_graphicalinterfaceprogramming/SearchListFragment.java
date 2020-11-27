@@ -2,13 +2,10 @@ package com.example.cst2335_graphicalinterfaceprogramming;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.text.TextUtils;
@@ -32,8 +29,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class SearchListFragment extends Fragment {
@@ -58,7 +53,7 @@ public class SearchListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View result = inflater.inflate(R.layout.fragment_blank, container, false);
+        View result = inflater.inflate(R.layout.search_fragment, container, false);
 
         listView = result.findViewById(R.id.lv_albums_tad);
         etSearch = result.findViewById(R.id.edt_search_tad);
@@ -114,6 +109,9 @@ public class SearchListFragment extends Fragment {
 
                             arrayAdapter.addAll(albumNames);
                             arrayAdapter.notifyDataSetChanged();
+
+                            // save artist name to preferences
+                            parentActivity.saveSharedPrefs(etSearch.getText().toString());
                         }
                         pBar.setVisibility(View.GONE);
                     }
@@ -129,6 +127,15 @@ public class SearchListFragment extends Fragment {
             }
 
         });
+
+        // if shared prefs is not null and contains artist name
+        if (parentActivity.sharedPreferences != null){
+            if (parentActivity.sharedPreferences.contains("SearchName")){
+                // get artist name from SP
+                etSearch.setText(parentActivity.sharedPreferences.getString("SearchName", ""));
+                btnSearch.callOnClick();
+            }
+        }
         return result;
     }
 

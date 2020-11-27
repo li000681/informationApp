@@ -1,7 +1,12 @@
 package com.example.cst2335_graphicalinterfaceprogramming;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,6 +17,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -21,6 +29,9 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.navigation.NavigationView;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONArray;
@@ -42,7 +53,7 @@ import java.util.List;
  *  @author Wei Li
  * @version 1.0
  */
-public class TicketMasterActivity extends AppCompatActivity {
+public class TicketMasterActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     /**
      * list of JSONObject
      */
@@ -60,10 +71,6 @@ public class TicketMasterActivity extends AppCompatActivity {
      */
     MyListAdapter myAdapter;
     /**
-     * database used to store data
-     */
-    SQLiteDatabase db;
-    /**
      * shared preferences instance
      */
     SharedPreferences prefs = null;
@@ -75,7 +82,7 @@ public class TicketMasterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ticket_master);
+        setContentView(R.layout.activity_ticket_search_tool_bar);
         ProgressBar progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
 
@@ -124,13 +131,21 @@ public class TicketMasterActivity extends AppCompatActivity {
             startActivity(nextPage);
         });
 
-        //press TOOLBAR button go to TOOLBAR and NAVIGATION page
-        Button toolbarButton = findViewById(R.id.my_toolbar);
-        Intent nextToolbarPage = new Intent(TicketMasterActivity.this, MenuExample.class);
-        toolbarButton.setOnClickListener( click ->
-        {
-            startActivity( nextToolbarPage );
-        });
+        //This gets the toolbar from the layout:
+        Toolbar tBar = (Toolbar)findViewById(R.id.ticketSearchtoolbar);
+
+        /**This loads the toolbar, which calls onCreateOptionsMenu below*/
+        setSupportActionBar(tBar);
+        //For NavigationDrawer:
+        DrawerLayout drawer = findViewById(R.id.ticketSearchdrawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,
+                drawer, tBar, R.string.open, R.string.close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = findViewById(R.id.ticket_nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        setResult(500);
 
         //click on events, if tablet shows fragment, if phone shows next TicketDetailsActivity page
         myList.setOnItemClickListener((list1, item, position, id) -> {
@@ -161,7 +176,7 @@ public class TicketMasterActivity extends AppCompatActivity {
         help1.setOnClickListener(v ->{
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(getResources().getString(R.string.TicketHelp) + ": ")
-                    .setMessage(getResources().getString(R.string.WelcomeTicketSearch)+getResources().getString(R.string.ticketFavorite)+getResources().getString(R.string.ticketToolBar))
+                    .setMessage(getResources().getString(R.string.WelcomeTicketSearch)+getResources().getString(R.string.ticketFavorite))
                     .setNeutralButton(getResources().getString(R.string.ticketAlertNB), (click, b) -> { })
                     .create().show();});
     }
@@ -235,15 +250,96 @@ public class TicketMasterActivity extends AppCompatActivity {
     }
 
     /**
+     * Initialize the contents of the Activity's standard options menu.
+     * <p>This is only called once, the first time the options menu is
+     * displayed.
+     * <p>The default implementation populates the menu with standard system
+     * menu items.
+     * @param menu The options menu in which you place your items.
+     * @return You must return true for the menu to be displayed;
+     * if you return false it will not be shown.
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu items for use in the action bar
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.example_menu, menu);
+        return true;
+    }
+
+    /**
+     * This method is called whenever an item in your toolbar menu is selected.
+     * @param item The menu item that was selected.
+     * @return boolean Return false to allow normal menu processing to
+     * proceed, true to consume it here.
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        String message = null;
+        //Look at your menu XML file. Put a case for every id in that file:
+        switch(item.getItemId())
+        {
+            //what to do when the menu item is selected:
+            case R.id.help_item:
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(getResources().getString(R.string.TicketHelp) + ": ")
+                        .setMessage(getResources().getString(R.string.WelcomeTicketSearch)+getResources().getString(R.string.ticketFavorite))
+                        .setNeutralButton(getResources().getString(R.string.ticketAlertNB), (click, b) -> { })
+                        .create().show();
+                break;
+            case R.id.favorite_item:
+                Intent nextPage5 = new Intent(TicketMasterActivity.this, FavoriteTicketActivity.class);
+                startActivity(nextPage5);
+                break;
+            case R.id.home_item:
+                Intent nextPage6 = new Intent(TicketMasterActivity.this, MainActivity.class);
+                startActivity(nextPage6);
+                break;
+        }
+        return true;
+    }
+
+    /**
+     * This method is called whenever an item in your navigation menu is selected.
+     * @param item The menu item that was selected.
+     * @return boolean Return true to allow normal menu processing to
+     * proceed, false to consume it here.
+     */
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        int d=item.getItemId();
+        if (d==R.id.navigation_help){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(getResources().getString(R.string.TicketHelp) + ": ")
+                    .setMessage(getResources().getString(R.string.WelcomeTicketSearch)+getResources().getString(R.string.ticketFavorite))
+                    .setNeutralButton(getResources().getString(R.string.ticketAlertNB), (click, b) -> { })
+                    .create().show();
+        }
+        else if (d==R.id.navigation_favorite){
+            Intent nextPage5 = new Intent(TicketMasterActivity.this, FavoriteTicketActivity.class);
+            startActivity(nextPage5);
+        }
+        else if (d==R.id.navigation_home){
+            Intent nextPage6 = new Intent(TicketMasterActivity.this, MainActivity.class);
+            startActivity(nextPage6);
+        }
+        return false;
+    }
+
+    /**
      * The inner class is used to read data from website using JSON
-     * @return A object of JSONObject
      */
     //AsynTask to retrieve data from http server
     private class ForecastQuery extends AsyncTask<String, Integer, String> {
         protected int size = 0;
         protected int totalElement = 0;
         protected int totalPages = 0;
-
+        /**
+         * This method is used to get all of the data from the reqUrl and
+         * save as a JASON object.
+         * @param reqUrl The url that connected
+         * @return An object of JASON
+         */
         private JSONObject getPageParameter(String reqUrl) {
             JSONObject page = null;
             try {

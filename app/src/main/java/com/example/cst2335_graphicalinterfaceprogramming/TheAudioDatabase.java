@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
@@ -16,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.InputStream;
 import java.util.List;
@@ -33,12 +35,14 @@ public class TheAudioDatabase extends AppCompatActivity {
     public static final String ARTIST_NAME = "ARTIST_NAME";
     public static final String ALBUM_NUM = "ALBUM_NUM";
     SearchListFragment  searchListFragment;
+    SharedPreferences sharedPreferences;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_the_audio_database);
+        sharedPreferences = getSharedPreferences("audioDb", MODE_PRIVATE);
 
         // initialize retrofit, setup for server tad
         retrofit = new Retrofit.Builder()
@@ -96,5 +100,13 @@ public class TheAudioDatabase extends AppCompatActivity {
         } else super.onBackPressed();
     }
 
+
+    void saveSharedPrefs(String savedString) {
+        if (sharedPreferences != null) {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("SearchName", savedString);
+            editor.commit();
+        }
+    }
 
 }
