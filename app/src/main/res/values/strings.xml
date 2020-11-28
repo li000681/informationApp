@@ -4,8 +4,6 @@
     <string name="recipeSearch">Recipe Search page/Jianchuan Li</string>
     <string name="covidCaseData">Covid-19 case data/June Li</string>
     <string name="audioDatabaseApi">The Audio Database api/name</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="Instruction">Input name and press \"Search\"</string>
     <string name="search">Search</string>
     <string name="empty_field_toast">Input artist name</string>
@@ -37,6 +35,10 @@
     <string name="undo">Recovery</string>
     <string name="hide">Hide</string>
     <string name="searchHeader">The Search Result</string>
+    <string name="header">Welcome to Covid19 search page</string>
+    <string name="author">Author: June Li</string>
+    <string name="version">Version: 1.0</string>
+    <string name="home">Go back to home page</string>
     <string name="recipeSearchopen">open</string>
     <string name="recipeSearchclose">close</string>
     <string name="recipeSearchFavorite">favorites</string>
@@ -52,6 +54,8 @@
     <string name="WelcomeCovidSearch">Welcome to Covid-19 search page. You can input the country name and date,then press
         the "SEARCH" button to search the detailed data,including province, cases. If you want to save the result, press
         "ADD TO FAVORITE" button. If you want to delete the saved record, click the specific record. </string>
+    <string name="CovidErrorMsg">Please input the country name and date, or check the date format is correct</string>
+    <string name="CovidErrorTitle">Error!</string>
     <string name="TicketHelp">Help</string>
     <string name="WelcomeTicketSearch">Welcome to ticket search page. Please input the city name and radius! Press the SEARCH button to begin search.</string>
     <string name="ticketAlertNB">OK</string>
@@ -89,6 +93,4 @@
     <string name="ticketNo">No</string>
     <string name="open" />
     <string name="close" />
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

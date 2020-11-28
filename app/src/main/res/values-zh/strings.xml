@@ -30,8 +30,14 @@
     <string name="undo">撤销清除</string>
     <string name="hide">隐藏</string>
     <string name="searchHeader">查询结果</string>
+    <string name="header">欢迎使用新冠查询页面</string>
+    <string name="author">作者：李俊娥</string>
+    <string name="version">版本: 1.0</string>
+    <string name="home">返回首页</string>
     <string name="WelcomeCovidSearch">欢迎来到新冠病毒查询页面。你可以输入国家和日期，点击查询按钮来查询，
         如果您想保存查询结果，点击加入收藏夹按钮，如果您想删除保存的记录，直接点击该条记录删除。 </string>
+    <string name="CovidErrorMsg">请输入国家和日期，并查看日期格式是否正确</string>
+    <string name="CovidErrorTitle">输入错误！</string>
     <string name="TicketHelp">帮助</string>
     <string name="WelcomeTicketSearch">欢迎来到订票网页! 请输入城市名称和半径. 按下搜索按钮开始搜索.</string>
     <string name="ticketAlertNB">好的</string>
