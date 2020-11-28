@@ -203,6 +203,7 @@ public class Covid19Activity extends AppCompatActivity implements NavigationView
                         .create().show();
                 break;
             case R.id.item2:
+                dateList.clear();
                 loadSavedDataFromDatabase();
                 savedView.setAdapter(savedAdapter);
                 break;

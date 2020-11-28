@@ -23,7 +23,7 @@
     <string name="fromDate">起始日期(年-月-日)</string>
     <string name="endDate">结束日期（年-月-日）</string>
     <string name="date">日期（年-月-日）</string>
-    <string name="favorite">您收藏的查询数据</string>
+    <string name="favorite">您要把数据添加到收藏夹吗？</string>
     <string name="hint">请在这里输入</string>
     <string name="save">加入收藏夹</string>
     <string name="clear">清除收藏夹</string>

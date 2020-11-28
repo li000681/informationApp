@@ -28,7 +28,7 @@
     <string name="fromDate">From Date(YYYY-MM-DD)</string>
     <string name="endDate">End Date(YYYY-MM-DD)</string>
     <string name="date">Date(YYYY-MM-DD)</string>
-    <string name="favorite">The favorite data you have saved:</string>
+    <string name="favorite">Do you want to add the data to favorite list?</string>
     <string name="hint">Type Here</string>
     <string name="save">Add To Favorite</string>
     <string name="clear">Clear</string>
