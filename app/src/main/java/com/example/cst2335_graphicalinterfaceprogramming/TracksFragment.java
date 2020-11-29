@@ -1,6 +1,7 @@
 package com.example.cst2335_graphicalinterfaceprogramming;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -17,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -142,4 +144,5 @@ public class TracksFragment extends Fragment {
 
         }
     }
+
 }

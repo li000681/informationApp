@@ -3,8 +3,9 @@
     <string name="ticketMaster">TicketMaster event search/Wei Li</string>
     <string name="recipeSearch">Recipe Search page/Jianchuan Li</string>
     <string name="covidCaseData">Covid-19 case data/June Li</string>
-    <string name="audioDatabaseApi">The Audio Database api/Gulmira Kanalinova</string>
-    <string name="Instruction">Input name and press \"Search\"</string>
+    <string name="audioDatabaseApi">The Audio Database api/name</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="Instruction" translatable="false">Input name and press \"Search\"</string>
     <string name="search">Search</string>
     <string name="empty_field_toast">Input artist name</string>
     <string name="error">Error</string>
@@ -12,57 +13,46 @@
     <string name="no_network">No Internet Connection</string>
     <string name="WelcomeRecipeSearch">Welcome to recipe search page, please input the recipe and ingredients, press the button to begin search</string>
     <string name="inputRecipe">Recipe: </string>
-    <string name="editRecipe">"Please input the recipe you want to search here "</string>
-    <string name="inputIngredients">Ingredients: </string>
-    <string name="editIngredients">Please input the ingredients included in the recipe here</string>
-    <string name="RecipeSearch">Press to search</string>
-    <string name="Recipe_toast_message">"Only one recipe "</string>
-    <string name="Ingredients_snackBar_message">Separate ingredients with \",\"</string>
-    <string name="RecipeHelp">Help</string>
-    <string name="recipeAlertNB">OK</string>
-    <string name="recipeURL">"URL: "</string>
-    <string name="recipeIngredients">"Ingredients: "</string>
-    <string name="covidSearch">Search</string>
-    <string name="help">Help</string>
-    <string name="country">Country</string>
-    <string name="fromDate">From Date(YYYY-MM-DD)</string>
-    <string name="endDate">End Date(YYYY-MM-DD)</string>
-    <string name="date">Date(YYYY-MM-DD)</string>
-    <string name="favorite">Do you want to add the data to favorite list?</string>
-    <string name="hint">Type Here</string>
-    <string name="save">Add To Favorite</string>
-    <string name="clear">Clear</string>
-    <string name="undo">Recovery</string>
-    <string name="hide">Hide</string>
-    <string name="searchHeader">The Search Result</string>
-    <string name="header">Welcome to Covid19 search page</string>
-    <string name="homeheader">Welcome to Information Search App</string>
-    android:text="@string/homeheader" />
-    <string name="introduction">This App is developed by Fighting Team. You can search Ticket,
-        Recipe, Covid-19 and AudioDatabase information. Hope our app can bring convenience to your life!</string>
-    <string name="author">Author: June Li</string>
-    <string name="version">Version: 1.0</string>
-    <string name="home">Go back to home page</string>
-    <string name="recipeSearchopen">open</string>
-    <string name="recipeSearchclose">close</string>
-    <string name="recipeSearchFavorite">favorites</string>
-    <string name="recipeSearchHelp">help</string>
-    <string name="login">go back to login</string>
-    <string name="recipeSearchTitle">Recipe Search</string>
-    <string name="recipeSearchAuthor">Jianchuan Li</string>
-    <string name="recipeSearchVersion">1.0</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="recipeSearchSave">save</string>
-    <string name="recipeSearchHide">hide</string>
-    <string name="Recipe_save_toast_message">this recipe is saved to favorates</string>
-    <string name="WelcomeCovidSearch">Welcome to Covid-19 search page. You can input the country name and date,then press
+    <string name="editRecipe" translatable="false">"Please input the recipe you want to search here "</string>
+    <string name="inputIngredients" translatable="false">Ingredients: </string>
+    <string name="editIngredients" translatable="false">Please input the ingredients included in the recipe here</string>
+    <string name="RecipeSearch" translatable="false">Press to search</string>
+    <string name="Recipe_toast_message" translatable="false">"Only one recipe "</string>
+    <string name="Ingredients_snackBar_message" translatable="false">Separate ingredients with \",\"</string>
+    <string name="RecipeHelp" translatable="false">Help</string>
+    <string name="recipeAlertNB" translatable="false">OK</string>
+    <string name="recipeURL" translatable="false">"URL: "</string>
+    <string name="recipeIngredients" translatable="false">"Ingredients: "</string>
+    <string name="covidSearch" translatable="false">Search</string>
+    <string name="help" translatable="false">Help</string>
+    <string name="country" translatable="false">Country</string>
+    <string name="fromDate" translatable="false">From Date(YYYY-MM-DD)</string>
+    <string name="endDate" translatable="false">End Date(YYYY-MM-DD)</string>
+    <string name="date" translatable="false">Date(YYYY-MM-DD)</string>
+    <string name="favorite" translatable="false">The favorite data you have saved:</string>
+    <string name="hint" translatable="false">Type Here</string>
+    <string name="save" translatable="false">Add To Favorite</string>
+    <string name="clear" translatable="false">Clear</string>
+    <string name="undo" translatable="false">Recovery</string>
+    <string name="hide" translatable="false">Hide</string>
+    <string name="searchHeader" translatable="false">The Search Result</string>
+    <string name="recipeSearchopen" translatable="false">open</string>
+    <string name="recipeSearchclose" translatable="false">close</string>
+    <string name="recipeSearchFavorite" translatable="false">favorites</string>
+    <string name="recipeSearchHelp" translatable="false">help</string>
+    <string name="login" translatable="false">go back to login</string>
+    <string name="recipeSearchTitle" translatable="false">Recipe Search</string>
+    <string name="recipeSearchAuthor" translatable="false">Jianchuan Li</string>
+    <string name="recipeSearchVersion" translatable="false">1.0</string>
+    <string name="recipeSearchSave" translatable="false">save</string>
+    <string name="recipeSearchHide" translatable="false">hide</string>
+    <string name="Recipe_save_toast_message" translatable="false">this recipe is saved to favorates</string>
+    <string name="WelcomeCovidSearch" translatable="false">Welcome to Covid-19 search page. You can input the country name and date,then press
         the "SEARCH" button to search the detailed data,including province, cases. If you want to save the result, press
         "ADD TO FAVORITE" button. If you want to delete the saved record, click the specific record. </string>
-    <string name="CovidErrorMsg">Please input the country name and date, or check the date format is correct</string>
-    <string name="CovidErrorTitle">Error!</string>
-    <string name="TicketHelp">Help</string>
-    <string name="WelcomeTicketSearch">Welcome to ticket search page. Please input the city name and radius! Press the SEARCH button to begin search.</string>
-    <string name="ticketAlertNB">OK</string>
+    <string name="TicketHelp" translatable="false">Help</string>
+    <string name="WelcomeTicketSearch" translatable="false">Welcome to ticket search page. Please input the city name and radius! Press the SEARCH button to begin search.</string>
+    <string name="ticketAlertNB" translatable="false">OK</string>
     <string name="ticketFavorite">Press the FAVORITE button go to the favorite events page.</string>
     <string name="ticketToolBar">Press the TOOLBAR button go to Toolbar and Navigation page.</string>
     <string name="TicketDetailHelp">Help</string>
@@ -95,6 +85,7 @@
     <string name="ticketUndo">UNDO</string>
     <string name="ticketRecover">The Item has been recovered!</string>
     <string name="ticketNo">No</string>
-    <string name="open" />
-    <string name="close" />
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+
 </resources>
