@@ -3,8 +3,9 @@
     <string name="ticketMaster">TicketMaster event search/Wei Li</string>
     <string name="recipeSearch">Recipe Search page/Jianchuan Li</string>
     <string name="covidCaseData">Covid-19 case data/June Li</string>
-    <string name="audioDatabaseApi">The Audio Database api/Gulmira Kanalinova</string>
-    <string name="Instruction">Input name and press \"Search\"</string>
+    <string name="audioDatabaseApi">The Audio Database api/name</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="Instruction" translatable="false">Input name and press \"Search\"</string>
     <string name="search">Search</string>
     <string name="empty_field_toast">Input artist name</string>
     <string name="error">Error</string>
@@ -57,11 +58,9 @@
     <string name="WelcomeCovidSearch">Welcome to Covid-19 search page. You can input the country name and date,then press
         the "SEARCH" button to search the detailed data,including province, cases. If you want to save the result, press
         "ADD TO FAVORITE" button. If you want to delete the saved record, click the specific record. </string>
-    <string name="CovidErrorMsg">Please input the country name and date, or check the date format is correct</string>
-    <string name="CovidErrorTitle">Error!</string>
-    <string name="TicketHelp">Help</string>
-    <string name="WelcomeTicketSearch">Welcome to ticket search page. Please input the city name and radius! Press the SEARCH button to begin search.</string>
-    <string name="ticketAlertNB">OK</string>
+    <string name="TicketHelp" translatable="false">Help</string>
+    <string name="WelcomeTicketSearch" translatable="false">Welcome to ticket search page. Please input the city name and radius! Press the SEARCH button to begin search.</string>
+    <string name="ticketAlertNB" translatable="false">OK</string>
     <string name="ticketFavorite">Press the FAVORITE button go to the favorite events page.</string>
     <string name="ticketToolBar">Press the TOOLBAR button go to Toolbar and Navigation page.</string>
     <string name="TicketDetailHelp">Help</string>
@@ -94,6 +93,7 @@
     <string name="ticketUndo">UNDO</string>
     <string name="ticketRecover">The Item has been recovered!</string>
     <string name="ticketNo">No</string>
-    <string name="open" />
-    <string name="close" />
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+
 </resources>
