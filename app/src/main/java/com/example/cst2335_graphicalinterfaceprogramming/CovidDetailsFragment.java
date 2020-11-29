@@ -15,11 +15,27 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-
+/**
+ * The class is used to demonstrate Fragment
+ *  @author June Li
+ * @version 1.0
+ */
 public class CovidDetailsFragment  extends Fragment {
+    /**
+     * The varialbe is used to pass data
+     */
     private Bundle dataFromActivity;
+    /**
+     * The varialbe is used define the context
+     */
     private AppCompatActivity parentActivity;
+    /**
+     * The varialbe is used to show fragment listview
+     */
     private FragmentAdapter fragmentAdapter=new FragmentAdapter();
+    /**
+     * The varialbe is used to store detailed data
+     */
     ArrayList<String> fragmentList=new ArrayList();
 
     public CovidDetailsFragment() {
@@ -45,7 +61,6 @@ public class CovidDetailsFragment  extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        //context will either be FragmentExample for a tablet, or EmptyActivity for phone
         parentActivity = (AppCompatActivity)context;
     }
 
