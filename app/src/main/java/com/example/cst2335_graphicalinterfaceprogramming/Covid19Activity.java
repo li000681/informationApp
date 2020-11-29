@@ -44,11 +44,26 @@ import java.util.ArrayList;
  * @version 1.0
  */
 public class Covid19Activity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+    /**
+     * The variable is used to store data to a external file
+     */
     SharedPreferences prefs=null;
+    /**
+     * The arraylist is used to store favorite search date
+     */
     ArrayList<String> dateList= new ArrayList<>();
+    /**
+     * The variable is used to manipulate database
+     */
     private SQLiteDatabase db;
+    /**
+     * The variable is used to demonstrate listview
+     */
     SavedAdapter savedAdapter=new SavedAdapter();
     ListView savedView;
+    /**
+     * The arraylist is used to define a new fragment
+     */
     CovidDetailsFragment dFragment = new CovidDetailsFragment();
 
 
@@ -72,7 +87,6 @@ public class Covid19Activity extends AppCompatActivity implements NavigationView
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
 
         boolean isTablet = findViewById(R.id.fragment) != null;
         //get data from saved file
@@ -121,14 +135,12 @@ public class Covid19Activity extends AppCompatActivity implements NavigationView
             Bundle dataToPass = new Bundle();
             dataToPass.putSerializable("ARRAYLIST", (Serializable) detailList);
             if (isTablet) {
-                // DetailsFragment dFragment = new DetailsFragment(); //add a DetailFragment
                 dFragment.setArguments(dataToPass);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment, dFragment).commit();
             }
             //for Phone:
             else {
                 Intent nextActivity = new Intent(this, CovidEmptyActivity.class);
-                //nextActivity.putExtras(dataToPass);
                 nextActivity.putExtra("BUNDLE", dataToPass);
                 startActivity(nextActivity);
             }
@@ -211,6 +223,13 @@ public class Covid19Activity extends AppCompatActivity implements NavigationView
         return true;
     }
     @Override
+
+    /**
+     * Called when an item in the navigation menu is selected.
+     *
+     * @param item The selected item
+     * @return true to display the item as the selected item
+     */
     public boolean onNavigationItemSelected( MenuItem item) {
         switch(item.getItemId())
         {
@@ -244,6 +263,7 @@ public class Covid19Activity extends AppCompatActivity implements NavigationView
         editor.putString("date",s2);
         editor.commit();
     }
+
     /**
      * This method is called to load the saved data from database.
      */
@@ -271,7 +291,9 @@ public class Covid19Activity extends AppCompatActivity implements NavigationView
         db.delete(CovidOpener.TABLE_NAME, CovidOpener.COL_DATE + "= ? and "+CovidOpener.COL_COUNTRY+" =?",
                 new String[]{s.substring(0,10),s.substring(11)});
     }
-
+    /**
+     * The inner class is used for listView
+     */
     protected class SavedAdapter extends BaseAdapter {
         /**
          * How many items are in the data set represented by this Adapter.

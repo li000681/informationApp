@@ -26,8 +26,6 @@
         <activity android:name=".ListOfRecipes" />
         <activity android:name=".RecipeSearch" />
         <activity android:name=".TicketMasterActivity" />
-        <activity android:name=".DetailsActivity" />
-        <activity android:name=".FavoriteActivity" />
         <activity android:name=".SearchActivity" />
         <activity android:name=".SearchResult" />
         <activity android:name=".Covid19Activity" />
