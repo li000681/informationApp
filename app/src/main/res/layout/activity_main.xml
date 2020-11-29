@@ -1,48 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+tools:context=".MainActivity">
+<androidx.appcompat.widget.Toolbar
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <TextView
-        android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/hometoolbar"/>
+<androidx.drawerlayout.widget.DrawerLayout
+    android:id="@+id/homedrawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:openDrawer="start">
+    <LinearLayout
         android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:text="Welcome!"
-        android:layout_gravity="center"
-        android:layout_marginTop="30dp"/>
-
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="250dp"
-        android:layout_gravity="center"
-        android:layout_height="70dp"
-        android:text="@string/ticketMaster"
-        android:layout_marginTop="20dp" />
-
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="250dp"
-        android:layout_gravity="center"
-        android:layout_height="70dp"
-        android:text="@string/recipeSearch"
-        android:layout_marginTop="20dp" />
-
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="250dp"
-        android:layout_gravity="center"
-        android:layout_height="70dp"
-        android:text="@string/covidCaseData"
-        android:layout_marginTop="20dp" />
-
-    <Button
-        android:id="@+id/button4"
-        android:layout_width="250dp"
-        android:layout_gravity="center"
-        android:layout_height="70dp"
-        android:text="@string/audioDatabaseApi"
-        android:layout_marginTop="20dp" />
+        android:layout_width="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/homeWelcome"
+            android:textSize="22sp"
+            android:textColor="@color/colorAccent"
+            android:text="@string/homeheader"
+            android:layout_gravity="center" />
+        <ImageView
+            android:layout_height="300dp"
+            android:layout_width="match_parent"
+            android:src="@drawable/info"
+            android:layout_gravity="center"
+            android:id="@+id/homeImage"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/introduction"
+            android:layout_gravity="center"
+            android:textSize="20sp"/>
+    </LinearLayout>
+    <!-- THIS IS WHAT IS WHAT POPS OUT FROM THE SIDE:-->
+    <com.google.android.material.navigation.NavigationView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/homepopmenuheader"
+        app:menu="@menu/homepagemenu"
+        android:id="@+id/homenav_view"/>
+</androidx.drawerlayout.widget.DrawerLayout>
 
 </LinearLayout>

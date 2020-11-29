@@ -2,9 +2,12 @@ package com.example.cst2335_graphicalinterfaceprogramming;
 
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -28,9 +31,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -38,12 +43,28 @@ import java.util.ArrayList;
  *  @author June Li
  * @version 1.0
  */
-public class Covid19Activity extends AppCompatActivity {
+public class Covid19Activity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+    /**
+     * The variable is used to store data to a external file
+     */
     SharedPreferences prefs=null;
-    ArrayList<String> savedList= new ArrayList<>();
-    ArrayList<String> detailList= new ArrayList<>();
+    /**
+     * The arraylist is used to store favorite search date
+     */
+    ArrayList<String> dateList= new ArrayList<>();
+    /**
+     * The variable is used to manipulate database
+     */
     private SQLiteDatabase db;
+    /**
+     * The variable is used to demonstrate listview
+     */
     SavedAdapter savedAdapter=new SavedAdapter();
+    ListView savedView;
+    /**
+     * The arraylist is used to define a new fragment
+     */
+    CovidDetailsFragment dFragment = new CovidDetailsFragment();
 
 
     @Override
@@ -58,6 +79,16 @@ public class Covid19Activity extends AppCompatActivity {
         Toolbar tBar = (Toolbar)findViewById(R.id.toolbar);
         //This loads the toolbar, which calls onCreateOptionsMenu below:
         setSupportActionBar(tBar);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,
+                drawer, tBar, R.string.open, R.string.close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        boolean isTablet = findViewById(R.id.fragment) != null;
         //get data from saved file
         prefs=getSharedPreferences("favoriteRecord", Context.MODE_PRIVATE);
         String savedString1 = prefs.getString("country", "");
@@ -65,23 +96,19 @@ public class Covid19Activity extends AppCompatActivity {
 
         EditText country1 = findViewById(R.id.country);
         EditText date1 = findViewById(R.id.date);
-
         country1.setText(savedString1);
         date1.setText(savedString2);
-
-        loadSavedDataFromDatabase();
-        ListView savedView=findViewById(R.id.savedData);
-        savedView.setAdapter(savedAdapter);
+        savedView=findViewById(R.id.savedData);
         savedView.setOnItemLongClickListener((p, b, pos, id)->{
-            String selectedRecord = savedList.get(pos);
+            String selectedRecord = dateList.get(pos);
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setTitle("Do you want to delete it?")
                     //What is the message:
                     .setMessage("The country is: " + selectedRecord.substring(11) + "\nThe date is: "+selectedRecord.substring(0,10))
                     .setPositiveButton("Yes", (click, arg) -> {
-                        savedList.remove(pos);
+                        dateList.remove(pos);
                         deleteRecord(selectedRecord);
-                        //getSupportFragmentManager().beginTransaction().remove(dFragment).commit();
+                        getSupportFragmentManager().beginTransaction().remove(dFragment).commit();
                         savedAdapter.notifyDataSetChanged();
                     })
                     .setNegativeButton("No", (click, arg) -> {
@@ -90,32 +117,55 @@ public class Covid19Activity extends AppCompatActivity {
                     .create().show();
             return true;
         });
-        savedView.setOnItemClickListener((p,b,pos,id)->{
-            String s=savedList.get(pos);
-             String [] columns1 = {CovidOpener.COL_PROVINCE,CovidOpener.COL_CASE};
-                Cursor detailResults=db.query(false,CovidOpener.TABLE_NAME,columns1, CovidOpener.COL_DATE + "= ? and "+CovidOpener.COL_COUNTRY+" =?",
+        savedView.setOnItemClickListener((list, view, position, id) -> {
+            //get the detailed list data
+            String s=dateList.get(position);
+            String [] columns1 = {CovidOpener.COL_PROVINCE,CovidOpener.COL_CASE};
+            Cursor detailResults=db.query(true,CovidOpener.TABLE_NAME,columns1, CovidOpener.COL_DATE + "= ? and "+CovidOpener.COL_COUNTRY+" =?",
                     new String[]{s.substring(0,10),s.substring(11)},null,null,null,null);
-                int provinceColIndex = detailResults.getColumnIndex(CovidOpener.COL_PROVINCE);
-                int caseColIndex = detailResults.getColumnIndex(CovidOpener.COL_CASE);
-            while(detailResults.moveToNext()){
-                String  s1 = detailResults.getString(provinceColIndex);
-                String s2=detailResults.getString(caseColIndex);
-                detailList.add(s1+":"+s2);
+            int provinceColIndex = detailResults.getColumnIndex(CovidOpener.COL_PROVINCE);
+            int caseColIndex = detailResults.getColumnIndex(CovidOpener.COL_CASE);
+            ArrayList<String> detailList= new ArrayList<>();
+            while(detailResults.moveToNext()) {
+                String s1 = detailResults.getString(provinceColIndex);
+                String s2 = detailResults.getString(caseColIndex);
+                detailList.add(s1 + ":" + s2);
+            }
+            //create a bundle to transfer data
+            Bundle dataToPass = new Bundle();
+            dataToPass.putSerializable("ARRAYLIST", (Serializable) detailList);
+            if (isTablet) {
+                dFragment.setArguments(dataToPass);
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment, dFragment).commit();
+            }
+            //for Phone:
+            else {
+                Intent nextActivity = new Intent(this, CovidEmptyActivity.class);
+                nextActivity.putExtra("BUNDLE", dataToPass);
+                startActivity(nextActivity);
             }
         });
 
         Button searchButton = findViewById(R.id.entrySearch);
         searchButton.setOnClickListener(clk -> {
-            Intent searchIntent = new Intent(this, SearchActivity.class);
             String country=country1.getText().toString();
             String date=date1.getText().toString();
+            if(country.trim().equals("")||date.trim().equals("")||!date.matches("\\d{4}[-.]\\d{1,2}[-.]\\d{1,2}")){
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+                alertDialogBuilder.setTitle(getResources().getString(R.string.CovidErrorTitle))
+                .setMessage(getResources().getString(R.string.CovidErrorMsg))
+                .setNeutralButton("OK",(click,args)->{})
+                .create().show();
+            }else {
+                Intent searchIntent = new Intent(this, SearchActivity.class);
+                searchIntent.putExtra("country", country);
+                searchIntent.putExtra("date", date);
 
-            searchIntent.putExtra("country", country);
-            searchIntent.putExtra("date", date);
-
-            saveSharedPrefs(country,date);
-            startActivity(searchIntent);
+                saveSharedPrefs(country, date);
+                startActivity(searchIntent);
+            }
         });
+
 
 
     }
@@ -164,9 +214,45 @@ public class Covid19Activity extends AppCompatActivity {
                         .setView(getLayoutInflater().inflate(R.layout.alert_layout, null))
                         .create().show();
                 break;
+            case R.id.item2:
+                dateList.clear();
+                loadSavedDataFromDatabase();
+                savedView.setAdapter(savedAdapter);
+                break;
         }
         return true;
     }
+    @Override
+
+    /**
+     * Called when an item in the navigation menu is selected.
+     *
+     * @param item The selected item
+     * @return true to display the item as the selected item
+     */
+    public boolean onNavigationItemSelected( MenuItem item) {
+        switch(item.getItemId())
+        {
+            case R.id.menu1:
+                startActivity(new Intent(this,TicketMasterActivity.class));
+                break;
+            case R.id.menu2:
+                startActivity(new Intent(this,RecipeSearchToolBar.class));
+                break;
+            case R.id.menu3:
+                startActivity(new Intent(this,TheAudioDatabase.class));
+                break;
+            case R.id.menu4:
+                finish();
+                break;
+
+        }
+
+        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return false;
+    }
+
     /**
      * This method is called when click search button to save the input content to a file.
      * @param s1,s2 these two parameters are the content to save.
@@ -194,7 +280,7 @@ public class Covid19Activity extends AppCompatActivity {
         while(results.moveToNext()){
             String  s1 = results.getString(dateColIndex);
             String s2=results.getString(countryColIndex);
-            savedList.add(s1+" "+s2);
+            dateList.add(s1+" "+s2);
         }
     }
     /**
@@ -202,9 +288,11 @@ public class Covid19Activity extends AppCompatActivity {
      */
     protected void deleteRecord(String s) {
         db.delete(CovidOpener.TABLE_NAME, CovidOpener.COL_DATE + "= ? and "+CovidOpener.COL_COUNTRY+" =?",
-                new String[]{s.substring(0,9),s.substring(11)});
+                new String[]{s.substring(0,10),s.substring(11)});
     }
-
+    /**
+     * The inner class is used for listView
+     */
     protected class SavedAdapter extends BaseAdapter {
         /**
          * How many items are in the data set represented by this Adapter.
@@ -213,7 +301,7 @@ public class Covid19Activity extends AppCompatActivity {
          */
         @Override
         public int getCount() {
-            return savedList.size();
+            return dateList.size();
         }
 
         /**
@@ -225,7 +313,7 @@ public class Covid19Activity extends AppCompatActivity {
          */
         @Override
         public String getItem(int position){
-            return savedList.get(position);
+            return dateList.get(position);
         }
 
         /**
