@@ -15,7 +15,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-
+/**
+ * The class is used to demonstrate Fragment on phone
+ *  @author June Li
+ * @version 1.0
+ */
 public class CovidEmptyActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {

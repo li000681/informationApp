@@ -37,7 +37,6 @@
     <string name="searchHeader">The Search Result</string>
     <string name="header">Welcome to Covid19 search page</string>
     <string name="homeheader">Welcome to Information Search App</string>
-    android:text="@string/homeheader" />
     <string name="introduction">This App is developed by Fighting Team. You can search Ticket,
         Recipe, Covid-19 and AudioDatabase information. Hope our app can bring convenience to your life!</string>
     <string name="author">Author: June Li</string>
