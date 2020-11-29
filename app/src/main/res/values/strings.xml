@@ -57,6 +57,8 @@
     <string name="WelcomeCovidSearch">Welcome to Covid-19 search page. You can input the country name and date,then press
         the "SEARCH" button to search the detailed data,including province, cases. If you want to save the result, press
         "ADD TO FAVORITE" button. If you want to delete the saved record, click the specific record. </string>
+    <string name="CovidErrorMsg">Please input the country name and date, or check the date format is correct</string>
+    <string name="CovidErrorTitle">Error!</string>
     <string name="TicketHelp" translatable="false">Help</string>
     <string name="WelcomeTicketSearch" translatable="false">Welcome to ticket search page. Please input the city name and radius! Press the SEARCH button to begin search.</string>
     <string name="ticketAlertNB" translatable="false">OK</string>
