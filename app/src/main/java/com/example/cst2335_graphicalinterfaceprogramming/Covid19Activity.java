@@ -263,6 +263,7 @@ public class Covid19Activity extends AppCompatActivity implements NavigationView
         editor.putString("date",s2);
         editor.commit();
     }
+
     /**
      * This method is called to load the saved data from database.
      */
