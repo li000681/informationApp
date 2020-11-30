@@ -408,7 +408,7 @@ public class TicketMasterActivity extends AppCompatActivity implements Navigatio
                     listItem.put("imgUrl", image.getString("url"));
                     listItem.put("city", args[0]);
                     listItem.put("localDate", event.getJSONObject("dates").getJSONObject("start").getString("localDate"));
-                    listItem.put("localTime", event.getJSONObject("dates").getJSONObject("start").getString("localTime"));
+                   // listItem.put("localTime", event.getJSONObject("dates").getJSONObject("start").getString("localTime"));
                     listItem.put("min", price.getString("min"));
                     listItem.put("max", price.getString("max"));
                     listItem.put("currency", price.getString("currency"));
@@ -455,7 +455,7 @@ public class TicketMasterActivity extends AppCompatActivity implements Navigatio
         public void onPostExecute(String fromDoInBackground) {
             Toast toast;
             if(totalElement > 0) {
-                toast = Toast.makeText(TicketMasterActivity.this.getApplicationContext(), totalElement+getResources().getString(R.string.ticketLoad), Toast.LENGTH_LONG);
+                toast = Toast.makeText(TicketMasterActivity.this.getApplicationContext(), totalElement+" "+getResources().getString(R.string.ticketLoad), Toast.LENGTH_LONG);
             }
             else {
                 toast = Toast.makeText(TicketMasterActivity.this.getApplicationContext(), getResources().getString(R.string.ticketNoFound), Toast.LENGTH_LONG);
