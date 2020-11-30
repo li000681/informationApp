@@ -17,9 +17,7 @@
         <activity android:name=".CovidEmptyActivity"></activity>
         <activity android:name=".RecipeSearchEmptyActivity" />
         <activity android:name=".RecipeSearchToolBar" />
-        <activity android:name=".FavoriteTicketActivity" />
-        <activity android:name=".MenuExample" />
-        <activity android:name=".GoToTicketToolbarPage" />
+        <activity android:name=".FavoriteTicketActivity"></activity>
         <activity android:name=".TicketDetailsActivity" />
         <activity android:name=".AlbumDetailsInfo" />
         <activity android:name=".TheAudioDatabase" />

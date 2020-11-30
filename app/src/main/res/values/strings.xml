@@ -63,7 +63,6 @@
     <string name="WelcomeTicketSearch" translatable="false">Welcome to ticket search page. Please input the city name and radius! Press the SEARCH button to begin search.</string>
     <string name="ticketAlertNB" translatable="false">OK</string>
     <string name="ticketFavorite">Press the FAVORITE button go to the favorite events page.</string>
-    <string name="ticketToolBar">Press the TOOLBAR button go to Toolbar and Navigation page.</string>
     <string name="TicketDetailHelp">Help</string>
     <string name="TicketFavoriteSaveAs">Welcome to ticket event detail page! Press the SAVE AS FAVORITE button can save events as favorite.</string>
     <string name="ticketAlertNB1">OK</string>
@@ -75,14 +74,14 @@
     <string name="radius">Radius</string>
     <string name="ticketsearch">SEARCH</string>
     <string name="ticketfavorite1">FAVORITE</string>
-    <string name="tickettoolbar">Toolbar</string>
     <string name="tickethelp1">HELP</string>
     <string name="save_as_favorite">Save as favorite</string>
     <string name="tickethelp2">HELP</string>
     <string name="title">TicketMaster-event-search, written by Wei Li, version 1.0.</string>
-    <string name="choice">Choices</string>
-    <string name="ticketsearch1">Search</string>
+    <string name="choice">TicketMaster, Written by Wei Li, Version number 1.0</string>
+    <string name="tickethelp3">Help</string>
     <string name="ticketfavorite2">Favorite</string>
+    <string name="tickethome">Home</string>
     <string name="ticketError">Error!</string>
     <string name="ticketPlease">Please input city and radius.</string>
     <string name="ticketLoad">Events has been loaded successfully!</string>
