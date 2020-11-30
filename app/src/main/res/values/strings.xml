@@ -79,8 +79,9 @@
     <string name="tickethelp2">HELP</string>
     <string name="title">TicketMaster-event-search, written by Wei Li, version 1.0.</string>
     <string name="choice">TicketMaster, Written by Wei Li, Version number 1.0</string>
-    <string name="tickethelp3">Help</string>
-    <string name="ticketfavorite2">Favorite</string>
+    <string name="ticketrecipe">Go To Recipe Search Page</string>
+    <string name="ticketcovid">Go To Covid Search Page</string>
+    <string name="ticketaudio">Go To Audio Search Page</string>
     <string name="tickethome">Home</string>
     <string name="ticketError">Error!</string>
     <string name="ticketPlease">Please input city and radius.</string>

@@ -291,10 +291,6 @@ public class TicketMasterActivity extends AppCompatActivity implements Navigatio
                 Intent nextPage5 = new Intent(TicketMasterActivity.this, FavoriteTicketActivity.class);
                 startActivity(nextPage5);
                 break;
-            case R.id.home_item:
-                Intent nextPage6 = new Intent(TicketMasterActivity.this, MainActivity.class);
-                startActivity(nextPage6);
-                break;
         }
         return true;
     }
@@ -308,19 +304,20 @@ public class TicketMasterActivity extends AppCompatActivity implements Navigatio
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int d=item.getItemId();
-        if (d==R.id.navigation_help){
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(getResources().getString(R.string.TicketHelp) + ": ")
-                    .setMessage(getResources().getString(R.string.WelcomeTicketSearch)+getResources().getString(R.string.ticketFavorite))
-                    .setNeutralButton(getResources().getString(R.string.ticketAlertNB), (click, b) -> { })
-                    .create().show();
+        if (d==R.id.navigation_home){
+            Intent nextPage6 = new Intent(TicketMasterActivity.this, MainActivity.class);
+            startActivity(nextPage6);
         }
-        else if (d==R.id.navigation_favorite){
-            Intent nextPage5 = new Intent(TicketMasterActivity.this, FavoriteTicketActivity.class);
+        else if (d==R.id.navigation_recipe){
+            Intent nextPage5 = new Intent(TicketMasterActivity.this, RecipeSearchToolBar.class);
             startActivity(nextPage5);
         }
-        else if (d==R.id.navigation_home){
-            Intent nextPage6 = new Intent(TicketMasterActivity.this, MainActivity.class);
+        else if (d==R.id.navigation_covid){
+            Intent nextPage6 = new Intent(TicketMasterActivity.this,  Covid19Activity.class);
+            startActivity(nextPage6);
+        }
+        else if (d==R.id.navigation_audio){
+            Intent nextPage6 = new Intent(TicketMasterActivity.this,  TheAudioDatabase.class);
             startActivity(nextPage6);
         }
         return false;

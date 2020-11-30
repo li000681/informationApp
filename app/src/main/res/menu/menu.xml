@@ -2,13 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single"></group>
     <item
-        android:id="@+id/navigation_help"
-        android:title="@string/tickethelp3"
-        android:icon="@drawable/tickethelp"/>
+        android:id="@+id/navigation_recipe"
+        android:title="@string/ticketrecipe"
+        android:icon="@drawable/icons8_cooking_book"/>
     <item
-        android:id="@+id/navigation_favorite"
-        android:title="@string/ticketfavorite2"
-        android:icon="@drawable/favorite"/>
+        android:id="@+id/navigation_covid"
+        android:title="@string/ticketcovid"
+        android:icon="@drawable/icons8_coronavirus"/>
+    <item
+        android:id="@+id/navigation_audio"
+        android:title="@string/ticketaudio"
+        android:icon="@drawable/icons8_audio"/>
     <item
         android:id="@+id/navigation_home"
         android:title="@string/tickethome"
