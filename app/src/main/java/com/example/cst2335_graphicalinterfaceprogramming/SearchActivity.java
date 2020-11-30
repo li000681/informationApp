@@ -87,7 +87,7 @@ public class SearchActivity extends AppCompatActivity {
 
         saveButton.setOnClickListener(clk -> {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-            alertDialogBuilder.setTitle("Do you want to save to recipe_search_favorite.png list?")
+            alertDialogBuilder.setTitle(getResources().getString(R.string.favorite))
                     //What is the message:
                     .setPositiveButton("Yes", (click, arg) -> {
                             ContentValues newRowValues = new ContentValues();
@@ -98,8 +98,12 @@ public class SearchActivity extends AppCompatActivity {
                                 newRowValues.put(CovidOpener.COL_CASE, resultList.get(i).getCase());
                                 //Insert in the database:
                                 CovidOpener covidOpener = new CovidOpener(this);
-                                db = covidOpener.getWritableDatabase();
-                                db.insert(CovidOpener.TABLE_NAME, null, newRowValues);
+                               try {
+                                   db = covidOpener.getWritableDatabase();
+                                   db.insert(CovidOpener.TABLE_NAME, null, newRowValues);
+                               }finally {
+                                   db.close();
+                               }
 
                             }
 

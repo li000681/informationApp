@@ -5,6 +5,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class CovidOpener extends SQLiteOpenHelper {
+    /**
+     * The varialbes are delared for database, table and colomns
+     */
     protected final static String DATABASE_NAME = "covidDB";
     protected final static int VERSION_NUM = 1;
     public final static String TABLE_NAME = "covidTable";
