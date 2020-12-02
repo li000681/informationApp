@@ -1,5 +1,9 @@
 package com.example.cst2335_graphicalinterfaceprogramming;
-
+/**
+ * The class is the basic message about Recipe
+ *  @author Jianchuan Li
+ * @version 1.0
+ */
 public class Recipes {
     protected  String title;
     protected String href;

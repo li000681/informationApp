@@ -16,7 +16,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-
+/**
+ * The class is used to demonstrate Fragment
+ *  @author Jianchuan Li
+ * @version 1.0
+ */
 
 
 public class RecipeSearchDetailsFragment extends Fragment{

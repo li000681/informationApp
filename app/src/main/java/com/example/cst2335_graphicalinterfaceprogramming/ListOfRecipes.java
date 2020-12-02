@@ -45,7 +45,7 @@ public class ListOfRecipes extends AppCompatActivity {
     private ListView lv;
     private ProgressBar pb;
     ArrayList<Recipes> elements = new ArrayList<>();
-    private MyListAdapter myAdapter;
+    public MyListAdapter myAdapter;
     private SQLiteDatabase db;
     boolean isTablet;
     ListView recipeList;

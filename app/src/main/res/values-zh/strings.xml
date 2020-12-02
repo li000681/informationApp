@@ -15,8 +15,8 @@
     <string name="Ingredients_snackBar_message">多个原料之间请用“,”分隔</string>
     <string name="RecipeHelp">帮助</string>
     <string name="recipeAlertNB">好</string>
-    <string name="recipeURL">"URL: "</string>
-    <string name="recipeIngredients">"Ingredients: "</string>
+    <string name="recipeURL">"链接: "</string>
+    <string name="recipeIngredients">"配料: "</string>
     <string name="covidSearch">查询</string>
     <string name="help">帮助</string>
     <string name="country">国家</string>
@@ -76,4 +76,17 @@
     <string name="ticketYes">是的</string>
     <string name="ticketRecover">此项已恢复！</string>
     <string name="ticketNo">否</string>
+    <string name="RecipeInputError">出错了！</string>
+    <string name="recipeSearchopen">open</string>
+    <string name="recipeSearchclose">close</string>
+    <string name="recipeSearchFavorite">收藏</string>
+    <string name="recipeSearchHelp">帮助</string>
+    <string name="login">回到主页</string>
+    <string name="recipeSearchTitle">菜谱搜索</string>
+    <string name="recipeSearchAuthor">李建川</string>
+    <string name="recipeSearchVersion">1.0</string>
+    <string name="recipeSearchSave">收藏</string>
+    <string name="recipeSearchHide">收起</string>
+    <string name="Recipe_save_toast_message">此菜谱已被收藏</string>
+    <string name="RecipeErrorMessage">菜名和配料名不能同时为空。</string>
 </resources>
