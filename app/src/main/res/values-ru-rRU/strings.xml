@@ -12,4 +12,8 @@
     <string name="error">Ошибка</string>
     <string name="cant_find_artist">Не находим такого артиста</string>
     <string name="no_network">Интернет пропал</string>
+    <string name="add_to_fav">в Избранные</string>
+    <string name="input_name">Укажите имя</string>
+    <string name="help_tad">Помощь</string>
+    <string name="tad_delete">Удалить</string>
 </resources>
