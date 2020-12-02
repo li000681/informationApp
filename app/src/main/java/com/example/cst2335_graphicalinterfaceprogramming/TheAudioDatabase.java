@@ -1,74 +1,125 @@
 package com.example.cst2335_graphicalinterfaceprogramming;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
-import android.os.AsyncTask;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.PopupMenu;
 
-import java.io.InputStream;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+
+import com.google.android.material.navigation.NavigationView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.List;
 
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
-public class TheAudioDatabase extends AppCompatActivity {
+public class TheAudioDatabase extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    static final String ID_ALBUM = "ID_ALBUM";
-    ArtistSearch searchCall;
-    Retrofit retrofit;
-    private List<Album> albums;
-    private ArrayAdapter<String> arrayAdapter;
     public static final String ARTIST_NAME = "ARTIST_NAME";
-    public static final String ALBUM_NUM = "ALBUM_NUM";
-    SearchListFragment  searchListFragment;
+    public static final String ALBUM_ID = "ALBUM_NUM";
+    public static final String URL_IMAGE = "URL_IMAGE";
+    private SearchListFragment searchListFragment;
+    private FavoriteTracksFragment favoriteTracksFragment;
+    TracksFragment tracksFragment;
     SharedPreferences sharedPreferences;
-
+    boolean orientationLand;
+    TheAudioDbHelper dbHelper;
+    NavigationView navigationView;
+    DrawerLayout drawer;
+    List<Track> favoriteTracks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_the_audio_database);
+        setContentView(R.layout.activity_tad_main);
+        Toolbar tBar = findViewById(R.id.tad_toolbar);
+        setSupportActionBar(tBar);
+        checkOrientation();
+        dbHelper = new TheAudioDbHelper(this);
+
+        drawer = findViewById(R.id.tad_drawer);
+        navigationView = findViewById(R.id.tad_nav_view);
+        updateFavList();
+        navigationView.setNavigationItemSelectedListener(this);
+
+        // Hamburger icon in toolbar
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, tBar, R.string.tad_nav_open, R.string.tad_nav_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        searchListFragment = new SearchListFragment();
+        tracksFragment = new TracksFragment();
+        favoriteTracksFragment = new FavoriteTracksFragment();
         sharedPreferences = getSharedPreferences("audioDb", MODE_PRIVATE);
 
-        // initialize retrofit, setup for server tad
-        retrofit = new Retrofit.Builder()
-                .baseUrl("https://www.theaudiodb.com/") // set servername
-                .addConverterFactory(GsonConverterFactory.create()) // set JSON converter
-                .build();
-
-        // creating object of interface ArtistSearch
-        searchCall = retrofit.create(ArtistSearch.class);
-        searchListFragment = SearchListFragment.newInstance();
-        changeFragment(searchListFragment, null);
+        if (orientationLand) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_location, searchListFragment) //Add the fragment in FrameLayout
+                    .commit(); //actually load the fragment.
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_location2, tracksFragment) //Add the fragment in FrameLayout
+                    .commit(); //actually load the fragment.
+        } else {
+            changeFragment(searchListFragment);
+        }
     }
 
-    void changeFragment(Fragment fragment, String idAlbum){
-        if (idAlbum != null) {
-            Bundle bundle = new Bundle();
-            bundle.putString(ID_ALBUM, idAlbum);
-            fragment.setArguments(bundle); //pass it a bundle for information
+    // update Favorite tracks in Navigation list
+    void updateFavList() {
+        favoriteTracks = dbHelper.getTracklist();
+        navigationView.getMenu().clear();
+        for (Track t : favoriteTracks){
+            navigationView.getMenu().add(t.toString());
         }
+    }
+
+    void changeFragment(Fragment fragment) {
         getSupportFragmentManager()
                 .beginTransaction()
+                .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
                 .replace(R.id.fragment_location, fragment) //Add the fragment in FrameLayout
                 .commit(); //actually load the fragment.
     }
+    void changeFragment(Fragment fragment, String idAlbum, String urlImage, String artistName) {
+        changeFragment(fragment);
+        tracksFragment.searchAlbum(idAlbum, urlImage, artistName);
+    }
+    public void searchAlbum(String idAlbum, String urlImage, String artistName) {
+        if (tracksFragment != null) {
+            tracksFragment.searchAlbum(idAlbum, urlImage, artistName);
+        }
+    }
 
-    boolean isNetworkOk(){
+    @Override
+    public void onBackPressed() {
+        if (orientationLand) {
+            super.onBackPressed();
+        } else if (tracksFragment.isVisible()){
+            changeFragment(searchListFragment);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    boolean isNetworkOk() {
         return ((ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE))
                 .getActiveNetworkInfo() != null &&
                 ((ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE))
@@ -77,36 +128,55 @@ public class TheAudioDatabase extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add("instruction");
+        menu.add(R.string.help_tad);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getTitle().equals("instruction")) {
+        if (item.getItemId() == 0) {
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
             alert.setTitle("Instruction")
                     .setMessage(R.string.Instruction)
                     .setPositiveButton("Ok", (dialog, which) -> dialog.dismiss());
             alert.show();
         }
-            return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onBackPressed() {
-        if (TracksFragment.newInstance().isVisible()){
-            changeFragment(SearchListFragment.newInstance(), null);
-        } else super.onBackPressed();
-    }
-
-
+    // Save string in SP
     void saveSharedPrefs(String savedString) {
         if (sharedPreferences != null) {
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("SearchName", savedString);
+            editor.putString(ARTIST_NAME, savedString);
             editor.commit();
         }
     }
 
+    private void checkOrientation(){
+        int orientation = getResources().getConfiguration().orientation;
+        if (orientation == 2){
+            orientationLand = true;
+        } else orientationLand = false;
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            String artistAndTrack = item.getTitle().toString().replace(" ", "%20");
+            String url = "http://www.google.com/search?q=" + artistAndTrack ;
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse(url));
+            startActivity(intent);
+        return false;
+    }
+
+	public void organizeFavorites(View view) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                .addToBackStack("")
+                .replace(R.id.fragment_location, favoriteTracksFragment) //Add the fragment in FrameLayout
+                .commit(); //actually load the fragment.
+        drawer.closeDrawers();
+	}
 }
