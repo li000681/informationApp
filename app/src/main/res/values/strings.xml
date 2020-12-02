@@ -4,7 +4,8 @@
     <string name="recipeSearch">Recipe Search page/Jianchuan Li</string>
     <string name="covidCaseData">Covid-19 case data/June Li</string>
     <string name="audioDatabaseApi">The Audio Database api/name</string>
-    <string name="Instruction">Input name and press \"Search\"</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="Instruction" translatable="false">Input name and press \"Search\"</string>
     <string name="search">Search</string>
     <string name="empty_field_toast">Input artist name</string>
     <string name="error">Error</string>
@@ -28,13 +29,20 @@
     <string name="fromDate">From Date(YYYY-MM-DD)</string>
     <string name="endDate">End Date(YYYY-MM-DD)</string>
     <string name="date">Date(YYYY-MM-DD)</string>
-    <string name="favorite">The favorite data you have saved:</string>
+    <string name="favorite">Do you want to add the data to favorite list?</string>
     <string name="hint">Type Here</string>
     <string name="save">Add To Favorite</string>
     <string name="clear">Clear</string>
     <string name="undo">Recovery</string>
     <string name="hide">Hide</string>
     <string name="searchHeader">The Search Result</string>
+    <string name="header">Welcome to Covid19 search page</string>
+    <string name="homeheader">Welcome to Information Search App</string>
+    <string name="introduction">This App is developed by Fighting Team. You can search Ticket,
+        Recipe, Covid-19 and AudioDatabase information. Hope our app can bring convenience to your life!</string>
+    <string name="author">Author: June Li</string>
+    <string name="version">Version: 1.0</string>
+    <string name="home">Go back to home page</string>
     <string name="recipeSearchopen">open</string>
     <string name="recipeSearchclose">close</string>
     <string name="recipeSearchFavorite">favorites</string>
@@ -49,11 +57,12 @@
     <string name="WelcomeCovidSearch">Welcome to Covid-19 search page. You can input the country name and date,then press
         the "SEARCH" button to search the detailed data,including province, cases. If you want to save the result, press
         "ADD TO FAVORITE" button. If you want to delete the saved record, click the specific record. </string>
-    <string name="TicketHelp">Help</string>
-    <string name="WelcomeTicketSearch">Welcome to ticket search page. Please input the city name and radius! Press the SEARCH button to begin search.</string>
-    <string name="ticketAlertNB">OK</string>
+    <string name="CovidErrorMsg">Please input the country name and date, or check the date format is correct</string>
+    <string name="CovidErrorTitle">Error!</string>
+    <string name="TicketHelp" translatable="false">Help</string>
+    <string name="WelcomeTicketSearch" translatable="false">Welcome to ticket search page. Please input the city name and radius! Press the SEARCH button to begin search.</string>
+    <string name="ticketAlertNB" translatable="false">OK</string>
     <string name="ticketFavorite">Press the FAVORITE button go to the favorite events page.</string>
-    <string name="ticketToolBar">Press the TOOLBAR button go to Toolbar and Navigation page.</string>
     <string name="TicketDetailHelp">Help</string>
     <string name="TicketFavoriteSaveAs">Welcome to ticket event detail page! Press the SAVE AS FAVORITE button can save events as favorite.</string>
     <string name="ticketAlertNB1">OK</string>
@@ -65,14 +74,15 @@
     <string name="radius">Radius</string>
     <string name="ticketsearch">SEARCH</string>
     <string name="ticketfavorite1">FAVORITE</string>
-    <string name="tickettoolbar">Toolbar</string>
     <string name="tickethelp1">HELP</string>
     <string name="save_as_favorite">Save as favorite</string>
     <string name="tickethelp2">HELP</string>
     <string name="title">TicketMaster-event-search, written by Wei Li, version 1.0.</string>
-    <string name="choice">Choices</string>
-    <string name="ticketsearch1">Search</string>
-    <string name="ticketfavorite2">Favorite</string>
+    <string name="choice">TicketMaster, Written by Wei Li, Version number 1.0</string>
+    <string name="ticketrecipe">Go To Recipe Search Page</string>
+    <string name="ticketcovid">Go To Covid Search Page</string>
+    <string name="ticketaudio">Go To Audio Search Page</string>
+    <string name="tickethome">Home</string>
     <string name="ticketError">Error!</string>
     <string name="ticketPlease">Please input city and radius.</string>
     <string name="ticketLoad">Events has been loaded successfully!</string>
@@ -84,7 +94,7 @@
     <string name="ticketUndo">UNDO</string>
     <string name="ticketRecover">The Item has been recovered!</string>
     <string name="ticketNo">No</string>
-    <string name="open" />
-    <string name="close" />
-    
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+
 </resources>

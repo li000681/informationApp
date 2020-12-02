@@ -32,7 +32,8 @@ public class TicketDetailsActivity extends AppCompatActivity {
     SQLiteDatabase db;
 
     /**
-     * Method used to retrieve required data(image, starting date, min price, max price, and URL) from jsonObject and set value to ImageView and TextView
+     * Method used to retrieve required data(image, starting date, min price, max price, and URL)
+     * from jsonObject and set value to ImageView and TextView
      * @param savedInstanceState reference to a Bundle object that is passed into the onCreate method
      */
     @Override

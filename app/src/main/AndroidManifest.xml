@@ -14,22 +14,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-
-        <activity android:name=".RecipeSearchEmptyActivity"></activity>
+        <activity android:name=".CovidEmptyActivity"></activity>
+        <activity android:name=".RecipeSearchEmptyActivity" />
         <activity android:name=".RecipeSearchToolBar" />
-
         <activity android:name=".FavoriteTicketActivity"></activity>
-        <activity android:name=".MenuExample" />
-        <activity android:name=".GoToTicketToolbarPage" />
         <activity android:name=".TicketDetailsActivity" />
-
         <activity android:name=".AlbumDetailsInfo" />
         <activity android:name=".TheAudioDatabase" />
         <activity android:name=".ListOfRecipes" />
         <activity android:name=".RecipeSearch" />
         <activity android:name=".TicketMasterActivity" />
-        <activity android:name=".DetailsActivity" />
-        <activity android:name=".FavoriteActivity" />
         <activity android:name=".SearchActivity" />
         <activity android:name=".SearchResult" />
         <activity android:name=".Covid19Activity" />

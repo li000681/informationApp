@@ -2,15 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/search_item"
-        android:icon="@drawable/search"
+    <item android:id="@+id/help_item"
+        android:icon="@drawable/tickethelp"
         android:orderInCategory="50"
         app:showAsAction="always"
-        android:title="SEARCH"/>    <!-- This uses showAsAction=always, so look at icon= parameter -->
+        android:title="HELP"/>    <!-- This uses showAsAction=always, so look at icon= parameter -->
 
     <item android:id="@+id/favorite_item"
         android:icon="@drawable/favorite"
         android:orderInCategory="75"
         app:showAsAction="always"
-        android:title="Not used, since showAsAction=always"/>
+        android:title="FAVORITE"/>
+
 </menu>
