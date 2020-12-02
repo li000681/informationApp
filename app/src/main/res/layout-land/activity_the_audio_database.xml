@@ -7,14 +7,13 @@
     android:orientation="horizontal"
     tools:context=".TheAudioDatabase">
     <FrameLayout
-        android:id="@+id/fragment_location_1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:id="@+id/fragment_location"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
     <FrameLayout
-        android:id="@+id/fragment_location_2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
-
-
+        android:id="@+id/fragment_location2"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
 </LinearLayout>
