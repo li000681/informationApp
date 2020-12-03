@@ -18,13 +18,13 @@ import androidx.fragment.app.Fragment;
 
 /**
  * The class is used to demonstrate Fragment
- *  @author Jianchuan Li
+ *  @author Jianchuan` Li
  * @version 1.0
  */
 
 
 public class RecipeSearchDetailsFragment extends Fragment{
-    private SQLiteDatabase db;
+    //private SQLiteDatabase db;
     private Bundle dataFromActivity;
     private long id;
     private AppCompatActivity parentActivity;
@@ -65,12 +65,13 @@ public class RecipeSearchDetailsFragment extends Fragment{
                 parentActivity.finish();
             }
         });
-        Button savehButton = (Button)result.findViewById(R.id.saveButton);
-        savehButton.setOnClickListener( clk -> {
+        Button saveButton = (Button)result.findViewById(R.id.saveButton);
+        saveButton.setOnClickListener( clk -> {
 
             //Tell the parent activity to remove
             Recipes r= new Recipes(title,url,ingredients);
-            updateMessage(r);
+            ListOfRecipes lr=new ListOfRecipes();
+            lr.updateMessage(r);
             Toast.makeText(getActivity(), getResources().getString(R.string.Recipe_save_toast_message), Toast.LENGTH_LONG).show();
         });
 
@@ -84,17 +85,17 @@ public class RecipeSearchDetailsFragment extends Fragment{
         //context will either be FragmentExample for a tablet, or EmptyActivity for phone
         parentActivity = (AppCompatActivity)context;
     }
-    protected void updateMessage(Recipes c)
-    {
-        //Create a ContentValues object to represent a database row:
-        ContentValues updatedValues = new ContentValues();
-        updatedValues.put(RecipeSearchMyOpener.COL_TITLE, c.getTitle());
-        updatedValues.put(RecipeSearchMyOpener.COL_URL, c.getHref());
-        updatedValues.put(RecipeSearchMyOpener.COL_INGREDIENTS, c.getIngredients());
-        updatedValues.put(RecipeSearchMyOpener.COL_ID, c.getId());
-
-        //now call the update function:
-        db.update(RecipeSearchMyOpener.TABLE_NAME, updatedValues, RecipeSearchMyOpener.COL_ID + "= ?", new String[] {Long.toString(c.getId())});
-
-    }
+//    protected void updateMessage(Recipes c)
+//    {
+//        //Create a ContentValues object to represent a database row:
+//        ContentValues updatedValues = new ContentValues();
+//        updatedValues.put(RecipeSearchMyOpener.COL_TITLE, c.getTitle());
+//        updatedValues.put(RecipeSearchMyOpener.COL_URL, c.getHref());
+//        updatedValues.put(RecipeSearchMyOpener.COL_INGREDIENTS, c.getIngredients());
+//        updatedValues.put(RecipeSearchMyOpener.COL_ID, c.getId());
+//
+//        //now call the update function:
+//        db.update(RecipeSearchMyOpener.TABLE_NAME, updatedValues, RecipeSearchMyOpener.COL_ID + "= ?", new String[] {Long.toString(c.getId())});
+//
+//    }
 }

@@ -89,4 +89,5 @@
     <string name="recipeSearchHide">收起</string>
     <string name="Recipe_save_toast_message">此菜谱已被收藏</string>
     <string name="RecipeErrorMessage">菜名和配料名不能同时为空。</string>
+    <string name="recipeSearchDelete">删除</string>
 </resources>

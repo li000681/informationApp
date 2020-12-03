@@ -98,5 +98,6 @@
     <string name="close">Close</string>
     <string name="RecipeInputError">Error!</string>
     <string name="RecipeErrorMessage">Recipe and ingredients can not be both blanks.</string>
+    <string name="recipeSearchDelete">Delete</string>
 
 </resources>

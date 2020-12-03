@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -42,7 +43,6 @@ public class ListOfRecipes extends AppCompatActivity {
     public final static String ITEM_URL = "URL";
     public final static String ITEM_INGREDIENTS = "INGREDIENTS";
     public final static String ITEM_ID = "_id";
-    private ListView lv;
     private ProgressBar pb;
     ArrayList<Recipes> elements = new ArrayList<>();
     public MyListAdapter myAdapter;
@@ -66,7 +66,11 @@ public class ListOfRecipes extends AppCompatActivity {
         req.execute("http://www.recipepuppy.com/api/?i=", ingredients, "&q=", recipe, "&format=xml");
         recipeList = (ListView) findViewById(R.id.recipeList);
         isTablet= findViewById(R.id.fragmentLocation) != null;
+        //get a database connection:
+        RecipeSearchMyOpener dbOpener = new RecipeSearchMyOpener(this);
+        //This calls onCreate() if you've never built the table before, or onUpgrade if the version here is newer
 
+        db = dbOpener.getWritableDatabase();
 /** When long press the recipe, there is an AlertDialog showing the recipe title, URL and ingredients.*/
         recipeList.setOnItemLongClickListener((parent, view, pos, id) -> {
 
@@ -221,26 +225,27 @@ public class ListOfRecipes extends AppCompatActivity {
     {
         Recipes selectedRecipe = elements.get(position);
 
-        //View contact_view = getLayoutInflater().inflate(R.layout.message_edit, null);
-        //get the TextViews
-//        EditText rowName = contact_view.findViewById(R.id.row_name);
-//        EditText rowEmail = contact_view.findViewById(R.id.row_email);
-//        TextView rowId = contact_view.findViewById(R.id.row_id);
+        View contact_view = getLayoutInflater().inflate(R.layout.recipe_search_favorite_edit, null);
+
+        TextView rowTitle = contact_view.findViewById(R.id.recipeTitle);
+        TextView rowURL = contact_view.findViewById(R.id.recipeURL);
+        TextView rowIngredients = contact_view.findViewById(R.id.recipeIngredients);
 
         //set the fields for the alert dialog
-//        rowName.setText(selectedMessage.getMsg());
-//        rowEmail.setText(selectedMessage.booleanToString(selectedMessage.getSendButtonIsClicked()));
-//        rowId.setText("id:" + selectedMessage.getId());
+        rowTitle.setText(selectedRecipe.getTitle());
+        rowURL.setText(selectedRecipe.getHref());
+        rowIngredients.setText(selectedRecipe.getIngredients());
+
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(selectedRecipe.getTitle())
                 .setMessage(getResources().getString(R.string.recipeURL)+ selectedRecipe.getHref()+"\n"+getResources().getString(R.string.recipeIngredients)+selectedRecipe.getIngredients())
-//                .setView(contact_view) //add the 3 edit texts showing the contact information
-//                .setPositiveButton(getResources().getString(R.string.alertUB), (click, b) -> {
-//                    selectedMessage.update(rowName.getText().toString(), selectedMessage.stringToBoolean(rowEmail.getText().toString()));
-//                    updateMessage(selectedMessage);
-//                    myAdapter.notifyDataSetChanged(); //the recipe_search_help.png and name have changed so rebuild the list
-//                })
+                .setView(contact_view) //add the 3 edit texts showing the contact information
+                .setPositiveButton(getResources().getString(R.string.recipeSearchSave), (click, b) -> {
+                    selectedRecipe.update(rowTitle.getText().toString(), rowURL.getText().toString(),rowIngredients.getText().toString());
+                    updateMessage(selectedRecipe);
+                    myAdapter.notifyDataSetChanged(); //the recipe_search_help.png and name have changed so rebuild the list
+                })
 //                .setNegativeButton(getResources().getString(R.string.alertPB), (click, b) -> {
 //                    deleteMessage(selectedMessage); //remove the contact from database
 //                    elements.remove(position);
@@ -253,11 +258,7 @@ public class ListOfRecipes extends AppCompatActivity {
     }
     protected void updateMessage(Recipes c)
     {
-        //get a database connection:
-        RecipeSearchMyOpener dbOpener = new RecipeSearchMyOpener(this);
-        //This calls onCreate() if you've never built the table before, or onUpgrade if the version here is newer
 
-        db = dbOpener.getWritableDatabase();
         //Create a ContentValues object to represent a database row:
         ContentValues updatedValues = new ContentValues();
         updatedValues.put(RecipeSearchMyOpener.COL_TITLE, c.getTitle());
@@ -272,5 +273,39 @@ public class ListOfRecipes extends AppCompatActivity {
     protected void deleteMessage(Recipes c)
     {
         db.delete(RecipeSearchMyOpener.TABLE_NAME, RecipeSearchMyOpener.COL_ID + "= ?", new String[] {Long.toString(c.getId())});
+    }
+    protected  void loadDataFromDatabase()
+    {
+
+//        RecipeSearchMyOpener dbOpener = new RecipeSearchMyOpener(this);
+//        //This calls onCreate() if you've never built the table before, or onUpgrade if the version here is newer
+//
+//        db = dbOpener.getWritableDatabase();
+        // We want to get all of the columns. Look at MyOpener.java for the definitions:
+        String [] columns = {RecipeSearchMyOpener.COL_ID, RecipeSearchMyOpener.COL_TITLE, RecipeSearchMyOpener.COL_URL, RecipeSearchMyOpener.COL_INGREDIENTS};
+        //query all the results from the database:
+        Cursor results = db.query(false, RecipeSearchMyOpener.TABLE_NAME, columns, null, null, null, null, null, null);
+
+
+        //Now the results object has rows of results that match the query.
+        //find the column indices:
+        int titleIndex = results.getColumnIndex(RecipeSearchMyOpener.COL_TITLE);
+        int urlIndex = results.getColumnIndex(RecipeSearchMyOpener.COL_URL);
+        int ingredientsIndex=results.getColumnIndex(RecipeSearchMyOpener.COL_INGREDIENTS);
+        int idColIndex = results.getColumnIndex(RecipeSearchMyOpener.COL_ID);
+
+        //iterate over the results, return true if there is a next item:
+        while(results.moveToNext())
+        {
+            String title = results.getString(titleIndex);
+            String url = results.getString(urlIndex);
+            String ingredients = results.getString(ingredientsIndex);
+            long id = results.getLong(idColIndex);
+            // Log.i(String.valueOf(id),msg+sendButtonIsClicked);
+            //add the new Contact to the array list:
+            elements.add(new Recipes(id, title, url,ingredients));
+        }
+
+        //At this point, the contactsList array has loaded every row from the cursor.
     }
 }
