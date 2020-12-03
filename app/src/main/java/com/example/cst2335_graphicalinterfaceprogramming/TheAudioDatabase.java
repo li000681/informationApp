@@ -46,6 +46,7 @@ public class TheAudioDatabase extends AppCompatActivity implements NavigationVie
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_tad_main);
         Toolbar tBar = findViewById(R.id.tad_toolbar);
         setSupportActionBar(tBar);
