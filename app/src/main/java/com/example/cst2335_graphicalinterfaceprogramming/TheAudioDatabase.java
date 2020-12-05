@@ -27,9 +27,21 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+/**
+ * The class is the main responsible the main page function
+ *  @author Gulmira Kanalinova
+ *  @version 1.0
+ *  December 5, 2020
+ */
 
+/**
+ * Main class for the The Audio Database api
+ * contains navigation menu to switch to other applications of the project
+ */
 public class TheAudioDatabase extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-
+    /**
+     * The variables is used to store data
+     */
     public static final String ARTIST_NAME = "ARTIST_NAME";
     public static final String ALBUM_ID = "ALBUM_NUM";
     public static final String URL_IMAGE = "URL_IMAGE";
@@ -44,21 +56,25 @@ public class TheAudioDatabase extends AppCompatActivity implements NavigationVie
     List<Track> favoriteTracks;
 
     @Override
+    /**
+     *The method is the entry of execute,it equivalent to main method
+     * @param savedInstanceState
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_tad_main);
-        Toolbar tBar = findViewById(R.id.tad_toolbar);
-        setSupportActionBar(tBar);
+        Toolbar tBar = findViewById(R.id.tad_toolbar); // get reference of Toolbar
+        setSupportActionBar(tBar); // setting/replace toolbar as ActionBar
         checkOrientation();
         dbHelper = new TheAudioDbHelper(this);
 
-        drawer = findViewById(R.id.tad_drawer);
+        drawer = findViewById(R.id.tad_drawer); //displays App’s Navigation option from the left edge of the screen
         navigationView = findViewById(R.id.tad_nav_view);
         updateFavList();
         navigationView.setNavigationItemSelectedListener(this);
 
-        // Hamburger icon in toolbar
+        // This is a hamburger icon in toolbar
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, tBar, R.string.tad_nav_open, R.string.tad_nav_close);
         drawer.addDrawerListener(toggle);
@@ -69,6 +85,8 @@ public class TheAudioDatabase extends AppCompatActivity implements NavigationVie
         favoriteTracksFragment = new FavoriteTracksFragment();
         sharedPreferences = getSharedPreferences("audioDb", MODE_PRIVATE);
 
+        // Allows to fragments locate horizontally when screen is turned. For this  was created
+        // layout_land with activity_the_audio_database.xml file
         if (orientationLand) {
             getSupportFragmentManager()
                     .beginTransaction()
@@ -119,7 +137,7 @@ public class TheAudioDatabase extends AppCompatActivity implements NavigationVie
             super.onBackPressed();
         }
     }
-
+      // this method detects the presence of the internet
     boolean isNetworkOk() {
         return ((ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE))
                 .getActiveNetworkInfo() != null &&
@@ -128,13 +146,20 @@ public class TheAudioDatabase extends AppCompatActivity implements NavigationVie
     }
 
     @Override
+    /**
+     Overriden onCreateOptionsMenu for adding a menu to Activity
+     */
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(R.string.help_tad);
+        menu.add(R.string.help_tad);//this adds the menu item dynamically
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
+    /**
+     * This hook is called whenever an item in your options menu is selected.
+     */
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        // what to do when menu item is selected
         if (item.getItemId() == 0) {
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
             alert.setTitle("Instruction")
@@ -145,7 +170,7 @@ public class TheAudioDatabase extends AppCompatActivity implements NavigationVie
         return super.onOptionsItemSelected(item);
     }
 
-    // Save string in SP
+    // Save string in SharedPreferences
     void saveSharedPrefs(String savedString) {
         if (sharedPreferences != null) {
             SharedPreferences.Editor editor = sharedPreferences.edit();
