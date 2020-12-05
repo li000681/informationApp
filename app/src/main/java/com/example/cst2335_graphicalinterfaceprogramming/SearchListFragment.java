@@ -38,7 +38,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.cst2335_graphicalinterfaceprogramming.TheAudioDatabase.ARTIST_NAME;
-
+/**
+ * The class is the main responsible the main page function
+ *  @author Gulmira Kanalinova
+ *  @version 1.0
+ *  December 5, 2020
+ */
 
 public class SearchListFragment extends Fragment {
 
