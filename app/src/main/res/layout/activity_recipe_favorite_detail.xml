@@ -41,20 +41,16 @@
         android:layout_below="@+id/recipeSpace2"
         android:textColor="@color/colorAccent"
         android:textSize="20dp"/>
-
     <Button
+        android:id="@+id/finish"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:text="@string/recipeSearchSave"
-        android:id="@+id/saveButton"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/colorAccent"
         android:text="@string/recipeSearchHide"
-        android:id="@+id/finishButton"/>
+        android:textSize="20dp"/>
+
+
 </RelativeLayout>

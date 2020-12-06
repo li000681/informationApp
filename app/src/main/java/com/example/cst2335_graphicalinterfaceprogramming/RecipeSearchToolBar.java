@@ -55,14 +55,14 @@ public class RecipeSearchToolBar extends AppCompatActivity implements Navigation
     private ProgressBar pb;
     ArrayList<Recipes> elements = new ArrayList<>();
     public MyListAdapter myAdapter;
-    private SQLiteDatabase db;
-    boolean isTablet;
+//    private SQLiteDatabase db;
+
     ListView recipeList;
 
     /** prefs is used to store the recipe and ingredients input by user last time.*/
 
     SharedPreferences prefs = null;
-    RecipeSearchDetailsFragment dFragment;
+  //  RecipeSearchDetailsFragment dFragment;
 
 
     @Override
@@ -73,10 +73,11 @@ public class RecipeSearchToolBar extends AppCompatActivity implements Navigation
         pb = findViewById(R.id.progressBar);
         pb.setVisibility(View.VISIBLE);
         recipeList=findViewById(R.id.listfavorite);
-        RecipeSearchMyOpener dbOpener = new RecipeSearchMyOpener(this);
+        boolean isTablet = findViewById(R.id.frameLayout) != null;
+      //  RecipeSearchMyOpener dbOpener = new RecipeSearchMyOpener(this);
 
 
-        db = dbOpener.getWritableDatabase();
+     //   db = dbOpener.getWritableDatabase();
 
 
 
@@ -98,14 +99,8 @@ public class RecipeSearchToolBar extends AppCompatActivity implements Navigation
 
         /** When users input, there is a snackBar indicating that ingredients should be separated by comma.*/
         et1.setOnClickListener(v -> Snackbar.make(et1,getResources().getString(R.string.Ingredients_snackBar_message),Snackbar.LENGTH_LONG).show());
-        /** help button is for help information which would show in AlertDialog.*/
-//        Button help = findViewById(R.id.recipeHelpButton);
-//        help.setOnClickListener(v ->{
-//            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//            builder.setTitle(getResources().getString(R.string.RecipeHelp) + ": ")
-//                    .setMessage(getResources().getString(R.string.WelcomeRecipeSearch)+getResources().getString(R.string.editRecipe))
-//                    .setNeutralButton(getResources().getString(R.string.recipeAlertNB), (click, b) -> { })
-//                    .create().show();});
+
+
         /** search button is for search information which would show in next activity.*/
         Button search = findViewById(R.id.button);
         search.setOnClickListener(bt -> {
@@ -129,17 +124,7 @@ public class RecipeSearchToolBar extends AppCompatActivity implements Navigation
 
                     }
                 });
-//            Intent goToProfile = new Intent(this, ListOfRecipes.class);
-//            goToProfile.putExtra("Recipe",et.getText().toString());
-//            goToProfile.putExtra("Ingredients",et1.getText().toString());
-//            startActivity(goToProfile);}});
 
-        recipeList.setOnItemLongClickListener((parent, view, pos, id) -> {
-
-            showMessage(pos);
-
-            return true;
-        });
         recipeList.setOnItemClickListener((list, item, position, id) -> {
             //Create a bundle to pass data to the new fragment
             Bundle dataToPass = new Bundle();
@@ -155,7 +140,7 @@ public class RecipeSearchToolBar extends AppCompatActivity implements Navigation
                 dFragment.setArguments( dataToPass ); //pass it a bundle for information
                 getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.fragmentLocation, dFragment) //Add the fragment in FrameLayout
+                        .replace(R.id.frameLayout, dFragment) //Add the fragment in FrameLayout
                         .commit(); //actually load the fragment. Calls onCreate() in DetailFragment
             }
             else //isPhone
@@ -231,11 +216,12 @@ public class RecipeSearchToolBar extends AppCompatActivity implements Navigation
         {
             //what to do when the menu item is selected:
             case R.id.recipeSearchFavorite:
-                elements.clear();
-                loadDataFromDatabase();
-                recipeList.setAdapter(myAdapter);
-
+                Intent nextPage = new Intent(this, ListOfRecipes.class);
+                startActivity(nextPage);
                 break;
+
+
+
             case R.id.recipeSearchHelp:
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle(getResources().getString(R.string.RecipeHelp) + ": ")
@@ -244,7 +230,8 @@ public class RecipeSearchToolBar extends AppCompatActivity implements Navigation
                         .create().show();
                 break;
             case R.id.recipeSearchLogin:
-                finish();
+                Intent nextPage1 = new Intent(this, MainActivity.class);
+                startActivity(nextPage1);
                 break;
 
         }
@@ -264,21 +251,26 @@ public class RecipeSearchToolBar extends AppCompatActivity implements Navigation
 
         switch(item.getItemId())
         {
-            case R.id.recipeSearchFavorite:
-                message = "You clicked recipe_search_favorite.png item";
-                break;
-            case R.id.recipeSearchHelp:
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle(getResources().getString(R.string.RecipeHelp) + ": ")
-                        .setMessage(getResources().getString(R.string.WelcomeRecipeSearch)+getResources().getString(R.string.editRecipe))
-                        .setNeutralButton(getResources().getString(R.string.recipeAlertNB), (click, b) -> { })
-                        .create().show();
-                break;
-            case R.id.recipeSearchLogin:
-                finish();
-                break;
 
-        }
+            case R.id.navigation_home:
+                Intent nextPage1 = new Intent(this, MainActivity.class);
+                startActivity(nextPage1);
+                break;
+            case R.id.navigation_recipe:
+                Intent nextPage2 = new Intent(this, TicketMasterActivity.class);
+                startActivity(nextPage2);
+                break;
+            case R.id.navigation_covid:
+                Intent nextPage3 = new Intent(this,  Covid19Activity.class);
+                startActivity(nextPage3);
+                break;
+            case R.id.navigation_audio:
+                Intent nextPage4 = new Intent(this,  TheAudioDatabase.class);
+                startActivity(nextPage4);
+                break;
+            }
+
+
 
         DrawerLayout drawerLayout = findViewById(R.id.recipeSearchdrawer_layout);
         drawerLayout.closeDrawer(GravityCompat.START);
@@ -292,7 +284,14 @@ public class RecipeSearchToolBar extends AppCompatActivity implements Navigation
             String title;
             String href;
             String ingredients;
-
+            /**
+             * this method to perform a computation on a background thread. The
+             * specified parameters are the parameters passed to {@link #execute}
+             * by the caller of this task.
+             *
+             * @param args The parameters of the task
+             * @return A result, defined by the subclass of this task
+             */
 
             @Override
             public String doInBackground(String... args) {
@@ -353,39 +352,79 @@ public class RecipeSearchToolBar extends AppCompatActivity implements Navigation
                 return "done";
             }
 
-
+            /**
+             * Runs on the UI thread after {@link #publishProgress} is invoked.
+             * The specified values are the values passed to {@link #publishProgress}.
+             * The default version does nothing.
+             * @param value The values indicating progress.
+             */
             //Type 2
             public void onProgressUpdate(Integer... value) {
                 pb.setVisibility(View.VISIBLE);
                 pb.setProgress(value[0]);
 
             }
-
+            /**
+             * <p>Runs on the UI thread after {@link #doInBackground}. The
+             * specified result is the value returned by {@link #doInBackground}.
+             * <p>If searching recipes that been found greater than 0, it shows the number of recipes has been loaded.
+             * Otherwise no recipe found.
+             * <p> the progress bar become invisible and recipes titles shows in lists
+             * @param fromDoInBackground The result of the operation computed by {@link #doInBackground}.
+             */
             //Type3
             public void onPostExecute(String fromDoInBackground) {
+                Toast toast;
+                if(elements.size() > 0) {
+                    toast = Toast.makeText(RecipeSearchToolBar.this.getApplicationContext(), elements.size()+" "+getResources().getString(R.string.recipeLoad), Toast.LENGTH_LONG);
+                }
+                else {
+                    toast = Toast.makeText(RecipeSearchToolBar.this.getApplicationContext(), getResources().getString(R.string.recipeNoFound), Toast.LENGTH_LONG);
+                }
+                toast.show();
                 recipeList.setAdapter(myAdapter = new MyListAdapter());
                 pb.setVisibility(View.INVISIBLE);
             }
 
 
         }
-
+        /**
+         * The inner class is an adapter for ListView
+         */
         private class MyListAdapter extends BaseAdapter {
+            /**
+             * Method counts how many recipes are in a list
+             * @return number of recipes in a list
+             */
             @Override
             public int getCount() {
                 return elements.size();
             }
-
+            /**
+             * Method gets a recipe from a list
+             * @param position position of a recipe in a list
+             * @return recipe
+             */
             @Override
             public Object getItem(int position) {
                 return elements.get(position);
             }
-
+            /**
+             * Method gets a event's id from a database
+             * @param position position of a event in a list
+             * @return id of a event
+             */
             @Override
             public long getItemId(int position) {
                 return elements.get(position).getId();
             }
-
+            /**
+             * Method returns a view for a recipe
+             * @param position position of a event in a list
+             * @param convertView recycled view
+             * @param parent view that can contain other views
+             * @return view of a event (row to the ListView)
+             */
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 LayoutInflater inflater = getLayoutInflater();
@@ -400,92 +439,92 @@ public class RecipeSearchToolBar extends AppCompatActivity implements Navigation
             }
 
         }
-    protected void showMessage(int position)
-    {
-        Recipes selectedRecipe = elements.get(position);
-        isTablet= findViewById(R.id.fragmentLocation) != null;
-        View contact_view = getLayoutInflater().inflate(R.layout.recipe_search_favorite_edit, null);
+//    protected void showMessage(int position)
+//    {
+//        Recipes selectedRecipe = elements.get(position);
+//        isTablet= findViewById(R.id.fragmentLocation) != null;
+//        View contact_view = getLayoutInflater().inflate(R.layout.recipe_search_favorite_edit, null);
+//
+//        TextView rowTitle = contact_view.findViewById(R.id.recipeTitle);
+//        TextView rowURL = contact_view.findViewById(R.id.recipeURL);
+//        TextView rowIngredients = contact_view.findViewById(R.id.recipeIngredients);
+//
+//        //set the fields for the alert dialog
+//        rowTitle.setText(selectedRecipe.getTitle());
+//        rowURL.setText(selectedRecipe.getHref());
+//        rowIngredients.setText(selectedRecipe.getIngredients());
+//
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setTitle(selectedRecipe.getTitle())
+//                .setMessage(getResources().getString(R.string.recipeURL)+ selectedRecipe.getHref()+"\n"+getResources().getString(R.string.recipeIngredients)+selectedRecipe.getIngredients())
+//                .setView(contact_view) //add the 3 edit texts showing the contact information
+//                .setPositiveButton(getResources().getString(R.string.recipeSearchSave), (click, b) -> {
+//                    selectedRecipe.update(rowTitle.getText().toString(), rowURL.getText().toString(),rowIngredients.getText().toString());
+//                    updateMessage(selectedRecipe);
+//                    myAdapter.notifyDataSetChanged(); //the recipe_search_help.png and name have changed so rebuild the list
+//                })
+//                .setNegativeButton(getResources().getString(R.string.recipeSearchDelete), (click, b) -> {
+//                    deleteMessage(selectedRecipe); //remove the contact from database
+//                    elements.remove(position);
+//                    if(isTablet){
+//                        getSupportFragmentManager().beginTransaction().remove(dFragment).commit();}//remove the contact from contact list
+//                    myAdapter.notifyDataSetChanged(); //there is one less item so update the list
+//                })
+//                .setNeutralButton(getResources().getString(R.string.recipeAlertNB), (click, b) -> { })
+//                .create().show();
+//    }
+//        protected void updateMessage(Recipes c)
+//        {
+//            //get a database connection:
+//
+//            //Create a ContentValues object to represent a database row:
+//            ContentValues updatedValues = new ContentValues();
+//            updatedValues.put(RecipeSearchMyOpener.COL_TITLE, c.getTitle());
+//            updatedValues.put(RecipeSearchMyOpener.COL_URL, c.getHref());
+//            updatedValues.put(RecipeSearchMyOpener.COL_INGREDIENTS, c.getIngredients());
+//           // updatedValues.put(RecipeSearchMyOpener.COL_ID, c.getId());
+//
+//
+//
+//            //Now insert in the database:
+//            long newId = db.insert(RecipeSearchMyOpener.TABLE_NAME, null, updatedValues);
+//            //now call the update function:
+//            //db.update(RecipeSearchMyOpener.TABLE_NAME, updatedValues, RecipeSearchMyOpener.COL_ID + "= ?", new String[] {Long.toString(c.getId())});
+//        }
 
-        TextView rowTitle = contact_view.findViewById(R.id.recipeTitle);
-        TextView rowURL = contact_view.findViewById(R.id.recipeURL);
-        TextView rowIngredients = contact_view.findViewById(R.id.recipeIngredients);
-
-        //set the fields for the alert dialog
-        rowTitle.setText(selectedRecipe.getTitle());
-        rowURL.setText(selectedRecipe.getHref());
-        rowIngredients.setText(selectedRecipe.getIngredients());
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(selectedRecipe.getTitle())
-                .setMessage(getResources().getString(R.string.recipeURL)+ selectedRecipe.getHref()+"\n"+getResources().getString(R.string.recipeIngredients)+selectedRecipe.getIngredients())
-                .setView(contact_view) //add the 3 edit texts showing the contact information
-                .setPositiveButton(getResources().getString(R.string.recipeSearchSave), (click, b) -> {
-                    selectedRecipe.update(rowTitle.getText().toString(), rowURL.getText().toString(),rowIngredients.getText().toString());
-                    updateMessage(selectedRecipe);
-                    myAdapter.notifyDataSetChanged(); //the recipe_search_help.png and name have changed so rebuild the list
-                })
-                .setNegativeButton(getResources().getString(R.string.recipeSearchDelete), (click, b) -> {
-                    deleteMessage(selectedRecipe); //remove the contact from database
-                    elements.remove(position);
-                    if(isTablet){
-                        getSupportFragmentManager().beginTransaction().remove(dFragment).commit();}//remove the contact from contact list
-                    myAdapter.notifyDataSetChanged(); //there is one less item so update the list
-                })
-                .setNeutralButton(getResources().getString(R.string.recipeAlertNB), (click, b) -> { })
-                .create().show();
-    }
-        protected void updateMessage(Recipes c)
-        {
-            //get a database connection:
-
-            //Create a ContentValues object to represent a database row:
-            ContentValues updatedValues = new ContentValues();
-            updatedValues.put(RecipeSearchMyOpener.COL_TITLE, c.getTitle());
-            updatedValues.put(RecipeSearchMyOpener.COL_URL, c.getHref());
-            updatedValues.put(RecipeSearchMyOpener.COL_INGREDIENTS, c.getIngredients());
-           // updatedValues.put(RecipeSearchMyOpener.COL_ID, c.getId());
-
-
-
-            //Now insert in the database:
-            long newId = db.insert(RecipeSearchMyOpener.TABLE_NAME, null, updatedValues);
-            //now call the update function:
-            //db.update(RecipeSearchMyOpener.TABLE_NAME, updatedValues, RecipeSearchMyOpener.COL_ID + "= ?", new String[] {Long.toString(c.getId())});
-        }
-
-        protected void deleteMessage(Recipes c)
-        {
-            db.delete(RecipeSearchMyOpener.TABLE_NAME, RecipeSearchMyOpener.COL_ID + "= ?", new String[] {Long.toString(c.getId())});
-        }
-        protected  void loadDataFromDatabase()
-        {
-
-
-            // We want to get all of the columns. Look at MyOpener.java for the definitions:
-            String [] columns = {RecipeSearchMyOpener.COL_ID, RecipeSearchMyOpener.COL_TITLE, RecipeSearchMyOpener.COL_URL, RecipeSearchMyOpener.COL_INGREDIENTS};
-            //query all the results from the database:
-            Cursor results = db.query(false, RecipeSearchMyOpener.TABLE_NAME, columns, null, null, null, null, null, null);
-
-
-            //Now the results object has rows of results that match the query.
-            //find the column indices:
-            int titleIndex = results.getColumnIndex(RecipeSearchMyOpener.COL_TITLE);
-            int urlIndex = results.getColumnIndex(RecipeSearchMyOpener.COL_URL);
-            int ingredientsIndex=results.getColumnIndex(RecipeSearchMyOpener.COL_INGREDIENTS);
-            int idColIndex = results.getColumnIndex(RecipeSearchMyOpener.COL_ID);
-
-            //iterate over the results, return true if there is a next item:
-            while(results.moveToNext())
-            {
-                String title = results.getString(titleIndex);
-                String url = results.getString(urlIndex);
-                String ingredients = results.getString(ingredientsIndex);
-                long id = results.getLong(idColIndex);
-                // Log.i(String.valueOf(id),msg+sendButtonIsClicked);
-                //add the new Contact to the array list:
-                elements.add(new Recipes(id, title, url,ingredients));
-            }
+//        protected void deleteMessage(Recipes c)
+//        {
+//            db.delete(RecipeSearchMyOpener.TABLE_NAME, RecipeSearchMyOpener.COL_ID + "= ?", new String[] {Long.toString(c.getId())});
+//        }
+//        protected  void loadDataFromDatabase()
+//        {
+//
+//
+//            // We want to get all of the columns. Look at MyOpener.java for the definitions:
+//            String [] columns = {RecipeSearchMyOpener.COL_ID, RecipeSearchMyOpener.COL_TITLE, RecipeSearchMyOpener.COL_URL, RecipeSearchMyOpener.COL_INGREDIENTS};
+//            //query all the results from the database:
+//            Cursor results = db.query(false, RecipeSearchMyOpener.TABLE_NAME, columns, null, null, null, null, null, null);
+//
+//
+//            //Now the results object has rows of results that match the query.
+//            //find the column indices:
+//            int titleIndex = results.getColumnIndex(RecipeSearchMyOpener.COL_TITLE);
+//            int urlIndex = results.getColumnIndex(RecipeSearchMyOpener.COL_URL);
+//            int ingredientsIndex=results.getColumnIndex(RecipeSearchMyOpener.COL_INGREDIENTS);
+//            int idColIndex = results.getColumnIndex(RecipeSearchMyOpener.COL_ID);
+//
+//            //iterate over the results, return true if there is a next item:
+//            while(results.moveToNext())
+//            {
+//                String title = results.getString(titleIndex);
+//                String url = results.getString(urlIndex);
+//                String ingredients = results.getString(ingredientsIndex);
+//                long id = results.getLong(idColIndex);
+//                // Log.i(String.valueOf(id),msg+sendButtonIsClicked);
+//                //add the new Contact to the array list:
+//                elements.add(new Recipes(id, title, url,ingredients));
+//            }
 
             //At this point, the contactsList array has loaded every row from the cursor.
-        }
+//        }
     }

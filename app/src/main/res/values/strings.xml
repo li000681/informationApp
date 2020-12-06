@@ -99,5 +99,8 @@
     <string name="RecipeInputError">Error!</string>
     <string name="RecipeErrorMessage">Recipe and ingredients can not be both blanks.</string>
     <string name="recipeSearchDelete">Delete</string>
+    <string name="recipeLoad">recipes found.</string>
+    <string name="recipeNoFound">Recipe not found</string>
+    <string name="recipeticket">go to Ticket Search Page</string>
 
 </resources>
