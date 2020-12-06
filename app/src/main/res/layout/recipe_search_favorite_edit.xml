@@ -20,7 +20,7 @@
         android:layout_below="@+id/recipeTitle"
         android:text="\n\n" />
 
-    <Button
+    <TextView
         android:id="@+id/recipeURL"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -42,19 +42,5 @@
         android:textColor="@color/colorAccent"
         android:textSize="20dp"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:text="@string/recipeSearchSave"
-        android:id="@+id/saveButton"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:text="@string/recipeSearchHide"
-        android:id="@+id/finishButton"/>
 </RelativeLayout>

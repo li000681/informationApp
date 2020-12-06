@@ -47,7 +47,7 @@
     <string name="recipeSearchclose">close</string>
     <string name="recipeSearchFavorite">favorites</string>
     <string name="recipeSearchHelp">help</string>
-    <string name="login">go back to login</string>
+    <string name="login">go back to main page</string>
     <string name="recipeSearchTitle">Recipe Search</string>
     <string name="recipeSearchAuthor">Jianchuan Li</string>
     <string name="recipeSearchVersion">1.0</string>
@@ -96,5 +96,11 @@
     <string name="ticketNo">No</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
+    <string name="RecipeInputError">Error!</string>
+    <string name="RecipeErrorMessage">Recipe and ingredients can not be both blanks.</string>
+    <string name="recipeSearchDelete">Delete</string>
+    <string name="recipeLoad">recipes found.</string>
+    <string name="recipeNoFound">Recipe not found</string>
+    <string name="recipeticket">go to Ticket Search Page</string>
 
 </resources>

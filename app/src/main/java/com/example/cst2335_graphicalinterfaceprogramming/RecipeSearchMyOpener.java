@@ -3,7 +3,11 @@ package com.example.cst2335_graphicalinterfaceprogramming;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
+/**
+ * The class is the Database information about saved recipes
+ *  @author Jianchuan Li
+ * @version 1.0
+ */
 public class RecipeSearchMyOpener extends SQLiteOpenHelper {
 
     protected final static String DATABASE_NAME = "RecipeSearchMessagesDB";
