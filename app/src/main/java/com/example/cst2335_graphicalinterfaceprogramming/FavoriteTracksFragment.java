@@ -39,6 +39,12 @@ import static com.example.cst2335_graphicalinterfaceprogramming.TheAudioDatabase
 import static com.example.cst2335_graphicalinterfaceprogramming.TheAudioDatabase.ARTIST_NAME;
 import static com.example.cst2335_graphicalinterfaceprogramming.TheAudioDatabase.URL_IMAGE;
 
+/**
+ * The class is the main responsible the main page function
+ *  @author Gulmira Kanalinova
+ *  @version 1.0
+ *  December 5, 2020
+ */
 public class FavoriteTracksFragment extends Fragment {
 
 	private TheAudioDatabase parentActivity;
@@ -52,7 +58,10 @@ public class FavoriteTracksFragment extends Fragment {
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		tracks = parentActivity.dbHelper.getTracklist();
+		tracks = new ArrayList<>();
+		if (parentActivity != null && parentActivity.dbHelper != null) {
+			tracks = parentActivity.dbHelper.getTracklist();
+		}
 	}
 
 	/**

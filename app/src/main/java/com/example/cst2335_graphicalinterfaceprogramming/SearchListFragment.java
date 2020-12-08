@@ -70,6 +70,9 @@ public class SearchListFragment extends Fragment {
     }
 
 	@Override
+	/**
+	 * call Search when return to this fragment
+	 */
 	public void onResume() {
     	if (!TextUtils.isEmpty(etSearch.getText())){
     		btnSearch.callOnClick();
@@ -107,7 +110,7 @@ public class SearchListFragment extends Fragment {
 				String urlImage = jsonObject.getString("strAlbumThumb");
 				String artistName = jsonObject.getString("strArtist");
 
-				if (parentActivity.orientationLand) {
+				if (parentActivity.orientationLand || parentActivity.isTablet) {
 					parentActivity.searchAlbum(idAlbum, urlImage, artistName);
 				} else {
 					parentActivity.changeFragment(parentActivity.tracksFragment, idAlbum, urlImage, artistName);
@@ -162,10 +165,8 @@ public class SearchListFragment extends Fragment {
 
 
 	/**
-	 * AsyncTask
+	 * AsyncTask for getting albums list
 	 */
-
-
 	private class GetAlbumsAsync extends AsyncTask<String, Integer, String> {
 		protected String doInBackground(String... params) {
 			String result = "";

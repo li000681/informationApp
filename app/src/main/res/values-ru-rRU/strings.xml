@@ -16,4 +16,6 @@
     <string name="input_name">Укажите имя</string>
     <string name="help_tad">Помощь</string>
     <string name="tad_delete">Удалить</string>
+    <string name="organize_favorites">Настроить избранные:</string>
+    <string name="songs">Песни:</string>
 </resources>

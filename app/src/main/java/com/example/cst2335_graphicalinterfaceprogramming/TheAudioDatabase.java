@@ -36,7 +36,7 @@ import java.util.List;
 
 /**
  * Main class for the The Audio Database api
- * contains navigation menu to switch to other applications of the project
+ * contains navigation menu with favorites list
  */
 public class TheAudioDatabase extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     /**
@@ -45,14 +45,26 @@ public class TheAudioDatabase extends AppCompatActivity implements NavigationVie
     public static final String ARTIST_NAME = "ARTIST_NAME";
     public static final String ALBUM_ID = "ALBUM_NUM";
     public static final String URL_IMAGE = "URL_IMAGE";
+    /**
+     * Fragments used in this activity
+     */
     private SearchListFragment searchListFragment;
     private FavoriteTracksFragment favoriteTracksFragment;
     TracksFragment tracksFragment;
+    /**
+     * DB classes
+     */
     SharedPreferences sharedPreferences;
-    boolean orientationLand;
     TheAudioDbHelper dbHelper;
+    /**
+     * orientation and tablet
+     */
+    boolean orientationLand;
+    boolean isTablet;
+
     NavigationView navigationView;
     DrawerLayout drawer;
+
     List<Track> favoriteTracks;
 
     @Override
@@ -62,12 +74,11 @@ public class TheAudioDatabase extends AppCompatActivity implements NavigationVie
      */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_tad_main);
+        dbHelper = new TheAudioDbHelper(this);
         Toolbar tBar = findViewById(R.id.tad_toolbar); // get reference of Toolbar
         setSupportActionBar(tBar); // setting/replace toolbar as ActionBar
         checkOrientation();
-        dbHelper = new TheAudioDbHelper(this);
 
         drawer = findViewById(R.id.tad_drawer); //displays App’s Navigation option from the left edge of the screen
         navigationView = findViewById(R.id.tad_nav_view);
@@ -87,7 +98,7 @@ public class TheAudioDatabase extends AppCompatActivity implements NavigationVie
 
         // Allows to fragments locate horizontally when screen is turned. For this  was created
         // layout_land with activity_the_audio_database.xml file
-        if (orientationLand) {
+        if (orientationLand || isTablet) {
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.fragment_location, searchListFragment) //Add the fragment in FrameLayout
@@ -101,7 +112,9 @@ public class TheAudioDatabase extends AppCompatActivity implements NavigationVie
         }
     }
 
-    // update Favorite tracks in Navigation list
+    /**
+     * update Favorite tracks in Navigation menu
+     */
     void updateFavList() {
         favoriteTracks = dbHelper.getTracklist();
         navigationView.getMenu().clear();
@@ -110,6 +123,10 @@ public class TheAudioDatabase extends AppCompatActivity implements NavigationVie
         }
     }
 
+    /**
+     * replace fragment with param
+     * @param fragment
+     */
     void changeFragment(Fragment fragment) {
         getSupportFragmentManager()
                 .beginTransaction()
@@ -117,27 +134,48 @@ public class TheAudioDatabase extends AppCompatActivity implements NavigationVie
                 .replace(R.id.fragment_location, fragment) //Add the fragment in FrameLayout
                 .commit(); //actually load the fragment.
     }
+
+    /**
+     * replace fragment and search specific album (used to replace details fragment
+     * @param fragment
+     * @param idAlbum
+     * @param urlImage
+     * @param artistName
+     */
     void changeFragment(Fragment fragment, String idAlbum, String urlImage, String artistName) {
         changeFragment(fragment);
         tracksFragment.searchAlbum(idAlbum, urlImage, artistName);
     }
+
+    /**
+     * search album in details album fragment
+     * @param idAlbum
+     * @param urlImage
+     * @param artistName
+     */
     public void searchAlbum(String idAlbum, String urlImage, String artistName) {
         if (tracksFragment != null) {
             tracksFragment.searchAlbum(idAlbum, urlImage, artistName);
         }
     }
 
+    /**
+     * override onBackPressed to control fragments change
+     */
     @Override
     public void onBackPressed() {
-        if (orientationLand) {
+        if (orientationLand || isTablet) {
             super.onBackPressed();
-        } else if (tracksFragment.isVisible()){
+        } else if (tracksFragment.isVisible() || favoriteTracksFragment.isVisible()){
             changeFragment(searchListFragment);
         } else {
             super.onBackPressed();
         }
     }
-      // this method detects the presence of the internet
+
+    /**
+     * @return network state
+     */
     boolean isNetworkOk() {
         return ((ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE))
                 .getActiveNetworkInfo() != null &&
@@ -170,7 +208,9 @@ public class TheAudioDatabase extends AppCompatActivity implements NavigationVie
         return super.onOptionsItemSelected(item);
     }
 
-    // Save string in SharedPreferences
+    /**
+     * Save string in SharedPreferences
+      */
     void saveSharedPrefs(String savedString) {
         if (sharedPreferences != null) {
             SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -179,13 +219,22 @@ public class TheAudioDatabase extends AppCompatActivity implements NavigationVie
         }
     }
 
+    /**
+    * checking orientation an tablet mode
+     */
     private void checkOrientation(){
+        isTablet = findViewById(R.id.fragment_location2) != null;
         int orientation = getResources().getConfiguration().orientation;
         if (orientation == 2){
             orientationLand = true;
         } else orientationLand = false;
     }
 
+    /**
+     * on Click Favorites in Navigation menu
+     * @param item
+     * @return
+     */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             String artistAndTrack = item.getTitle().toString().replace(" ", "%20");
@@ -196,13 +245,26 @@ public class TheAudioDatabase extends AppCompatActivity implements NavigationVie
         return false;
     }
 
+    /**
+     * Go to organize Favorites Fragment
+     * @param view
+     */
 	public void organizeFavorites(View view) {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-                .addToBackStack("")
-                .replace(R.id.fragment_location, favoriteTracksFragment) //Add the fragment in FrameLayout
-                .commit(); //actually load the fragment.
-        drawer.closeDrawers();
+        if(orientationLand || isTablet){
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_location, favoriteTracksFragment) //Add the fragment in FrameLayout
+                    .addToBackStack("")
+                    .commit(); //actually load the fragment.
+            drawer.closeDrawers();
+        } else {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                    .addToBackStack("")
+                    .replace(R.id.fragment_location, favoriteTracksFragment) //Add the fragment in FrameLayout
+                    .commit(); //actually load the fragment.
+            drawer.closeDrawers();
+        }
 	}
 }

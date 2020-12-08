@@ -11,10 +11,18 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+/**
+ * The class is the main responsible the main page function
+ *  @author Gulmira Kanalinova
+ *  @version 1.0
+ *  December 5, 2020
+ */
 
 class TheAudioDbHelper extends SQLiteOpenHelper {
 	private static final String DB_NAME = "TADDB";
 	private static final String DB_TABLE = "Tracks";
+
+
 
 	//columns
 	static final String ID = "_id";
@@ -64,6 +72,12 @@ class TheAudioDbHelper extends SQLiteOpenHelper {
 		db.delete(DB_TABLE, ARTIST + "= ?" + " AND " + TRACK_NAME + "= ?", new String[] {artist, track});
 	}
 
+	/**
+	 * returns true if track exists in DB
+	 * @param artist
+	 * @param track
+	 * @return
+	 */
 	private boolean trackExists(String artist, String track){
 		try
 		{
@@ -84,6 +98,10 @@ class TheAudioDbHelper extends SQLiteOpenHelper {
 		return false;
 	}
 
+	/**
+	 * get favorite tracks list
+	 * @return
+	 */
 	public List<Track> getTracklist(){
 		List<Track> tracks = new ArrayList<>();
 		Cursor cursor = getCursor();

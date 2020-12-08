@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,10 +40,17 @@ import static com.example.cst2335_graphicalinterfaceprogramming.TheAudioDatabase
 import static com.example.cst2335_graphicalinterfaceprogramming.TheAudioDatabase.ARTIST_NAME;
 import static com.example.cst2335_graphicalinterfaceprogramming.TheAudioDatabase.URL_IMAGE;
 
+/**
+ * The class is the main responsible the main page function
+ *  @author Gulmira Kanalinova
+ *  @version 1.0
+ *  December 5, 2020
+ */
 public class TracksFragment extends Fragment {
 
 	private TheAudioDatabase parentActivity;
 	private ListView listView;
+	TextView songs;
 	ProgressBar pBar;
 	private ArrayAdapter arrayAdapter;
 	private ImageView imageView;
@@ -52,15 +60,6 @@ public class TracksFragment extends Fragment {
 
 	private List<String> tracks;
 
-	public static TracksFragment newInstance(String albumID, String urlImage, String artistName) {
-		TracksFragment fragment = new TracksFragment();
-		Bundle bundle = new Bundle();
-		bundle.putString(ALBUM_ID, albumID);
-		bundle.putString(URL_IMAGE, urlImage);
-		bundle.putString(ARTIST_NAME, artistName);
-		fragment.setArguments(bundle);
-		return fragment;
-	}
 
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,8 +86,9 @@ public class TracksFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
-		View result = inflater.inflate(R.layout.fragment_tracks, container, false);
+		View result = inflater.inflate(R.layout.fragment_album_detail, container, false);
 
+		songs = result.findViewById(R.id.tv_songs_tracks_frag);
 		listView = result.findViewById(R.id.list_view_tracks);
 		imageView = result.findViewById(R.id.iv_album_img_ft);
 		pBar = result.findViewById(R.id.pb_tracks_frag);
@@ -263,6 +263,7 @@ public class TracksFragment extends Fragment {
 				ex.printStackTrace();
 			}
 			pBar.setVisibility(View.GONE);
+			songs.setVisibility(View.VISIBLE);
 		}
 	}
 }

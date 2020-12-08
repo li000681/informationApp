@@ -101,5 +101,7 @@
     <string name="tad_nav_open">open</string>
     <string name="tad_nav_close">close</string>
     <string name="tad_delete">Delete</string>
+    <string name="organize_favorites">Organize Favorites:</string>
+    <string name="songs">Songs:</string>
 
 </resources>
