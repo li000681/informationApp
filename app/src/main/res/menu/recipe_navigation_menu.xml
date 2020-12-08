@@ -3,7 +3,7 @@
     <group android:checkableBehavior="single"></group>
     <item
         android:id="@+id/navigation_recipe"
-        android:title="@string/ticketrecipe"
+        android:title="@string/recipeticket"
         android:icon="@drawable/icons8_cooking_book"/>
     <item
         android:id="@+id/navigation_covid"

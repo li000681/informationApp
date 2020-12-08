@@ -56,10 +56,19 @@
                 android:visibility="invisible"
                 style="?android:attr/progressBarStyleHorizontal"
                 />
-            <ListView
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/listfavorite"/>
+                android:layout_height="wrap_content">
+                <ListView
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/listfavorite"/>
+                <FrameLayout
+                    android:id="@+id/frameLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@id/listfavorite" />
+            </RelativeLayout>
         </LinearLayout>
 
         <!-- THIS IS WHAT IS WHAT POPS OUT FROM THE SIDE:-->

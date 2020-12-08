@@ -47,7 +47,7 @@
     <string name="recipeSearchclose">close</string>
     <string name="recipeSearchFavorite">favorites</string>
     <string name="recipeSearchHelp">help</string>
-    <string name="login">go back to login</string>
+    <string name="login">go back to main page</string>
     <string name="recipeSearchTitle">Recipe Search</string>
     <string name="recipeSearchAuthor">Jianchuan Li</string>
     <string name="recipeSearchVersion">1.0</string>
@@ -79,8 +79,9 @@
     <string name="tickethelp2">HELP</string>
     <string name="title">TicketMaster-event-search, written by Wei Li, version 1.0.</string>
     <string name="choice">TicketMaster, Written by Wei Li, Version number 1.0</string>
-    <string name="tickethelp3">Help</string>
-    <string name="ticketfavorite2">Favorite</string>
+    <string name="ticketrecipe">Go To Recipe Search Page</string>
+    <string name="ticketcovid">Go To Covid Search Page</string>
+    <string name="ticketaudio">Go To Audio Search Page</string>
     <string name="tickethome">Home</string>
     <string name="ticketError">Error!</string>
     <string name="ticketPlease">Please input city and radius.</string>
@@ -103,5 +104,11 @@
     <string name="tad_delete">Delete</string>
     <string name="organize_favorites">Organize Favorites:</string>
     <string name="songs">Songs:</string>
+    <string name="RecipeInputError">Error!</string>
+    <string name="RecipeErrorMessage">Recipe and ingredients can not be both blanks.</string>
+    <string name="recipeSearchDelete">Delete</string>
+    <string name="recipeLoad">recipes found.</string>
+    <string name="recipeNoFound">Recipe not found</string>
+    <string name="recipeticket">go to Ticket Search Page</string>
 
 </resources>
