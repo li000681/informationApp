@@ -96,6 +96,14 @@
     <string name="ticketNo">No</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
+    <string name="add_to_fav">add to Favorites</string>
+    <string name="input_name">Input Name</string>
+    <string name="help_tad">Help</string>
+    <string name="tad_nav_open">open</string>
+    <string name="tad_nav_close">close</string>
+    <string name="tad_delete">Delete</string>
+    <string name="organize_favorites">Organize Favorites:</string>
+    <string name="songs">Songs:</string>
     <string name="RecipeInputError">Error!</string>
     <string name="RecipeErrorMessage">Recipe and ingredients can not be both blanks.</string>
     <string name="recipeSearchDelete">Delete</string>
