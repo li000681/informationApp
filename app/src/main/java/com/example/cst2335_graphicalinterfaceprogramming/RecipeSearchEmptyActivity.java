@@ -3,7 +3,7 @@ package com.example.cst2335_graphicalinterfaceprogramming;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-
+//connection fragment 
 public class RecipeSearchEmptyActivity extends AppCompatActivity {
 
     @Override
